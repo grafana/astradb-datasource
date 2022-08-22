@@ -1,21 +1,22 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
-  "name": "Grafana Data Source Backend Plugin Template",
-  "id": "myorgid-simple-backend-datasource",
+  "name": "AstraDB",
+  "id": "grafana-astradb-datasource",
   "metrics": true,
   "backend": true,
-  "executable": "gpx_simple_datasource_backend",
+  "annotations": true,
+  "executable": "gpx_astradb",
 
   "info": {
-    "description": "Grafana Data Source Backend Plugin Template",
+    "description": "AstraDB datasource plugin for Grafana",
     "author": {
-      "name": "Your Name"
+      "name": "Grafana Labs"
     },
-    "keywords": ["Simple"],
+    "keywords": ["astra"],
     "logos": {
-      "small": "img/logo.svg",
-      "large": "img/logo.svg"
+      "small": "img/astra-square.png",
+      "large": "img/astra-square.png"
     },
     "links": [
       {"name": "Website", "url": "https://github.com/grafana/grafana-starter-datasource-backend"},
