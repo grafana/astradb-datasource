@@ -4,13 +4,13 @@ import (
 	"context"
 	"testing"
 
+	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
-	"github.com/grafana/grafana-starter-datasource-backend/pkg/plugin"
 )
 
 // This is where the tests for the datasource backend live.
 func TestQueryData(t *testing.T) {
-	ds := plugin.SampleDatasource{}
+	ds := plugin.AstraDatasource{}
 
 	resp, err := ds.QueryData(
 		context.Background(),

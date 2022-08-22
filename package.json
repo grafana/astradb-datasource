@@ -1,7 +1,7 @@
 {
-  "name": "simple-datasource-backend",
-  "version": "1.0.0",
-  "description": "Grafana Data Source Backend Plugin Template",
+  "name": "astradb-datasource",
+  "version": "0.0.1",
+  "description": "Grafana Data Source Backend Plugin for Astra DB",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
