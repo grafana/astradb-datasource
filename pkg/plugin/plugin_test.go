@@ -3,11 +3,13 @@ package plugin_test
 import (
 	"context"
 	"crypto/tls"
-	"fmt"
 	"testing"
 
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
+
+	"github.com/grafana/grafana-plugin-sdk-go/data"
+	"github.com/grafana/grafana-plugin-sdk-go/experimental"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
@@ -68,26 +70,92 @@ func TestConnect(t *testing.T) {
 
 	// For  Astra DB: SELECT the data to read from the table
 	selectQuery := &pb.Query{
-		Cql: "SELECT * from grafana.cars;",
+		Cql: "SELECT CAST( acceleration AS float) as acceleration, cylinders, displacement, horsepower, modelyear,  mpg,  passedemissions, CAST( weight as float) as weight from grafana.cars;",
 	}
 
 	response, err := stargateClient.ExecuteQuery(selectQuery)
 	assert.Nil(t, err)
 
-	result := response.GetResultSet()
+	frame := plugin.Frame(response)
 
-	var i, j int
-	for i = 0; i < 2; i++ {
-		valueToPrint := ""
-		for j = 0; j < 2; j++ {
-			value, err := client.ToString(result.Rows[i].Values[j])
-			if err != nil {
-				fmt.Printf("error getting value %v", err)
-			}
-			valueToPrint += " "
-			valueToPrint += value
-		}
-		fmt.Printf("%v \n", valueToPrint)
-	}
+	res := &backend.DataResponse{Frames: data.Frames{frame}, Error: err}
 
+	err = experimental.CheckGoldenDataResponse("../testdata/basic.txt", res, true)
+	assert.Nil(t, err)
 }
+
+// TODO - code to reference for converting these types
+
+// func translateType(spec *pb.TypeSpec) (interface{}, error) {
+// 	switch spec.GetSpec().(type) {
+// 	case *pb.TypeSpec_Basic_:
+// 		return translateBasicType(value, spec)
+// 	case *pb.TypeSpec_Map_:
+// 		elements := make(map[interface{}]interface{})
+
+// 		for i := 0; i < len(value.GetCollection().Elements)-1; i += 2 {
+// 			key, err := translateType(value.GetCollection().Elements[i], spec.GetMap().Key)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+// 			mapVal, err := translateType(value.GetCollection().Elements[i+1], spec.GetMap().Value)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+// 			elements[key] = mapVal
+// 		}
+// 		return elements, nil
+// 	case *pb.TypeSpec_List_:
+// 		var elements []interface{}
+
+// 		for i := range value.GetCollection().Elements {
+// 			element, err := translateType(value.GetCollection().Elements[i], spec.GetList().Element)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+// 			elements = append(elements, element)
+// 		}
+
+// 		return elements, nil
+// 	case *pb.TypeSpec_Set_:
+// 		var elements []interface{}
+// 		for _, element := range value.GetCollection().Elements {
+// 			element, err := translateType(element, spec.GetSet().Element)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+
+// 			elements = append(elements, element)
+// 		}
+
+// 		return elements, nil
+// 	case *pb.TypeSpec_Udt_:
+// 		fields := map[string]interface{}{}
+// 		for key, val := range value.GetUdt().Fields {
+// 			element, err := translateType(val, spec.GetUdt().Fields[key])
+// 			if err != nil {
+// 				return nil, err
+// 			}
+
+// 			fields[key] = element
+// 		}
+
+// 		return fields, nil
+// 	case *pb.TypeSpec_Tuple_:
+// 		var elements []interface{}
+// 		numElements := len(spec.GetTuple().Elements)
+// 		for i := 0; i <= len(value.GetCollection().Elements)-numElements; i++ {
+// 			for j, typeSpec := range spec.GetTuple().Elements {
+// 				element, err := translateType(value.GetCollection().Elements[i+j], typeSpec)
+// 				if err != nil {
+// 					return nil, err
+// 				}
+
+// 				elements = append(elements, element)
+// 			}
+// 		}
+
+// 		return elements, nil
+// 	}
+// 	return nil, errors.New("unsupported type")
+// }
