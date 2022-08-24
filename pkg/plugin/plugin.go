@@ -2,15 +2,20 @@ package plugin
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/json"
-	"math/rand"
+	"fmt"
 	"time"
 
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
-	"github.com/grafana/grafana-plugin-sdk-go/live"
+	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
+	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 // Make sure Datasource implements required interfaces.
@@ -21,14 +26,23 @@ var (
 )
 
 // NewDatasource creates a new datasource instance.
-func NewDatasource(_ backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
-	return &AstraDatasource{}, nil
+func NewDatasource(s backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
+	settings, err := models.LoadSettings(s)
+	if err != nil {
+		return nil, fmt.Errorf("error reading settings: %s", err.Error())
+	}
+	return &AstraDatasource{settings: settings}, nil
 }
 
-type AstraDatasource struct{}
+type AstraDatasource struct {
+	settings models.Settings
+	client   *client.StargateClient
+	conn     *grpc.ClientConn
+}
 
 func (d *AstraDatasource) Dispose() {
 	// Clean up datasource instance resources.
+	d.conn.Close()
 }
 
 func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
@@ -50,7 +64,7 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 }
 
 type queryModel struct {
-	WithStreaming bool `json:"withStreaming"`
+	rawCql string
 }
 
 func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
@@ -73,18 +87,6 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 		data.NewField("values", nil, []int64{10, 20}),
 	)
 
-	// If query called with streaming on then return a channel
-	// to subscribe on a client-side and consume updates from a plugin.
-	// Feel free to remove this if you don't need streaming for your datasource.
-	if qm.WithStreaming {
-		channel := live.Channel{
-			Scope:     live.ScopeDatasource,
-			Namespace: pCtx.DataSourceInstanceSettings.UID,
-			Path:      "stream",
-		}
-		frame.SetMeta(&data.FrameMeta{Channel: channel.String()})
-	}
-
 	// add the frames to the response.
 	response.Frames = append(response.Frames, frame)
 
@@ -92,18 +94,47 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 }
 
 func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
-	log.DefaultLogger.Info("CheckHealth called", "request", req)
-
 	var status = backend.HealthStatusOk
 	var message = "Data source is working"
 
-	if rand.Int()%2 == 0 {
+	err := d.connect()
+	if err != nil {
 		status = backend.HealthStatusError
-		message = "randomized error"
+		message = err.Error()
+	}
+	if err == nil {
+		_, err := client.NewStargateClientWithConn(d.conn)
+		if err != nil {
+			status = backend.HealthStatusError
+			message = err.Error()
+		}
 	}
 
 	return &backend.CheckHealthResult{
 		Status:  status,
 		Message: message,
 	}, nil
+}
+
+func (d *AstraDatasource) connect() error {
+	if d.conn != nil {
+		return nil
+	}
+
+	config := &tls.Config{
+		InsecureSkipVerify: false,
+	}
+
+	conn, err := grpc.Dial(d.settings.URI, grpc.WithTransportCredentials(credentials.NewTLS(config)),
+		grpc.WithBlock(),
+		grpc.WithPerRPCCredentials(
+			auth.NewStaticTokenProvider(d.settings.Token),
+		),
+	)
+	if err != nil {
+		return err
+	}
+
+	d.conn = conn
+	return nil
 }
