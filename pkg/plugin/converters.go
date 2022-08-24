@@ -48,7 +48,7 @@ var Float32ToNullableFloat64 = data.FieldConverter{
 		}
 		val, ok := v.(float32)
 		if !ok {
-			return ptr, errors.New("failed converting to")
+			return ptr, errors.New("failed converting to float64")
 		}
 		f64 := math.Round((float64(val) * 100)) / 100
 		ptr = &f64
