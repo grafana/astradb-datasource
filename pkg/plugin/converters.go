@@ -38,7 +38,7 @@ var DecimalToNullableFloat64 = data.FieldConverter{
 	},
 }
 
-// Float64ToNullableFloat64 returns an error if the input is not a float64.
+// Float32ToNullableFloat64 converts float32 to float64
 var Float32ToNullableFloat64 = data.FieldConverter{
 	OutputFieldType: data.FieldTypeNullableFloat64,
 	Converter: func(v interface{}) (interface{}, error) {

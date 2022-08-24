@@ -4,8 +4,10 @@ go 1.18
 
 require (
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
-	github.com/golang/protobuf v1.5.1
 	github.com/grafana/grafana-plugin-sdk-go v0.102.0
+	github.com/stargate/stargate-grpc-go-client v0.0.0-20220822130422-9a1c6261d4fa
+	github.com/stretchr/testify v1.7.0
+	google.golang.org/grpc v1.37.1
 )
 
 require (
@@ -14,6 +16,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/cheekybits/genny v1.0.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/golang/protobuf v1.5.1 // indirect
 	github.com/google/flatbuffers v1.11.0 // indirect
 	github.com/google/go-cmp v0.5.5 // indirect
 	github.com/google/uuid v1.2.0 // indirect
