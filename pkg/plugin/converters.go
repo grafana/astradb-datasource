@@ -2,13 +2,30 @@ package plugin
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"strconv"
 
+	"github.com/araddon/dateparse"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
+
+var dateTimeConverter = data.FieldConverter{
+	OutputFieldType: data.FieldTypeTime,
+	Converter: func(v interface{}) (interface{}, error) {
+		fV, ok := v.(string)
+		if !ok {
+			return nil, fmt.Errorf(`expected %s input but got type %T for value "%v"`, "string", v, v)
+		}
+		t, err := dateparse.ParseAny(fV)
+		if err != nil {
+			return nil, fmt.Errorf("error converting to a time / date value. error: '%s', value: '%s", err.Error(), fV)
+		}
+		return &t, nil
+	},
+}
 
 // DecimalToNullableFloat64 returns an error if the input is not a float64.
 var DecimalToNullableFloat64 = data.FieldConverter{

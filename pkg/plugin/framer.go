@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/araddon/dateparse"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
@@ -161,21 +160,6 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 			v.String(),
 		}
 	}
-}
-
-var dateTimeConverter = data.FieldConverter{
-	OutputFieldType: data.FieldTypeTime,
-	Converter: func(v interface{}) (interface{}, error) {
-		fV, ok := v.(string)
-		if !ok {
-			return nil, fmt.Errorf(`expected %s input but got type %T for value "%v"`, "string", v, v)
-		}
-		t, err := dateparse.ParseAny(fV)
-		if err != nil {
-			return nil, fmt.Errorf("error converting to a time / date value. error: '%s', value: '%s", err.Error(), fV)
-		}
-		return &t, nil
-	},
 }
 
 func getValue(col column, raw *pb.Value) (interface{}, error) {
