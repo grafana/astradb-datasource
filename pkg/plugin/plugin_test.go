@@ -3,6 +3,7 @@ package plugin_test
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
 	"testing"
 	"time"
 
@@ -19,13 +20,13 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
+// free tier - TODO - env vars
+const astra_uri = "37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.datastax.com:443"
+const token = "AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b13cd6b79a6bc43b9b79f7557749352030b62ea1"
+
 func TestConnect(t *testing.T) {
 
 	t.Skip() // integration test - TODO - setup build flags to ignore
-
-	// Astra DB configuration
-	const astra_uri = "37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.datastax.com:443"
-	const bearer_token = "AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b13cd6b79a6bc43b9b79f7557749352030b62ea1"
 
 	// Create connection with authentication
 	// For Astra DB:
@@ -36,7 +37,7 @@ func TestConnect(t *testing.T) {
 	conn, err := grpc.Dial(astra_uri, grpc.WithTransportCredentials(credentials.NewTLS(config)),
 		grpc.WithBlock(),
 		grpc.WithPerRPCCredentials(
-			auth.NewStaticTokenProvider(bearer_token),
+			auth.NewStaticTokenProvider(token),
 		),
 	)
 
@@ -69,8 +70,8 @@ func TestQuery(t *testing.T) {
 	t.Skip() // integration test - TODO - setup build flags to ignore
 
 	query := `{"rawCql": "SELECT CAST( acceleration AS float) as acceleration, cylinders, displacement, horsepower, modelyear,  mpg,  passedemissions, CAST( weight as float) as weight from grafana.cars;"}`
-	params := `{ "uri": "37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.datastax.com:443" }`
-	secure := map[string]string{"token": "AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b13cd6b79a6bc43b9b79f7557749352030b62ea1"}
+	params := fmt.Sprintf(`{ "uri": "%s" }`, astra_uri)
+	secure := map[string]string{"token": token}
 	settings := backend.DataSourceInstanceSettings{JSONData: []byte(params), DecryptedSecureJSONData: secure}
 	ds, err := plugin.NewDatasource(settings)
 	assert.Nil(t, err)
