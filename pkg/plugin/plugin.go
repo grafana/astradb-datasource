@@ -5,15 +5,13 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
-	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
-	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
+	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -25,7 +23,6 @@ var (
 	_ instancemgmt.InstanceDisposer = (*AstraDatasource)(nil)
 )
 
-// NewDatasource creates a new datasource instance.
 func NewDatasource(s backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
 	settings, err := models.LoadSettings(s)
 	if err != nil {
@@ -46,17 +43,11 @@ func (d *AstraDatasource) Dispose() {
 }
 
 func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
-	log.DefaultLogger.Info("QueryData called", "request", req)
+	d.connect()
 
-	// create response struct
 	response := backend.NewQueryDataResponse()
-
-	// loop over queries and execute them individually.
 	for _, q := range req.Queries {
 		res := d.query(ctx, req.PluginContext, q)
-
-		// save the response in a hashmap
-		// based on with RefID as identifier
 		response.Responses[q.RefID] = res
 	}
 
@@ -64,30 +55,30 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 }
 
 type queryModel struct {
-	rawCql string
+	RawCql string
 }
 
 func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	response := backend.DataResponse{}
 
-	// Unmarshal the JSON into our queryModel.
 	var qm queryModel
-
 	response.Error = json.Unmarshal(query.JSON, &qm)
 	if response.Error != nil {
 		return response
 	}
 
-	// create data frame response.
-	frame := data.NewFrame("response")
+	stargateClient, err := client.NewStargateClientWithConn(d.conn)
+	if err != nil {
+		response.Error = err
+		return response
+	}
 
-	// add fields.
-	frame.Fields = append(frame.Fields,
-		data.NewField("time", nil, []time.Time{query.TimeRange.From, query.TimeRange.To}),
-		data.NewField("values", nil, []int64{10, 20}),
-	)
+	selectQuery := &pb.Query{
+		Cql: qm.RawCql,
+	}
 
-	// add the frames to the response.
+	queryResponse, err := stargateClient.ExecuteQuery(selectQuery)
+	frame := Frame(queryResponse)
 	response.Frames = append(response.Frames, frame)
 
 	return response

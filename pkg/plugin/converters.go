@@ -72,3 +72,79 @@ var Float32ToNullableFloat64 = data.FieldConverter{
 		return ptr, nil
 	},
 }
+
+// TODO - code to reference for converting these types
+
+// func translateType(spec *pb.TypeSpec) (interface{}, error) {
+// 	switch spec.GetSpec().(type) {
+// 	case *pb.TypeSpec_Basic_:
+// 		return translateBasicType(value, spec)
+// 	case *pb.TypeSpec_Map_:
+// 		elements := make(map[interface{}]interface{})
+
+// 		for i := 0; i < len(value.GetCollection().Elements)-1; i += 2 {
+// 			key, err := translateType(value.GetCollection().Elements[i], spec.GetMap().Key)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+// 			mapVal, err := translateType(value.GetCollection().Elements[i+1], spec.GetMap().Value)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+// 			elements[key] = mapVal
+// 		}
+// 		return elements, nil
+// 	case *pb.TypeSpec_List_:
+// 		var elements []interface{}
+
+// 		for i := range value.GetCollection().Elements {
+// 			element, err := translateType(value.GetCollection().Elements[i], spec.GetList().Element)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+// 			elements = append(elements, element)
+// 		}
+
+// 		return elements, nil
+// 	case *pb.TypeSpec_Set_:
+// 		var elements []interface{}
+// 		for _, element := range value.GetCollection().Elements {
+// 			element, err := translateType(element, spec.GetSet().Element)
+// 			if err != nil {
+// 				return nil, err
+// 			}
+
+// 			elements = append(elements, element)
+// 		}
+
+// 		return elements, nil
+// 	case *pb.TypeSpec_Udt_:
+// 		fields := map[string]interface{}{}
+// 		for key, val := range value.GetUdt().Fields {
+// 			element, err := translateType(val, spec.GetUdt().Fields[key])
+// 			if err != nil {
+// 				return nil, err
+// 			}
+
+// 			fields[key] = element
+// 		}
+
+// 		return fields, nil
+// 	case *pb.TypeSpec_Tuple_:
+// 		var elements []interface{}
+// 		numElements := len(spec.GetTuple().Elements)
+// 		for i := 0; i <= len(value.GetCollection().Elements)-numElements; i++ {
+// 			for j, typeSpec := range spec.GetTuple().Elements {
+// 				element, err := translateType(value.GetCollection().Elements[i+j], typeSpec)
+// 				if err != nil {
+// 					return nil, err
+// 				}
+
+// 				elements = append(elements, element)
+// 			}
+// 		}
+
+// 		return elements, nil
+// 	}
+// 	return nil, errors.New("unsupported type")
+// }
