@@ -3,7 +3,9 @@ package plugin_test
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
@@ -18,34 +20,13 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
-// This is where the tests for the datasource backend live.
-func TestQueryData(t *testing.T) {
-	ds := plugin.AstraDatasource{}
-
-	resp, err := ds.QueryData(
-		context.Background(),
-		&backend.QueryDataRequest{
-			Queries: []backend.DataQuery{
-				{RefID: "A"},
-			},
-		},
-	)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if len(resp.Responses) != 1 {
-		t.Fatal("QueryData must return a response")
-	}
-}
+// free tier - TODO - env vars
+const astra_uri = "37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.datastax.com:443"
+const token = "AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b13cd6b79a6bc43b9b79f7557749352030b62ea1"
 
 func TestConnect(t *testing.T) {
 
-	t.Skip() // integration test
-
-	// Astra DB configuration
-	const astra_uri = "37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.datastax.com:443"
-	const bearer_token = "AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b13cd6b79a6bc43b9b79f7557749352030b62ea1"
+	t.Skip() // integration test - TODO - setup build flags to ignore
 
 	// Create connection with authentication
 	// For Astra DB:
@@ -56,7 +37,7 @@ func TestConnect(t *testing.T) {
 	conn, err := grpc.Dial(astra_uri, grpc.WithTransportCredentials(credentials.NewTLS(config)),
 		grpc.WithBlock(),
 		grpc.WithPerRPCCredentials(
-			auth.NewStaticTokenProvider(bearer_token),
+			auth.NewStaticTokenProvider(token),
 		),
 	)
 
@@ -84,78 +65,40 @@ func TestConnect(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-// TODO - code to reference for converting these types
+func TestQuery(t *testing.T) {
 
-// func translateType(spec *pb.TypeSpec) (interface{}, error) {
-// 	switch spec.GetSpec().(type) {
-// 	case *pb.TypeSpec_Basic_:
-// 		return translateBasicType(value, spec)
-// 	case *pb.TypeSpec_Map_:
-// 		elements := make(map[interface{}]interface{})
+	t.Skip() // integration test - TODO - setup build flags to ignore
 
-// 		for i := 0; i < len(value.GetCollection().Elements)-1; i += 2 {
-// 			key, err := translateType(value.GetCollection().Elements[i], spec.GetMap().Key)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 			mapVal, err := translateType(value.GetCollection().Elements[i+1], spec.GetMap().Value)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 			elements[key] = mapVal
-// 		}
-// 		return elements, nil
-// 	case *pb.TypeSpec_List_:
-// 		var elements []interface{}
+	query := `{"rawCql": "SELECT CAST( acceleration AS float) as acceleration, cylinders, displacement, horsepower, modelyear,  mpg,  passedemissions, CAST( weight as float) as weight from grafana.cars;"}`
+	params := fmt.Sprintf(`{ "uri": "%s" }`, astra_uri)
+	secure := map[string]string{"token": token}
+	settings := backend.DataSourceInstanceSettings{JSONData: []byte(params), DecryptedSecureJSONData: secure}
+	ds, err := plugin.NewDatasource(settings)
+	assert.Nil(t, err)
+	if err != nil {
+		return
+	}
+	req := &backend.QueryDataRequest{
+		Queries: []backend.DataQuery{
+			{
+				RefID:     "A",
+				QueryType: "cql",
+				JSON:      []byte(query),
+			},
+		},
+		PluginContext: backend.PluginContext{
+			DataSourceInstanceSettings: &settings,
+		},
+	}
 
-// 		for i := range value.GetCollection().Elements {
-// 			element, err := translateType(value.GetCollection().Elements[i], spec.GetList().Element)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 			elements = append(elements, element)
-// 		}
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
 
-// 		return elements, nil
-// 	case *pb.TypeSpec_Set_:
-// 		var elements []interface{}
-// 		for _, element := range value.GetCollection().Elements {
-// 			element, err := translateType(element, spec.GetSet().Element)
-// 			if err != nil {
-// 				return nil, err
-// 			}
+	dataSource := ds.(*plugin.AstraDatasource)
+	res, err := dataSource.QueryData(ctx, req)
+	assert.Nil(t, err)
 
-// 			elements = append(elements, element)
-// 		}
-
-// 		return elements, nil
-// 	case *pb.TypeSpec_Udt_:
-// 		fields := map[string]interface{}{}
-// 		for key, val := range value.GetUdt().Fields {
-// 			element, err := translateType(val, spec.GetUdt().Fields[key])
-// 			if err != nil {
-// 				return nil, err
-// 			}
-
-// 			fields[key] = element
-// 		}
-
-// 		return fields, nil
-// 	case *pb.TypeSpec_Tuple_:
-// 		var elements []interface{}
-// 		numElements := len(spec.GetTuple().Elements)
-// 		for i := 0; i <= len(value.GetCollection().Elements)-numElements; i++ {
-// 			for j, typeSpec := range spec.GetTuple().Elements {
-// 				element, err := translateType(value.GetCollection().Elements[i+j], typeSpec)
-// 				if err != nil {
-// 					return nil, err
-// 				}
-
-// 				elements = append(elements, element)
-// 			}
-// 		}
-
-// 		return elements, nil
-// 	}
-// 	return nil, errors.New("unsupported type")
-// }
+	r := res.Responses["A"]
+	err = experimental.CheckGoldenDataResponse("../testdata/basic.txt", &r, true)
+	assert.Nil(t, err)
+}
