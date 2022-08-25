@@ -15,8 +15,8 @@
     },
     "keywords": ["astra"],
     "logos": {
-      "small": "img/astra-square.png",
-      "large": "img/astra-square.png"
+      "small": "img/astra-logo.svg",
+      "large": "img/astra-logo.svg"
     },
     "links": [
       {"name": "Website", "url": "https://github.com/grafana/grafana-starter-datasource-backend"},

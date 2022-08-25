@@ -18,6 +18,10 @@ type column struct {
 func Frame(res *pb.Response) *data.Frame {
 
 	result := res.GetResultSet()
+	if result == nil {
+		return data.NewFrame("response", nil)
+	}
+
 	columns, fields := getColumns(result)
 
 	frame := data.NewFrame("response", fields...)

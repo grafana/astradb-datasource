@@ -108,6 +108,7 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 }
 
 func (d *AstraDatasource) connect() error {
+	// grpc - connect and stay connected
 	if d.conn != nil {
 		return nil
 	}
