@@ -76,4 +76,4 @@ export function CQLEditor({ children, onChange, onRunQuery, query, width, height
       </SQLEditor>
     </div>
   );
-}
+};

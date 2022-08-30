@@ -25,16 +25,6 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery }: Props) 
     }
   };
 
-  // const onSqlChange = (sql: string) => {
-  //   if (sql.trim() !== '') {
-  //     const format = sql.toLowerCase().includes('as time') ? Format.TIMESERIES : Format.TABLE;
-  //     onChange({ ...query, rawCql: sql, format });
-  //     onRunQuery();
-  //   }
-  // };
-
-  // const run = () => onSqlChange(query.rawCql || '');
-
   return (
     <div style={{ width: '100%', height: '300px' }} >
       <AutoSizer defaultHeight="300px" defaultWidth="100%">
