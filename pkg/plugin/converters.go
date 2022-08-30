@@ -233,23 +233,3 @@ func anyToNullable[T Number](val any, f func(val any) (T, error)) (T, error) {
 // 	}
 // 	return nil, errors.New("unsupported type")
 // }
-
-// FieldType indicates the Go type underlying the Field.
-type FieldType int
-
-// A FieldConverter is a type to support building Frame fields of a different
-// type than one's input data.
-type FieldConverter struct {
-	// OutputFieldType is the type of Field that will be created.
-	OutputFieldType FieldType
-
-	// Converter is a conversion function that is called when setting Field values with a FrameInputConverter.
-	// Care must be taken that the type returned by the conversion function matches the member type of the FieldType,
-	// and that the input type matches the expected input type for the Converter function, or panics can occur.
-	// If the Converter is nil, no conversion is performed when calling methods to set values.
-	Converter Converter
-}
-
-// Converter is a function type for converting values in a Frame. It is the consumers responsibility
-// to the check the underlying interface types of the input and return types to avoid panics.
-type Converter func(v interface{}) (interface{}, error)
