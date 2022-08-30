@@ -14,7 +14,7 @@ import (
 
 var dateTimeConverter = data.FieldConverter{
 	OutputFieldType: data.FieldTypeTime,
-	Converter: func(v interface{}) (interface{}, error) {
+	Converter: func(v any) (any, error) {
 		fV, ok := v.(string)
 		if !ok {
 			return nil, fmt.Errorf(`expected %s input but got type %T for value "%v"`, "string", v, v)
@@ -30,47 +30,132 @@ var dateTimeConverter = data.FieldConverter{
 // DecimalToNullableFloat64 returns an error if the input is not a float64.
 var DecimalToNullableFloat64 = data.FieldConverter{
 	OutputFieldType: data.FieldTypeNullableFloat64,
-	Converter: func(v interface{}) (interface{}, error) {
+	Converter: func(v any) (any, error) {
 		// TODO - seems to be an issue with decimals in the stargate package
 		// as a workaround they can convert to float in the cql:  CAST( x AS float)
-		var ptr *float64
-		if v == nil {
-			return ptr, nil
-		}
-		val, ok := v.(*pb.Value)
-		if !ok {
-			return ptr, errors.New("unable to convert decimal to float")
-		}
+		convert := func(val *pb.Value) (*float64, error) {
+			val, ok := v.(*pb.Value)
+			if !ok {
+				return nil, errors.New("unable to convert decimal to float")
+			}
 
-		dec, err := client.ToDecimal(val)
-		if err != nil {
-			return nil, err
-		}
+			dec, err := client.ToDecimal(val)
+			if err != nil {
+				return nil, err
+			}
 
-		str := dec.String()
-		if float, err := strconv.ParseFloat(str, 64); err == nil {
-			return &float, nil
+			str := dec.String()
+			if float, err := strconv.ParseFloat(str, 64); err == nil {
+				return &float, nil
+			}
+			return nil, errors.New("unable to convert decimal to float")
 		}
-		return ptr, errors.New("unable to convert decimal to float")
+		return toNullable(v.(*pb.Value), convert)
 	},
 }
 
 // Float32ToNullableFloat64 converts float32 to float64
 var Float32ToNullableFloat64 = data.FieldConverter{
 	OutputFieldType: data.FieldTypeNullableFloat64,
-	Converter: func(v interface{}) (interface{}, error) {
-		var ptr *float64
-		if v == nil {
-			return ptr, nil
+	Converter: func(v any) (any, error) {
+		convert := func(val any) (*float64, error) {
+			v, ok := v.(float32)
+			if !ok {
+				return nil, errors.New("failed converting to float64")
+			}
+			f64 := math.Round((float64(v) * 100)) / 100
+			return &f64, nil
 		}
-		val, ok := v.(float32)
-		if !ok {
-			return ptr, errors.New("failed converting to float64")
-		}
-		f64 := math.Round((float64(val) * 100)) / 100
-		ptr = &f64
-		return ptr, nil
+		return anyToNullable(v, convert)
 	},
+}
+
+// BigIntConverter converts bigInt to float64
+var BigIntConverter = data.FieldConverter{
+	OutputFieldType: data.FieldTypeNullableInt64,
+	Converter: func(v any) (any, error) {
+		return convertBigInt(v.(*pb.Value))
+	},
+}
+
+func convertBigInt(val *pb.Value) (*int64, error) {
+	convert := func(val *pb.Value) (*int64, error) {
+		v, err := client.ToBigInt(val)
+		if err != nil {
+			return nil, err
+		}
+		if v.IsInt64() {
+			return toInt64(v.Int64()), nil
+		}
+		if v.IsUint64() {
+			return toInt64(v.Uint64()), nil
+		}
+		intVal, err := strconv.Atoi(v.String())
+		if err != nil {
+			return nil, errors.New("could not convert BigInt")
+		}
+		return toInt64(intVal), nil
+	}
+	return toNullable(val, convert)
+}
+
+// SmallIntConverter converts smallInt to int64
+var SmallIntConverter = data.FieldConverter{
+	OutputFieldType: data.FieldTypeNullableInt64,
+	Converter: func(v any) (any, error) {
+		return convertSmallInt(v.(*pb.Value))
+	},
+}
+
+func convertSmallInt(val *pb.Value) (*int64, error) {
+	convert := func(val *pb.Value) (*int64, error) {
+		v, err := client.ToSmallInt(val)
+		return &v, err
+	}
+	return toNullable(val, convert)
+}
+
+// VarIntConverter converts smallInt to int64
+var VarIntConverter = data.FieldConverter{
+	OutputFieldType: data.FieldTypeNullableInt64,
+	Converter: func(v any) (any, error) {
+		return convertVarInt(v.(*pb.Value))
+	},
+}
+
+func convertVarInt(val *pb.Value) (*uint64, error) {
+	convert := func(val *pb.Value) (*uint64, error) {
+		v, err := client.ToVarInt(val)
+		return &v, err
+	}
+	return toNullable(val, convert)
+}
+
+type Int interface {
+	int | int64 | uint64
+}
+
+func toInt64[V Int](val V) *int64 {
+	v := int64(val)
+	return &v
+}
+
+type Number interface {
+	*int | *int64 | *uint64 | *float64
+}
+
+func toNullable[T Number](val *pb.Value, f func(val *pb.Value) (T, error)) (T, error) {
+	if val == nil {
+		return nil, nil
+	}
+	return f(val)
+}
+
+func anyToNullable[T Number](val any, f func(val any) (T, error)) (T, error) {
+	if val == nil {
+		return nil, nil
+	}
+	return f(val)
 }
 
 // TODO - code to reference for converting these types
@@ -148,3 +233,23 @@ var Float32ToNullableFloat64 = data.FieldConverter{
 // 	}
 // 	return nil, errors.New("unsupported type")
 // }
+
+// FieldType indicates the Go type underlying the Field.
+type FieldType int
+
+// A FieldConverter is a type to support building Frame fields of a different
+// type than one's input data.
+type FieldConverter struct {
+	// OutputFieldType is the type of Field that will be created.
+	OutputFieldType FieldType
+
+	// Converter is a conversion function that is called when setting Field values with a FrameInputConverter.
+	// Care must be taken that the type returned by the conversion function matches the member type of the FieldType,
+	// and that the input type matches the expected input type for the Converter function, or panics can occur.
+	// If the Converter is nil, no conversion is performed when calling methods to set values.
+	Converter Converter
+}
+
+// Converter is a function type for converting values in a Frame. It is the consumers responsibility
+// to the check the underlying interface types of the input and return types to avoid panics.
+type Converter func(v interface{}) (interface{}, error)

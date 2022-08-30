@@ -69,14 +69,31 @@ func TestQuery(t *testing.T) {
 
 	t.Skip() // integration test - TODO - setup build flags to ignore
 
-	query := `{"rawCql": "SELECT CAST( acceleration AS float) as acceleration, cylinders, displacement, horsepower, modelyear,  mpg,  passedemissions, CAST( weight as float) as weight from grafana.cars;"}`
+	query := `SELECT CAST( acceleration AS float) as acceleration, cylinders, displacement, horsepower, modelyear,  mpg,  passedemissions, CAST( weight as float) as weight from grafana.cars;`
+	r := runQuery(t, query)
+
+	err := experimental.CheckGoldenDataResponse("../testdata/basic.txt", r, true)
+	assert.Nil(t, err)
+}
+
+func TestQueryWithInts(t *testing.T) {
+
+	t.Skip() // integration test - TODO - setup build flags to ignore
+
+	r := runQuery(t, "SELECT show_id, date_added, release_year from grafana.movies_and_tv2 limit 10;")
+	err := experimental.CheckGoldenDataResponse("../testdata/movies.txt", r, true)
+	assert.Nil(t, err)
+}
+
+func runQuery(t *testing.T, cql string) *backend.DataResponse {
+	query := fmt.Sprintf(`{"rawCql": "%s;"}`, cql)
 	params := fmt.Sprintf(`{ "uri": "%s" }`, astra_uri)
 	secure := map[string]string{"token": token}
 	settings := backend.DataSourceInstanceSettings{JSONData: []byte(params), DecryptedSecureJSONData: secure}
 	ds, err := plugin.NewDatasource(settings)
 	assert.Nil(t, err)
 	if err != nil {
-		return
+		return nil
 	}
 	req := &backend.QueryDataRequest{
 		Queries: []backend.DataQuery{
@@ -99,6 +116,5 @@ func TestQuery(t *testing.T) {
 	assert.Nil(t, err)
 
 	r := res.Responses["A"]
-	err = experimental.CheckGoldenDataResponse("../testdata/basic.txt", &r, true)
-	assert.Nil(t, err)
+	return &r
 }
