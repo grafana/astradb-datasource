@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"time"
 
 	"github.com/araddon/dateparse"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
@@ -131,6 +132,27 @@ func convertVarInt(val *pb.Value) (*uint64, error) {
 	return toNullable(val, convert)
 }
 
+// TimeConverter converts uint64 to time
+var TimeConverter = data.FieldConverter{
+	OutputFieldType: data.FieldTypeNullableInt64,
+	Converter: func(v any) (any, error) {
+		return convertVarInt(v.(*pb.Value))
+	},
+}
+
+func convertTime(val uint64) (*time.Time, error) {
+	convert := func(val uint64) (*time.Time, error) {
+		t := time.Unix(int64(val), 0)
+		return &t, nil
+	}
+	converted, err := convert(val)
+	if err != nil {
+		return nil, err
+	}
+
+	return converted, nil
+}
+
 type Int interface {
 	int | int64 | uint64
 }
@@ -141,7 +163,7 @@ func toInt64[V Int](val V) *int64 {
 }
 
 type Number interface {
-	*int | *int64 | *uint64 | *float64
+	*int | *int64 | *uint64 | *float64 | *time.Time
 }
 
 func toNullable[T Number](val *pb.Value, f func(val *pb.Value) (T, error)) (T, error) {
