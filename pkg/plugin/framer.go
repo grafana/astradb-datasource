@@ -112,11 +112,13 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 	case pb.TypeSpec_BLOB:
 		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
 	case pb.TypeSpec_TIME:
-		return newColumn[time.Time](col.Name, config, TimeConverter, v.String())
+		return newColumn[uint64](col.Name, config, TimeConverter, v.String())
+	case pb.TypeSpec_TIMESTAMP:
+		return newColumn[time.Time](col.Name, config, TimestampConverter, v.String())
+
 	// TODO
 	// pb.TypeSpec_BLOB
 	// pb.TypeSpec_COUNTER
-	// pb.TypeSpec_TIMESTAMP
 
 	default:
 		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
@@ -143,6 +145,8 @@ func getValue(col column, raw *pb.Value) (any, error) {
 		return col.converter.Converter(raw.GetDouble())
 	case pb.TypeSpec_TIME.String():
 		return col.converter.Converter(raw.GetTime())
+	case pb.TypeSpec_TIMESTAMP.String():
+		return col.converter.Converter(raw.GetInt())
 	}
 	return nil, nil
 }

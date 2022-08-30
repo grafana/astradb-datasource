@@ -136,21 +136,32 @@ func convertVarInt(val *pb.Value) (*uint64, error) {
 var TimeConverter = data.FieldConverter{
 	OutputFieldType: data.FieldTypeNullableInt64,
 	Converter: func(v any) (any, error) {
-		return convertVarInt(v.(*pb.Value))
+		return convertTime(v.(uint64))
 	},
 }
 
-func convertTime(val uint64) (*time.Time, error) {
-	convert := func(val uint64) (*time.Time, error) {
-		t := time.Unix(int64(val), 0)
-		return &t, nil
+// TimestampConverter converts uint64 to time
+var TimestampConverter = data.FieldConverter{
+	OutputFieldType: data.FieldTypeNullableInt64,
+	Converter: func(v any) (any, error) {
+		return convertIntToTimestamp(v.(int64))
+	},
+}
+
+func convertTime(val uint64) (*uint64, error) {
+	return &val, nil
+}
+
+func convertIntToTimestamp(val int64) (*time.Time, error) {
+	convert := func(val int64) (time.Time, error) {
+		return time.Unix(0, val*int64(time.Millisecond)).UTC(), nil
 	}
 	converted, err := convert(val)
 	if err != nil {
 		return nil, err
 	}
 
-	return converted, nil
+	return &converted, nil
 }
 
 type Int interface {

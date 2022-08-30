@@ -85,6 +85,24 @@ func TestQueryWithInts(t *testing.T) {
 	assert.Nil(t, err)
 }
 
+func TestQueryWithTime(t *testing.T) {
+
+	t.Skip() // integration test - TODO - setup build flags to ignore
+
+	r := runQuery(t, "SELECT * FROM grafana.covidtime limit 10;")
+	err := experimental.CheckGoldenDataResponse("../testdata/covidtime2.txt", r, true)
+	assert.Nil(t, err)
+}
+
+func TestQueryWithTimestamp(t *testing.T) {
+
+	t.Skip() // integration test - TODO - setup build flags to ignore
+
+	r := runQuery(t, "SELECT * FROM grafana.covid19 limit 10;")
+	err := experimental.CheckGoldenDataResponse("../testdata/covid19.txt", r, true)
+	assert.Nil(t, err)
+}
+
 func runQuery(t *testing.T, cql string) *backend.DataResponse {
 	query := fmt.Sprintf(`{"rawCql": "%s;"}`, cql)
 	params := fmt.Sprintf(`{ "uri": "%s" }`, astra_uri)
