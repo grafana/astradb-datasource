@@ -9,4 +9,3 @@ export const plugin = new DataSourcePlugin<DataSource, AstraQuery, AstraSettings
   .setConfigEditor(ConfigEditor)
   .setQueryEditor(QueryEditor)
   .setVariableQueryEditor(VariableQueryEditor);
-  
