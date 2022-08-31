@@ -65,17 +65,6 @@ func TestConnect(t *testing.T) {
 	experimental.CheckGoldenJSONResponse(t, "testdata", "connection", res, updateGoldenFile)
 }
 
-func TestQueryWithTimestamp(t *testing.T) {
-
-	t.Skip() // integration test - TODO - setup build flags to ignore
-
-	query := `SELECT CAST( acceleration AS float) as acceleration, cylinders, displacement, horsepower, modelyear,  mpg,  passedemissions, CAST( weight as float) as weight from grafana.cars;`
-	r := runQuery(t, query)
-
-	err := experimental.CheckGoldenDataResponse("../testdata/basic.txt", r, true)
-	assert.Nil(t, err)
-}
-
 func TestQueryWithInts(t *testing.T) {
 
 	t.Skip() // integration test - TODO - setup build flags to ignore
