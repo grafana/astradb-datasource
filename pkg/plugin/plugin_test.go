@@ -23,6 +23,7 @@ import (
 // free tier - TODO - env vars
 const astra_uri = "37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.datastax.com:443"
 const token = "AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b13cd6b79a6bc43b9b79f7557749352030b62ea1"
+const updateGoldenFile = false
 
 func TestConnect(t *testing.T) {
 
@@ -61,11 +62,10 @@ func TestConnect(t *testing.T) {
 
 	res := &backend.DataResponse{Frames: data.Frames{frame}, Error: err}
 
-	err = experimental.CheckGoldenDataResponse("../testdata/basic.txt", res, true)
-	assert.Nil(t, err)
+	experimental.CheckGoldenJSONResponse(t, "testdata", "connection", res, updateGoldenFile)
 }
 
-func TestQuery(t *testing.T) {
+func TestQueryWithTimestamp(t *testing.T) {
 
 	t.Skip() // integration test - TODO - setup build flags to ignore
 

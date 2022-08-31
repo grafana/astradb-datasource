@@ -33,8 +33,9 @@ func NewDatasource(s backend.DataSourceInstanceSettings) (instancemgmt.Instance,
 
 type AstraDatasource struct {
 	settings models.Settings
-	client   *client.StargateClient
-	conn     *grpc.ClientConn
+	// nolint:unused
+	client *client.StargateClient
+	conn   *grpc.ClientConn
 }
 
 func (d *AstraDatasource) Dispose() {
@@ -43,6 +44,7 @@ func (d *AstraDatasource) Dispose() {
 }
 
 func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
+	//nolint:errcheck
 	d.connect()
 
 	response := backend.NewQueryDataResponse()
@@ -77,6 +79,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 		Cql: qm.RawCql,
 	}
 
+	// nolint:staticcheck,ineffassign
 	queryResponse, err := stargateClient.ExecuteQuery(selectQuery)
 	frame := Frame(queryResponse)
 	response.Frames = append(response.Frames, frame)
