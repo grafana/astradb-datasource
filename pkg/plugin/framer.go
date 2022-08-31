@@ -91,83 +91,42 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 	switch v := col.Type.GetBasic(); v {
 	case pb.TypeSpec_DATE:
-		field := data.NewField(col.Name, nil, []*time.Time{})
-		field.Config = config
-		return column{
-			field,
-			dateTimeConverter,
-			v.String(),
-		}
+		return newColumn[time.Time](col.Name, config, dateTimeConverter, v.String())
 	case pb.TypeSpec_TEXT, pb.TypeSpec_VARCHAR:
-		field := data.NewField(col.Name, nil, []*string{})
-		field.Config = config
-		return column{
-			field,
-			converters.AnyToNullableString,
-			v.String(),
-		}
+		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
 	case pb.TypeSpec_DECIMAL:
-		field := data.NewField(col.Name, nil, []*float64{})
-		field.Config = config
-		return column{
-			field,
-			DecimalToNullableFloat64,
-			v.String(),
-		}
+		return newColumn[float64](col.Name, config, DecimalToNullableFloat64, v.String())
 	case pb.TypeSpec_INT:
-		field := data.NewField(col.Name, nil, []*int64{})
-		field.Config = config
-		return column{
-			field,
-			converters.Int64ToNullableInt64,
-			v.String(),
-		}
+		return newColumn[int64](col.Name, config, converters.Int64ToNullableInt64, v.String())
 	case pb.TypeSpec_BOOLEAN:
-		field := data.NewField(col.Name, nil, []*bool{})
-		field.Config = config
-		return column{
-			field,
-			converters.BoolToNullableBool,
-			v.String(),
-		}
+		return newColumn[bool](col.Name, config, converters.BoolToNullableBool, v.String())
 	case pb.TypeSpec_FLOAT:
-		field := data.NewField(col.Name, nil, []*float64{})
-		field.Config = config
-		return column{
-			field,
-			Float32ToNullableFloat64,
-			v.String(),
-		}
+		return newColumn[float64](col.Name, config, Float32ToNullableFloat64, v.String())
 	case pb.TypeSpec_DOUBLE:
-		field := data.NewField(col.Name, nil, []*float64{})
-		field.Config = config
-		return column{
-			field,
-			converters.Float64ToNullableFloat64,
-			v.String(),
-		}
+		return newColumn[float64](col.Name, config, converters.Float64ToNullableFloat64, v.String())
+	case pb.TypeSpec_BIGINT:
+		return newColumn[int64](col.Name, config, BigIntConverter, v.String())
+	case pb.TypeSpec_SMALLINT, pb.TypeSpec_TINYINT:
+		return newColumn[int64](col.Name, config, SmallIntConverter, v.String())
+	case pb.TypeSpec_VARINT:
+		return newColumn[uint64](col.Name, config, VarIntConverter, v.String())
+	case pb.TypeSpec_BLOB:
+		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
+	case pb.TypeSpec_TIME:
+		return newColumn[uint64](col.Name, config, TimeConverter, v.String())
+	case pb.TypeSpec_TIMESTAMP:
+		return newColumn[time.Time](col.Name, config, TimestampConverter, v.String())
+
 	// TODO
-	// pb.TypeSpec_BIGINT
 	// pb.TypeSpec_BLOB
 	// pb.TypeSpec_COUNTER
-	// pb.TypeSpec_SMALLINT
-	// pb.TypeSpec_TIME
-	// pb.TypeSpec_TIMESTAMP
-	// pb.TypeSpec_TINYINT
-	// pb.TypeSpec_VARINT
 
 	default:
-		field := data.NewField(col.Name, nil, []*string{})
-		field.Config = config
-		return column{
-			field,
-			converters.AnyToNullableString,
-			v.String(),
-		}
+		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
 	}
 }
 
-func getValue(col column, raw *pb.Value) (interface{}, error) {
+func getValue(col column, raw *pb.Value) (any, error) {
 	switch col.kind {
 	case pb.TypeSpec_DATE.String():
 		return col.converter.Converter(raw.GetDate())
@@ -177,12 +136,32 @@ func getValue(col column, raw *pb.Value) (interface{}, error) {
 		return col.converter.Converter(raw)
 	case pb.TypeSpec_INT.String():
 		return col.converter.Converter(raw.GetInt())
+	case pb.TypeSpec_BIGINT.String(), pb.TypeSpec_SMALLINT.String(), pb.TypeSpec_TINYINT.String(), pb.TypeSpec_VARINT.String():
+		return col.converter.Converter(raw)
 	case pb.TypeSpec_BOOLEAN.String():
 		return col.converter.Converter(raw.GetBoolean())
 	case pb.TypeSpec_FLOAT.String():
 		return col.converter.Converter(raw.GetFloat())
 	case pb.TypeSpec_DOUBLE.String():
 		return col.converter.Converter(raw.GetDouble())
+	case pb.TypeSpec_TIME.String():
+		return col.converter.Converter(raw.GetTime())
+	case pb.TypeSpec_TIMESTAMP.String():
+		return col.converter.Converter(raw.GetInt())
 	}
 	return nil, nil
+}
+
+type Converted interface {
+	float64 | int64 | int32 | uint64 | bool | string | time.Time
+}
+
+func newColumn[V Converted](name string, config *data.FieldConfig, converter data.FieldConverter, kind string) column {
+	field := data.NewField(name, nil, []*V{})
+	field.Config = config
+	return column{
+		field,
+		converter,
+		kind,
+	}
 }
