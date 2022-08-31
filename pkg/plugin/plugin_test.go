@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -25,9 +26,16 @@ const astra_uri = "37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.data
 const token = "AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b13cd6b79a6bc43b9b79f7557749352030b62ea1"
 const updateGoldenFile = false
 
+func check(t *testing.T) {
+	_, should := os.LookupEnv("RUN_ASTRA_INTEGRATION_TESTS")
+	if !should {
+		t.Skip("Skipping integration test")
+	}
+}
+
 func TestConnect(t *testing.T) {
 
-	t.Skip() // integration test - TODO - setup build flags to ignore
+	check(t)
 
 	// Create connection with authentication
 	// For Astra DB:
@@ -67,29 +75,26 @@ func TestConnect(t *testing.T) {
 
 func TestQueryWithInts(t *testing.T) {
 
-	t.Skip() // integration test - TODO - setup build flags to ignore
+	check(t)
 
 	r := runQuery(t, "SELECT show_id, date_added, release_year from grafana.movies_and_tv2 limit 10;")
-	err := experimental.CheckGoldenDataResponse("../testdata/movies.txt", r, true)
-	assert.Nil(t, err)
+	experimental.CheckGoldenJSONResponse(t, "testdata", "movies", r, updateGoldenFile)
 }
 
 func TestQueryWithTime(t *testing.T) {
 
-	t.Skip() // integration test - TODO - setup build flags to ignore
+	check(t)
 
 	r := runQuery(t, "SELECT * FROM grafana.covidtime limit 10;")
-	err := experimental.CheckGoldenDataResponse("../testdata/covidtime2.txt", r, true)
-	assert.Nil(t, err)
+	experimental.CheckGoldenJSONResponse(t, "testdata", "covidtime2", r, updateGoldenFile)
 }
 
 func TestQueryWithTimestamp(t *testing.T) {
 
-	t.Skip() // integration test - TODO - setup build flags to ignore
+	check(t)
 
 	r := runQuery(t, "SELECT * FROM grafana.covid19 limit 10;")
-	err := experimental.CheckGoldenDataResponse("../testdata/covid19.txt", r, true)
-	assert.Nil(t, err)
+	experimental.CheckGoldenJSONResponse(t, "testdata", "covid19", r, updateGoldenFile)
 }
 
 func runQuery(t *testing.T, cql string) *backend.DataResponse {
