@@ -71,9 +71,9 @@ export function CQLEditor({ children, onChange, onRunQuery, query, width, height
         query={query.rawCql!}
         onChange={onQueryChange}
         language={{ id: 'sql', completionProvider, formatter: formatSQL }}
-        >
+      >
         {children}
       </SQLEditor>
     </div>
   );
-};
+}

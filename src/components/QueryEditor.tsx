@@ -26,7 +26,7 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery }: Props) 
   };
 
   return (
-    <div style={{ width: '100%', height: '300px' }} >
+    <div style={{ width: '100%', height: '300px' }}>
       <AutoSizer defaultHeight="300px" defaultWidth="100%">
         {(props: AutoSizerProps) => (
           <CQLEditor
@@ -41,7 +41,7 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery }: Props) 
       </AutoSizer>
     </div>
   );
-}
+};
 
 const isQueryValid = (q: AstraQuery) => {
   return Boolean(q.rawCql);
