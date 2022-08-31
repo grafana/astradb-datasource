@@ -35,11 +35,6 @@ var DecimalToNullableFloat64 = data.FieldConverter{
 		// TODO - seems to be an issue with decimals in the stargate package
 		// as a workaround they can convert to float in the cql:  CAST( x AS float)
 		convert := func(val *pb.Value) (*float64, error) {
-			val, ok := v.(*pb.Value)
-			if !ok {
-				return nil, errors.New("unable to convert decimal to float")
-			}
-
 			dec, err := client.ToDecimal(val)
 			if err != nil {
 				return nil, err
