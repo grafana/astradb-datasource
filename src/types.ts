@@ -81,15 +81,6 @@ export const OPERATORS = [
     operator: '<>',
     description: 'Returns TRUE if X is not equal to Y.',
   },
-  {
-    type: OperatorType.Comparison,
-    id: 'LIKE',
-    operator: 'LIKE',
-    description: `Checks if the STRING in the first operand X matches a pattern specified by the second operand Y. Expressions can contain these characters:
-- A percent sign "%" matches any number of characters or bytes
-- An underscore "_" matches a single character or byte
-- You can escape "\", "_", or "%" using two backslashes. For example, "\\%". If you are using raw strings, only a single backslash is required. For example, r"\%".`,
-  },
   { type: OperatorType.Logical, id: 'AND', operator: 'AND' },
   { type: OperatorType.Logical, id: 'OR', operator: 'OR' },
 ];
