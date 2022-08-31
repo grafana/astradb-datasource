@@ -1,26 +1,27 @@
 {
-  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
-  "name": "AstraDB",
+  "name": "Astra DB",
   "id": "grafana-astradb-datasource",
+  "category": "enterprise",
   "metrics": true,
   "backend": true,
   "annotations": true,
   "executable": "gpx_astradb",
 
   "info": {
-    "description": "AstraDB datasource plugin for Grafana",
+    "description": "Astra DB datasource plugin for Grafana",
     "author": {
       "name": "Grafana Labs"
     },
-    "keywords": ["astra"],
+    "keywords": ["astra", "astra db", "datastax"],
     "logos": {
       "small": "img/astra-logo.svg",
       "large": "img/astra-logo.svg"
     },
     "links": [
-      {"name": "Website", "url": "https://github.com/grafana/grafana-starter-datasource-backend"},
-      {"name": "License", "url": "https://github.com/grafana/grafana-starter-datasource-backend/blob/master/LICENSE"}
+      { "name": "Docs", "url": "https://grafana.com/docs/plugins/grafana-astradb-datasource" },
+      { "name": "License", "url": "https://grafana.com/legal/enterprise-plugins" }
     ],
     "screenshots": [],
     "version": "%VERSION%",

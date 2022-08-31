@@ -1,5 +1,5 @@
 {
-  "name": "astradb-datasource",
+  "name": "grafana-astradb-datasource",
   "version": "0.0.1",
   "description": "Grafana Data Source Backend Plugin for Astra DB",
   "scripts": {
@@ -11,8 +11,9 @@
     "sign": "grafana-toolkit plugin:sign",
     "start": "yarn watch"
   },
+  "private": true,
   "author": "Grafana Labs",
-  "license": "Apache-2.0",
+  "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "@grafana/data": "8.4.7",
     "@grafana/experimental": "^0.0.2-canary.39",
