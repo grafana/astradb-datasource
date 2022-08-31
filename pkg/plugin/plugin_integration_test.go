@@ -33,8 +33,8 @@ func TestMain(m *testing.M) {
 }
 
 func setup() {
-	_, should := os.LookupEnv("RUN_ASTRA_INTEGRATION_TESTS")
-	if !should {
+	_, shouldRun := os.LookupEnv("RUN_ASTRA_INTEGRATION_TESTS")
+	if !shouldRun {
 		os.Exit(0)
 	}
 }
