@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { QueryEditorProps } from '@grafana/data';
 import { DataSource } from '../datasource';
 import { AstraQuery, AstraSettings, AutoSizerProps } from '../types';
@@ -24,6 +24,8 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery }: Props) 
       processQuery(q);
     }
   };
+  
+  const completionProvider = useMemo(() => datasource.getDB().getSqlCompletionProvider(), [datasource]);
 
   return (
     <div style={{ width: '100%', height: '300px' }}>
@@ -36,6 +38,7 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery }: Props) 
             onChange={onQueryChange}
             width={props.width}
             height={props.height}
+            completionProvider={completionProvider}
           />
         )}
       </AutoSizer>
