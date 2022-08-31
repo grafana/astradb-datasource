@@ -132,11 +132,15 @@ func convertVarInt(val *pb.Value) (*uint64, error) {
 	return toNullable(val, convert)
 }
 
-// TimeConverter converts uint64 to time
+// TimeConverter converts uint64 to nullable uint64
 var TimeConverter = data.FieldConverter{
 	OutputFieldType: data.FieldTypeNullableInt64,
 	Converter: func(v any) (any, error) {
-		return convertTime(v.(uint64))
+		convert := func(val any) (*uint64, error) {
+			v := val.(uint64)
+			return &v, nil
+		}
+		return anyToNullable(v, convert)
 	},
 }
 
@@ -146,10 +150,6 @@ var TimestampConverter = data.FieldConverter{
 	Converter: func(v any) (any, error) {
 		return convertIntToTimestamp(v.(int64))
 	},
-}
-
-func convertTime(val uint64) (*uint64, error) {
-	return &val, nil
 }
 
 func convertIntToTimestamp(val int64) (*time.Time, error) {
