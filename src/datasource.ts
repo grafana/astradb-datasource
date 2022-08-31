@@ -67,7 +67,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
   async fetchDatasets(): Promise<string[]> {
     this.dataset = undefined;
     const datasets = await this.runSql<string[]>(showDatabases(), { refId: 'datasets' });
-    return datasets.map((t) => t[0]).filter(d => !d.startsWith('system_') && !d.startsWith('datastax_') && !d.startsWith('data_'));
+    return datasets.map((t) => t[0]).filter(d => !d.startsWith('system') && !d.startsWith('datastax_') && !d.startsWith('data_'));
   }
 
   async fetchTables(dataset?: string): Promise<string[]> {
