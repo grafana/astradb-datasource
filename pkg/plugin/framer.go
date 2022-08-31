@@ -35,6 +35,7 @@ func Frame(res *pb.Response) *data.Frame {
 			val, err := getValue(col, raw)
 			if err != nil {
 				fmt.Println(err.Error())
+				// nolint:staticcheck
 				errors = append(errors)
 			}
 			vals = append(vals, val)
