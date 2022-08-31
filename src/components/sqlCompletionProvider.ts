@@ -125,7 +125,7 @@ export const customSuggestionKinds: (
       },
     },
     {
-      id: `MYSQL${StatementPosition.WhereKeyword}`,
+      id: `CQL${StatementPosition.WhereKeyword}`,
       applyTo: [StatementPosition.WhereKeyword],
       suggestionsResolver: async (ctx) => {
         const path = getPath(ctx.currentToken, Direction.Previous);
