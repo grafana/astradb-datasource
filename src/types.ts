@@ -6,6 +6,7 @@ export interface AstraSettings extends DataSourceJsonData {
   uri: string;
   database?: string;
 }
+
 export interface SecureSettings {
   token?: string;
 }
@@ -14,11 +15,11 @@ export interface SecureSettings {
 //#region Query
 export interface AstraQuery extends DataQuery {
   dataset: string;
-  database?: string;
   rawCql: string;
   format: Format;
   table?: string;
 }
+
 export enum Format {
   TIMESERIES = 0,
   TABLE = 1,
