@@ -9,7 +9,14 @@ import {
   TimeRange,
   vectorator,
 } from '@grafana/data';
-import { BackendDataSourceResponse, DataSourceWithBackend, FetchResponse, getBackendSrv, getTemplateSrv, toDataQueryResponse } from '@grafana/runtime';
+import {
+  BackendDataSourceResponse,
+  DataSourceWithBackend,
+  FetchResponse,
+  getBackendSrv,
+  getTemplateSrv,
+  toDataQueryResponse,
+} from '@grafana/runtime';
 import { buildColumnQuery, buildTableQuery, showDatabases } from './components/metaQuery';
 import { uniqueId } from 'lodash';
 import { lastValueFrom } from 'rxjs';
@@ -67,7 +74,9 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
   async fetchDatasets(): Promise<string[]> {
     this.dataset = undefined;
     const datasets = await this.runSql<string[]>(showDatabases(), { refId: 'datasets' });
-    return datasets.map((t) => t[0]).filter(d => !d.startsWith('system') && !d.startsWith('datastax_') && !d.startsWith('data_'));
+    return datasets
+      .map((t) => t[0])
+      .filter((d) => !d.startsWith('system') && !d.startsWith('datastax_') && !d.startsWith('data_'));
   }
 
   async fetchTables(dataset?: string): Promise<string[]> {
