@@ -123,7 +123,8 @@ func TestConnect(t *testing.T) {
 	response, err := stargateClient.ExecuteQuery(selectQuery)
 	assert.Nil(t, err)
 
-	frame := plugin.Frame(response)
+	qm := plugin.QueryModel{RawCql: selectQuery.Cql, Format: 0}
+	frame := plugin.Frame(response, qm)
 
 	res := &backend.DataResponse{Frames: data.Frames{frame}, Error: err}
 

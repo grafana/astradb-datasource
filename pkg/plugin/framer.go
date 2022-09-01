@@ -16,7 +16,19 @@ type column struct {
 	kind      string
 }
 
-func Frame(res *pb.Response) *data.Frame {
+// FormatQueryOption defines how the user has chosen to represent the data
+type FormatQueryOption uint32
+
+const (
+	// FormatOptionTimeSeries formats the query results as a timeseries using "WideToLong"
+	FormatOptionTimeSeries FormatQueryOption = iota
+	// FormatOptionTable formats the query results as a table using "LongToWide"
+	FormatOptionTable
+	// FormatOptionLogs sets the preferred visualization to logs
+	FormatOptionLogs
+)
+
+func Frame(res *pb.Response, qm QueryModel) *data.Frame {
 
 	result := res.GetResultSet()
 	if result == nil {
@@ -44,6 +56,19 @@ func Frame(res *pb.Response) *data.Frame {
 		}
 
 		frame.AppendRow(vals...)
+	}
+
+	frame.Meta.ExecutedQueryString = qm.RawCql
+	frame.Meta.PreferredVisualization = data.VisTypeGraph
+
+	if qm.Format == FormatOptionTable {
+		frame.Meta.PreferredVisualization = data.VisTypeTable
+		return frame
+	}
+
+	if qm.Format == FormatOptionLogs {
+		frame.Meta.PreferredVisualization = data.VisTypeLogs
+		return frame
 	}
 
 	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {

@@ -127,7 +127,8 @@ func TestFramer(t *testing.T) {
 	response, err = stargateClient.ExecuteQuery(query)
 	require.NoError(t, err)
 
-	frameResponse := plugin.Frame(response)
+	qm := plugin.QueryModel{RawCql: "foo", Format: 0}
+	frameResponse := plugin.Frame(response, qm)
 	require.NotNil(t, frameResponse)
 	experimental.CheckGoldenJSONFrame(t, "testdata", "framerAllTypes", frameResponse, updateGoldenFile)
 }

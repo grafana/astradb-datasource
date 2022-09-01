@@ -56,14 +56,15 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 	return response, nil
 }
 
-type queryModel struct {
+type QueryModel struct {
 	RawCql string
+	Format FormatQueryOption
 }
 
 func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	response := backend.DataResponse{}
 
-	var qm queryModel
+	var qm QueryModel
 	response.Error = json.Unmarshal(query.JSON, &qm)
 	if response.Error != nil {
 		return response
@@ -81,7 +82,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 
 	// nolint:staticcheck,ineffassign
 	queryResponse, err := stargateClient.ExecuteQuery(selectQuery)
-	frame := Frame(queryResponse)
+	frame := Frame(queryResponse, qm)
 	response.Frames = append(response.Frames, frame)
 
 	return response
