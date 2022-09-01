@@ -58,8 +58,10 @@ func Frame(res *pb.Response, qm QueryModel) *data.Frame {
 		frame.AppendRow(vals...)
 	}
 
-	frame.Meta.ExecutedQueryString = qm.RawCql
-	frame.Meta.PreferredVisualization = data.VisTypeGraph
+	frame.Meta = &data.FrameMeta{
+		ExecutedQueryString:    qm.RawCql,
+		PreferredVisualization: data.VisTypeGraph,
+	}
 
 	if qm.Format == FormatOptionTable {
 		frame.Meta.PreferredVisualization = data.VisTypeTable
