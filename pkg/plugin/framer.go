@@ -7,6 +7,7 @@ import (
 
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
+	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
 
@@ -119,7 +120,7 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		return newColumn[float64](col.Name, config, converters.Float64ToNullableFloat64, v.String())
 	case pb.TypeSpec_BIGINT:
 		return newColumn[int64](col.Name, config, BigIntConverter, v.String())
-	case pb.TypeSpec_SMALLINT, pb.TypeSpec_TINYINT:
+	case pb.TypeSpec_SMALLINT, pb.TypeSpec_TINYINT, pb.TypeSpec_COUNTER:
 		return newColumn[int64](col.Name, config, SmallIntConverter, v.String())
 	case pb.TypeSpec_VARINT:
 		return newColumn[uint64](col.Name, config, VarIntConverter, v.String())
@@ -129,11 +130,6 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		return newColumn[uint64](col.Name, config, TimeConverter, v.String())
 	case pb.TypeSpec_TIMESTAMP:
 		return newColumn[time.Time](col.Name, config, TimestampConverter, v.String())
-
-	// TODO
-	// pb.TypeSpec_BLOB
-	// pb.TypeSpec_COUNTER
-
 	default:
 		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
 	}
@@ -149,7 +145,7 @@ func getValue(col column, raw *pb.Value) (any, error) {
 		return col.converter.Converter(raw)
 	case pb.TypeSpec_INT.String():
 		return col.converter.Converter(raw.GetInt())
-	case pb.TypeSpec_BIGINT.String(), pb.TypeSpec_SMALLINT.String(), pb.TypeSpec_TINYINT.String(), pb.TypeSpec_VARINT.String():
+	case pb.TypeSpec_BIGINT.String(), pb.TypeSpec_SMALLINT.String(), pb.TypeSpec_TINYINT.String(), pb.TypeSpec_VARINT.String(), pb.TypeSpec_COUNTER.String():
 		return col.converter.Converter(raw)
 	case pb.TypeSpec_BOOLEAN.String():
 		return col.converter.Converter(raw.GetBoolean())
@@ -161,6 +157,12 @@ func getValue(col column, raw *pb.Value) (any, error) {
 		return col.converter.Converter(raw.GetTime())
 	case pb.TypeSpec_TIMESTAMP.String():
 		return col.converter.Converter(raw.GetInt())
+	case pb.TypeSpec_BLOB.String():
+		v, err := client.ToBlob(raw)
+		if err != nil {
+			return nil, err
+		}
+		return col.converter.Converter(string(v))
 	}
 	if col.converter.Converter != nil {
 		return col.converter.Converter(raw)

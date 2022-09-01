@@ -41,6 +41,12 @@
     "TINYINT",
     "vals",
     "VARCHAR",
-    "vectorator"
+    "vectorator",
+    "keyspace",
+    "keyspaces",
+    "sugg",
+    "RAQB",
+    "datetime",
+    "raqb"
   ]
 }
