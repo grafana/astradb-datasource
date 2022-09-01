@@ -1,0 +1,108 @@
+//  🌟 This was machine generated.  Do not edit. 🌟
+//  
+//  Frame[0] 
+//  Name: response
+//  Dimensions: 3 Fields by 10 Rows
+//  +----------------+--------------------+--------------------+
+//  | Name: show_id  | Name: date_added   | Name: release_year |
+//  | Labels:        | Labels:            | Labels:            |
+//  | Type: []*int64 | Type: []*string    | Type: []*int64     |
+//  +----------------+--------------------+--------------------+
+//  | 80163156       | September 19, 2017 | 2017               |
+//  | 80222256       | July 1, 2018       | 2018               |
+//  | 70098332       | July 1, 2018       | 2008               |
+//  | 70019491       | March 1, 2018      | 2004               |
+//  | 80157083       | May 15, 2017       | 1994               |
+//  | 80037280       | September 17, 2018 | 2015               |
+//  | 81029736       | June 7, 2019       | 2019               |
+//  | 80214478       | December 26, 2017  | 2017               |
+//  | 81008536       | December 20, 2018  | 2018               |
+//  | 81168343       | October 1, 2019    | 1982               |
+//  +----------------+--------------------+--------------------+
+//  
+//  
+//  🌟 This was machine generated.  Do not edit. 🌟
+{
+  "frames": [
+    {
+      "schema": {
+        "name": "response",
+        "fields": [
+          {
+            "name": "show_id",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "show_id"
+            }
+          },
+          {
+            "name": "date_added",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "date_added"
+            }
+          },
+          {
+            "name": "release_year",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "release_year"
+            }
+          }
+        ]
+      },
+      "data": {
+        "values": [
+          [
+            80163156,
+            80222256,
+            70098332,
+            70019491,
+            80157083,
+            80037280,
+            81029736,
+            80214478,
+            81008536,
+            81168343
+          ],
+          [
+            "September 19, 2017",
+            "July 1, 2018",
+            "July 1, 2018",
+            "March 1, 2018",
+            "May 15, 2017",
+            "September 17, 2018",
+            "June 7, 2019",
+            "December 26, 2017",
+            "December 20, 2018",
+            "October 1, 2019"
+          ],
+          [
+            2017,
+            2018,
+            2008,
+            2004,
+            1994,
+            2015,
+            2019,
+            2017,
+            2018,
+            1982
+          ]
+        ]
+      }
+    }
+  ]
+}
