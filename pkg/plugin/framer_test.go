@@ -1,86 +1,14 @@
 package plugin_test
 
 import (
-	"context"
-	"fmt"
-	"log"
 	"testing"
-	"time"
 
-	"github.com/docker/go-connections/nat"
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
-	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
-	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/testcontainers/testcontainers-go"
-	"github.com/testcontainers/testcontainers-go/wait"
-	"google.golang.org/grpc"
 )
-
-var (
-	grpcEndpoint string
-	authEndpoint string
-)
-
-func init() {
-	ctx := context.Background()
-	astraDbContainer, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: testcontainers.ContainerRequest{
-			Image: "stargateio/stargate-3_11:v1.0.40",
-			Env: map[string]string{
-				"CLUSTER_NAME":    "test",
-				"CLUSTER_VERSION": "3.11",
-				"DEVELOPER_MODE":  "true",
-				"ENABLE_AUTH":     "true",
-			},
-			ExposedPorts: []string{"8090/tcp", "8081/tcp", "8084/tcp", "9042/tcp"},
-			WaitingFor:   wait.ForHTTP("/checker/readiness").WithPort("8084/tcp").WithStartupTimeout(90 * time.Second),
-		},
-		Started: true,
-	})
-	if err != nil {
-		log.Fatalf("Failed to start Stargate container: %v", err)
-	}
-
-	grpcPort, err := nat.NewPort("tcp", "8090")
-	if err != nil {
-		log.Fatalf("Failed to get port: %v", err)
-	}
-
-	authPort, err := nat.NewPort("tcp", "8081")
-	if err != nil {
-		log.Fatalf("Failed to get port: %v", err)
-	}
-
-	grpcEndpoint, err = astraDbContainer.PortEndpoint(ctx, grpcPort, "")
-	if err != nil {
-		log.Fatalf("Failed to get endpoint: %v", err)
-	}
-
-	authEndpoint, err = astraDbContainer.PortEndpoint(ctx, authPort, "")
-	if err != nil {
-		log.Fatalf("Failed to get endpoint: %v", err)
-	}
-
-}
-
-func createClient(t *testing.T) *client.StargateClient {
-	conn, err := grpc.Dial(grpcEndpoint, grpc.WithInsecure(), grpc.WithBlock(),
-		grpc.WithPerRPCCredentials(
-			auth.NewTableBasedTokenProviderUnsafe(
-				fmt.Sprintf("http://%s/v1/auth", authEndpoint), "cassandra", "cassandra",
-			),
-		),
-	)
-	require.NoError(t, err)
-
-	astraDbClient, err := client.NewStargateClientWithConn(conn)
-	require.NoError(t, err)
-	return astraDbClient
-}
 
 //TODO: TestFramer currently tests for Frame() method returns correct frame
 // But various data type fields returns null instead of actual data. This needs to be fixed
