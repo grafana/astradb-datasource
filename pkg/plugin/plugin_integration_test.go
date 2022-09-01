@@ -144,11 +144,6 @@ func TestQueryWithInts(t *testing.T) {
 // 	experimental.CheckGoldenJSONResponse(t, "testdata", "covid19", r, updateGoldenFile)
 // }
 
-func TestComplexType(t *testing.T) {
-	r := runQuery(t, "select decimalvalue, textvalue, listvalue, mapvalue, setvalue, tuplevalue from grafana.tbl1 where id=0d6eb088-638b-4da6-904d-3cc08fc60b8a;")
-	experimental.CheckGoldenJSONResponse(t, "testdata", "complex", r, updateGoldenFile)
-}
-
 func runQuery(t *testing.T, cql string) *backend.DataResponse {
 	query := fmt.Sprintf(`{"rawCql": "%s;"}`, cql)
 	params := fmt.Sprintf(`{ "uri": "%s" }`, astra_uri)
