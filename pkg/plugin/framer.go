@@ -69,7 +69,35 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 	switch col.Type.Spec.(type) {
 	case *pb.TypeSpec_Basic_:
 		return newBasicColumn(col, config)
-	case *pb.TypeSpec_Map_, *pb.TypeSpec_List_, *pb.TypeSpec_Set_, *pb.TypeSpec_Tuple_:
+	case *pb.TypeSpec_Map_:
+		return column{
+			field: data.NewField(col.Name, nil, []*string{}),
+			converter: data.FieldConverter{
+				Converter: func(v interface{}) (interface{}, error) {
+					v1, err := translateType(v.(*pb.Value), col.Type)
+					if err != nil {
+						return nil, err
+					}
+					mapInterface, ok := v1.(map[interface{}]interface{})
+					if !ok {
+						return nil, nil
+					}
+					mapString := make(map[string]interface{})
+					for key, value := range mapInterface {
+						strKey := fmt.Sprintf("%v", key)
+						strValue := value
+						mapString[strKey] = strValue
+					}
+					b, err := json.Marshal(mapString)
+					if err != nil {
+						return nil, err
+					}
+					str := string(b)
+					return &str, err
+				},
+			},
+		}
+	case *pb.TypeSpec_List_, *pb.TypeSpec_Set_, *pb.TypeSpec_Tuple_:
 		return column{
 			field: data.NewField(col.Name, nil, []*string{}),
 			converter: data.FieldConverter{
