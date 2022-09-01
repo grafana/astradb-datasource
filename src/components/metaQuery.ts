@@ -1,4 +1,4 @@
-import { AstraQuery } from "types";
+import { AstraQuery } from 'types';
 
 const DATASET_NAME = 'keyspace_name';
 const DATASETS = 'keyspaces';
