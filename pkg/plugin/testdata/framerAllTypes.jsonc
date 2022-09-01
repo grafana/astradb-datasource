@@ -1,17 +1,17 @@
 //  🌟 This was machine generated.  Do not edit. 🌟
-//
-//  Frame[0]
+//  
+//  Frame[0] 
 //  Name: response
 //  Dimensions: 23 Fields by 1 Rows
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+-----------------+--------------------+-------------------+
-//  | Name: id        | Name: asciivalue | Name: bigintvalue | Name: blobvalue | Name: booleanvalue | Name: datevalue    | Name: decimalvalue | Name: doublevalue | Name: floatvalue | Name: inetvalue | Name: intvalue | Name:           | Name:           | Name:           | Name: smallintvalue | Name: textvalue | Name: timestampvalue              | Name: timeuuidvalue | Name: timevalue | Name: tinyintvalue | Name:           | Name: varcharvalue | Name: varintvalue |
-//  | Labels:         | Labels:          | Labels:           | Labels:         | Labels:            | Labels:            | Labels:            | Labels:           | Labels:          | Labels:         | Labels:        | Labels:         | Labels:         | Labels:         | Labels:             | Labels:         | Labels:                           | Labels:             | Labels:         | Labels:            | Labels:         | Labels:            | Labels:           |
-//  | Type: []*string | Type: []*string  | Type: []*int64    | Type: []*string | Type: []*bool      | Type: []*time.Time | Type: []*float64   | Type: []*float64  | Type: []*float64 | Type: []*string | Type: []*int64 | Type: []*string | Type: []*string | Type: []*string | Type: []*int64      | Type: []*string | Type: []*time.Time                | Type: []*string     | Type: []*uint64 | Type: []*int64     | Type: []*string | Type: []*string    | Type: []*uint64   |
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+-----------------+--------------------+-------------------+
-//  | null            | null             | 1                 | null            | true               | null               | 1.1                | 2.2               | 3.3              | null            | 2              | null            | null            | null            | 3                   | bravo           | 2021-09-07 16:40:31.123 +0000 UTC | null                | 36930123456789  | 5                  | null            | charlie            | 4                 |
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+-----------------+--------------------+-------------------+
-//
-//
+//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  | Name: id        | Name: asciivalue | Name: bigintvalue | Name: blobvalue | Name: booleanvalue | Name: datevalue    | Name: decimalvalue | Name: doublevalue | Name: floatvalue | Name: inetvalue | Name: intvalue | Name: listvalue | Name: mapvalue  | Name: setvalue  | Name: smallintvalue | Name: textvalue | Name: timestampvalue              | Name: timeuuidvalue | Name: timevalue | Name: tinyintvalue | Name: tuplevalue | Name: varcharvalue | Name: varintvalue |
+//  | Labels:         | Labels:          | Labels:           | Labels:         | Labels:            | Labels:            | Labels:            | Labels:           | Labels:          | Labels:         | Labels:        | Labels:         | Labels:         | Labels:         | Labels:             | Labels:         | Labels:                           | Labels:             | Labels:         | Labels:            | Labels:          | Labels:            | Labels:           |
+//  | Type: []*string | Type: []*string  | Type: []*int64    | Type: []*string | Type: []*bool      | Type: []*time.Time | Type: []*float64   | Type: []*float64  | Type: []*float64 | Type: []*string | Type: []*int64 | Type: []*string | Type: []*string | Type: []*string | Type: []*int64      | Type: []*string | Type: []*time.Time                | Type: []*string     | Type: []*uint64 | Type: []*int64     | Type: []*string  | Type: []*string    | Type: []*uint64   |
+//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  | null            | null             | 1                 | null            | true               | null               | 1.1                | 2.2               | 3.3              | null            | 2              | null            | null            | null            | 3                   | bravo           | 2021-09-07 16:40:31.123 +0000 UTC | null                | 36930123456789  | 5                  | null             | charlie            | 4                 |
+//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  
+//  
 //  🌟 This was machine generated.  Do not edit. 🌟
 {
   "frames": [
@@ -141,6 +141,7 @@
             }
           },
           {
+            "name": "listvalue",
             "type": "string",
             "typeInfo": {
               "frame": "string",
@@ -151,6 +152,7 @@
             }
           },
           {
+            "name": "mapvalue",
             "type": "string",
             "typeInfo": {
               "frame": "string",
@@ -161,6 +163,7 @@
             }
           },
           {
+            "name": "setvalue",
             "type": "string",
             "typeInfo": {
               "frame": "string",
@@ -237,6 +240,7 @@
             }
           },
           {
+            "name": "tuplevalue",
             "type": "string",
             "typeInfo": {
               "frame": "string",
@@ -272,29 +276,75 @@
       },
       "data": {
         "values": [
-          [null],
-          [null],
-          [1],
-          [null],
-          [true],
-          [null],
-          [1.1],
-          [2.2],
-          [3.3],
-          [null],
-          [2],
-          [null],
-          [null],
-          [null],
-          [3],
-          ["bravo"],
-          [1631032831123],
-          [null],
-          [36930123456789],
-          [5],
-          [null],
-          ["charlie"],
-          [4]
+          [
+            null
+          ],
+          [
+            null
+          ],
+          [
+            1
+          ],
+          [
+            null
+          ],
+          [
+            true
+          ],
+          [
+            null
+          ],
+          [
+            1.1
+          ],
+          [
+            2.2
+          ],
+          [
+            3.3
+          ],
+          [
+            null
+          ],
+          [
+            2
+          ],
+          [
+            null
+          ],
+          [
+            null
+          ],
+          [
+            null
+          ],
+          [
+            3
+          ],
+          [
+            "bravo"
+          ],
+          [
+            1631032831123
+          ],
+          [
+            null
+          ],
+          [
+            36930123456789
+          ],
+          [
+            5
+          ],
+          [
+            null
+          ],
+          [
+            "charlie"
+          ],
+          [
+            4
+          ]
         ]
       }
     }

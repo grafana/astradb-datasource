@@ -51,7 +51,7 @@ func getColumns(result *pb.ResultSet) ([]column, []*data.Field) {
 	var fields []*data.Field
 
 	for _, col := range result.Columns {
-		col := NewColumn(col, "", "", "", nil)
+		col := NewColumn(col, col.Name, col.Name, "", nil)
 		columns = append(columns, col)
 		fields = append(fields, col.field)
 	}
