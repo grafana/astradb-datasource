@@ -1,17 +1,19 @@
 //  🌟 This was machine generated.  Do not edit. 🌟
 //  
 //  Frame[0] {
-//      "type": "timeseries-wide"
+//      "type": "timeseries-wide",
+//      "preferredVisualisationType": "graph",
+//      "executedQueryString": "foo"
 //  }
 //  Name: response
-//  Dimensions: 2 Fields by 1 Rows
-//  +-----------------------------------+-------------------------+
-//  | Name: time                        | Name: decimalvalue      |
-//  | Labels:                           | Labels: textvalue=bravo |
-//  | Type: []time.Time                 | Type: []*float64        |
-//  +-----------------------------------+-------------------------+
-//  | 2021-09-07 16:40:31.123 +0000 UTC | 1.1                     |
-//  +-----------------------------------+-------------------------+
+//  Dimensions: 4 Fields by 1 Rows
+//  +-----------------------------------+-------------------------+-------------------------+---------------------------+
+//  | Name: time                        | Name: bigintvalue       | Name: bigintvalue       | Name: bigintvalue         |
+//  | Labels:                           | Labels: textvalue=brave | Labels: textvalue=bravo | Labels: textvalue=brother |
+//  | Type: []time.Time                 | Type: []*int64          | Type: []*int64          | Type: []*int64            |
+//  +-----------------------------------+-------------------------+-------------------------+---------------------------+
+//  | 2021-09-07 16:40:31.123 +0000 UTC | 11                      | 1                       | 111                       |
+//  +-----------------------------------+-------------------------+-------------------------+---------------------------+
 //  
 //  
 //  🌟 This was machine generated.  Do not edit. 🌟
@@ -21,7 +23,9 @@
       "schema": {
         "name": "response",
         "meta": {
-          "type": "timeseries-wide"
+          "type": "timeseries-wide",
+          "preferredVisualisationType": "graph",
+          "executedQueryString": "foo"
         },
         "fields": [
           {
@@ -32,14 +36,36 @@
             }
           },
           {
-            "name": "decimalvalue",
+            "name": "bigintvalue",
             "type": "number",
             "typeInfo": {
-              "frame": "float64",
+              "frame": "int64",
+              "nullable": true
+            },
+            "labels": {
+              "textvalue": "brave"
+            }
+          },
+          {
+            "name": "bigintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
               "nullable": true
             },
             "labels": {
               "textvalue": "bravo"
+            }
+          },
+          {
+            "name": "bigintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "labels": {
+              "textvalue": "brother"
             }
           }
         ]
@@ -50,7 +76,13 @@
             1631032831123
           ],
           [
-            1.1
+            11
+          ],
+          [
+            1
+          ],
+          [
+            111
           ]
         ]
       }

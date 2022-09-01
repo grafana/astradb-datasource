@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//TODO: TestFramer currently tests for Frame() method returns correct frame
+// TODO: TestFramer currently tests for Frame() method returns correct frame
 // But various data type fields returns null instead of actual data. This needs to be fixed
 // Also later different types can be added
 func TestFramer(t *testing.T) {
@@ -62,6 +62,7 @@ func TestFramer(t *testing.T) {
 
 	// insert into table
 	cql = `
+	BEGIN BATCH
 	INSERT INTO grafana.tempTable1 (
 		id, 
 		asciivalue,
@@ -110,7 +111,106 @@ func TestFramer(t *testing.T) {
 		['a', 'b', 'c'],
 		{'a', 'b', 'c'},
 		(3, 'bar', 2.1)
-	);
+	)
+	INSERT INTO grafana.tempTable1 (
+		id, 
+		asciivalue,
+		textvalue,
+		varcharvalue,
+		blobvalue,
+		booleanvalue,
+		decimalvalue,
+		doublevalue,
+		floatvalue,
+		inetvalue,
+		bigintvalue,
+		intvalue,
+		smallintvalue,
+		varintvalue,
+		tinyintvalue,
+		timevalue,
+		timestampvalue,
+		datevalue,
+		timeuuidvalue,
+		mapvalue,
+		listvalue,
+		setvalue,
+		tuplevalue
+	) VALUES (
+		cbb8f69a-2a3a-11ed-a261-0242ac120002,
+		'alpha', 
+		'brave',
+		'charlie',
+		textAsBlob('foo'),
+		true,
+		1.2,
+        2.2,
+		3.3,
+		'127.0.0.1',
+        11,
+		2,
+		3,
+		4,
+		5,
+        '10:15:30.123456789',
+        '2021-09-07T16:40:31.123Z',
+        '2021-09-07',
+		30821634-13ad-11eb-adc1-0242ac120003,
+		{1: 'a', 2: 'b', 3: 'c'},
+		['a', 'b', 'c'],
+		{'a', 'b', 'c'},
+		(3, 'bar', 2.1)
+	)
+	INSERT INTO grafana.tempTable1 (
+		id, 
+		asciivalue,
+		textvalue,
+		varcharvalue,
+		blobvalue,
+		booleanvalue,
+		decimalvalue,
+		doublevalue,
+		floatvalue,
+		inetvalue,
+		bigintvalue,
+		intvalue,
+		smallintvalue,
+		varintvalue,
+		tinyintvalue,
+		timevalue,
+		timestampvalue,
+		datevalue,
+		timeuuidvalue,
+		mapvalue,
+		listvalue,
+		setvalue,
+		tuplevalue
+	) VALUES (
+		16133404-2a3f-11ed-a261-0242ac120002,
+		'alpha', 
+		'brother',
+		'charlie',
+		textAsBlob('foo'),
+		true,
+		1.3,
+        2.2,
+		3.3,
+		'127.0.0.1',
+        111,
+		2,
+		3,
+		4,
+		5,
+        '10:15:30.123456789',
+        '2021-09-07T16:40:31.123Z',
+        '2021-09-07',
+		30821634-13ad-11eb-adc1-0242ac120002,
+		{1: 'a', 2: 'b', 3: 'c'},
+		['a', 'b', 'c'],
+		{'a', 'b', 'c'},
+		(3, 'bar', 2.1)
+	)
+	APPLY BATCH;
 	`
 	query = &pb.Query{
 		Cql: cql,
@@ -122,7 +222,7 @@ func TestFramer(t *testing.T) {
 
 	// read from table
 	query = &pb.Query{
-		Cql: "SELECT timestampvalue as time, decimalvalue, textvalue FROM grafana.tempTable1",
+		Cql: "SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1",
 	}
 	response, err = stargateClient.ExecuteQuery(query)
 	require.NoError(t, err)
