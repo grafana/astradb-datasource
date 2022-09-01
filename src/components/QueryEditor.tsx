@@ -24,7 +24,7 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery }: Props) 
       processQuery(q);
     }
   };
-  
+
   const completionProvider = useMemo(() => datasource.getDB().getSqlCompletionProvider(), [datasource]);
 
   return (

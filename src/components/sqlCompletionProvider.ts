@@ -11,13 +11,13 @@ interface CompletionProviderGetterArgs {
 
 export const getSqlCompletionProvider: (args: CompletionProviderGetterArgs) => LanguageCompletionProvider =
   ({ getColumns, getTables, fetchMeta, getFunctions }) =>
-  () => ({
-    triggerCharacters: ['.', ' ', '$', ',', '(', "'"],
-    supportedFunctions: () => getFunctions.current(),
-    supportedOperators: () => OPERATORS,
-    customSuggestionKinds: customSuggestionKinds(getTables, getColumns, fetchMeta),
-    customStatementPlacement,
-  });
+    () => ({
+      triggerCharacters: ['.', ' ', '$', ',', '(', "'"],
+      supportedFunctions: () => getFunctions.current(),
+      supportedOperators: () => OPERATORS,
+      customSuggestionKinds: customSuggestionKinds(getTables, getColumns, fetchMeta),
+      customStatementPlacement,
+    });
 
 export enum CustomStatementPlacement {
   AfterDataset = 'afterDataset',
@@ -48,8 +48,8 @@ export const customStatementPlacement: StatementPlacementProvider = () => [
     resolve: (currentToken, previousKeyword) => {
       const is = Boolean(
         currentToken?.is(TokenType.Delimiter, '.') ||
-          (currentToken?.is(TokenType.Whitespace) && currentToken?.previous?.is(TokenType.Delimiter, '.')) ||
-           (currentToken?.is(TokenType.Identifier) && currentToken.value.endsWith('.'))
+        (currentToken?.is(TokenType.Whitespace) && currentToken?.previous?.is(TokenType.Delimiter, '.')) ||
+        (currentToken?.is(TokenType.Identifier) && currentToken.value.endsWith('.'))
       );
       console.log(is);
       return is;

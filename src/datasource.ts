@@ -23,7 +23,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
   dataset?: string;
 
   completionProvider: LanguageCompletionProvider | undefined;
-  
+
   constructor(private instanceSettings: DataSourceInstanceSettings<AstraSettings>) {
     super(instanceSettings);
     this.db = this.getDB();
@@ -81,7 +81,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
     if (!ds || !query.table) {
       return [];
     }
-    const queryString = buildColumnQuery({...query, dataset: ds }, query.table!);
+    const queryString = buildColumnQuery({ ...query, dataset: ds }, query.table!);
     const frame = await this.runSql<string[]>(queryString, { refId: 'fields' });
     const fields = frame.map((f) => ({ name: f[0], text: f[0], value: f[0], type: f[1], label: f[0] }));
     return fields;
@@ -116,7 +116,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
       }
     }
   }
-  
+
   async runSql<T>(query: string, options?: RunSQLOptions) {
     const frame = await this.runMetaQuery({ rawCql: query, format: Format.TABLE, refId: options?.refId }, options);
     return new DataFrameView<T>(frame);
@@ -149,7 +149,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
         )
     );
   }
-  
+
   runQuery(request: Partial<AstraQuery>): Promise<DataFrame> {
     return new Promise((resolve) => {
       const req = {
