@@ -69,7 +69,7 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 	switch col.Type.Spec.(type) {
 	case *pb.TypeSpec_Basic_:
 		return newBasicColumn(col, config)
-	case *pb.TypeSpec_Map_, *pb.TypeSpec_List_, *pb.TypeSpec_Set_:
+	case *pb.TypeSpec_Map_, *pb.TypeSpec_List_, *pb.TypeSpec_Set_, *pb.TypeSpec_Tuple_:
 		return column{
 			field: data.NewField(col.Name, nil, []*string{}),
 			converter: data.FieldConverter{
@@ -88,8 +88,6 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 			},
 		}
 	case *pb.TypeSpec_Udt_:
-		// TODO
-	case *pb.TypeSpec_Tuple_:
 		// TODO
 	}
 
@@ -130,6 +128,41 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		return newColumn[uint64](col.Name, config, TimeConverter, v.String())
 	case pb.TypeSpec_TIMESTAMP:
 		return newColumn[time.Time](col.Name, config, TimestampConverter, v.String())
+	case pb.TypeSpec_TIMEUUID:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok {
+					if u, err := client.ToTimeUUID(v1); err == nil {
+						val := u.String()
+						return &val, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
+	case pb.TypeSpec_ASCII:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok {
+					if u, err := client.ToString(v1); err == nil {
+						return &u, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
+	case pb.TypeSpec_UUID:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok {
+					if u, err := client.ToUUID(v1); err == nil {
+						val := u.String()
+						return &val, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
 	default:
 		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
 	}

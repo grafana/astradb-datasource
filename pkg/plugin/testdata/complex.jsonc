@@ -3,13 +3,13 @@
 //  Frame[0] 
 //  Name: response
 //  Dimensions: 6 Fields by 1 Rows
-//  +--------------------+-----------------+-----------------+-----------------+-----------------+----------------------------------------------------------------------------+
-//  | Name: decimalvalue | Name: textvalue | Name: listvalue | Name: mapvalue  | Name: setvalue  | Name: tuplevalue                                                           |
-//  | Labels:            | Labels:         | Labels:         | Labels:         | Labels:         | Labels:                                                                    |
-//  | Type: []*float64   | Type: []*string | Type: []*string | Type: []*string | Type: []*string | Type: []*string                                                            |
-//  +--------------------+-----------------+-----------------+-----------------+-----------------+----------------------------------------------------------------------------+
-//  | 1.1                | bravo           | ["a","b","c"]   | null            | ["a","b","c"]   | collection:{elements:{int:3} elements:{string:"bar"} elements:{float:2.1}} |
-//  +--------------------+-----------------+-----------------+-----------------+-----------------+----------------------------------------------------------------------------+
+//  +--------------------+-----------------+-----------------+-----------------+-----------------+------------------+
+//  | Name: decimalvalue | Name: textvalue | Name: listvalue | Name: mapvalue  | Name: setvalue  | Name: tuplevalue |
+//  | Labels:            | Labels:         | Labels:         | Labels:         | Labels:         | Labels:          |
+//  | Type: []*float64   | Type: []*string | Type: []*string | Type: []*string | Type: []*string | Type: []*string  |
+//  +--------------------+-----------------+-----------------+-----------------+-----------------+------------------+
+//  | 1.1                | bravo           | ["a","b","c"]   | null            | ["a","b","c"]   | [3,"bar",2.1]    |
+//  +--------------------+-----------------+-----------------+-----------------+-----------------+------------------+
 //  
 //  
 //  🌟 This was machine generated.  Do not edit. 🌟
@@ -71,9 +71,6 @@
             "typeInfo": {
               "frame": "string",
               "nullable": true
-            },
-            "config": {
-              "displayName": "tuplevalue"
             }
           }
         ]
@@ -96,7 +93,7 @@
             "[\"a\",\"b\",\"c\"]"
           ],
           [
-            "collection:{elements:{int:3} elements:{string:\"bar\"} elements:{float:2.1}}"
+            "[3,\"bar\",2.1]"
           ]
         ]
       }
