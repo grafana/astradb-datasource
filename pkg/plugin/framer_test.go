@@ -1,4 +1,4 @@
-package framer_test
+package plugin_test
 
 import (
 	"context"
@@ -21,15 +21,13 @@ import (
 )
 
 var (
-	grpcEndpoint string
-	authEndpoint string
+	grpcEndpoint     string
+	authEndpoint     string
+	astraDbContainer testcontainers.Container
 )
-
-const updateGoldenFile = false
 
 func init() {
 	ctx := context.Background()
-
 	astraDbContainer, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: testcontainers.ContainerRequest{
 			Image: "stargateio/stargate-3_11:v1.0.40",
@@ -204,5 +202,5 @@ func TestFramer(t *testing.T) {
 
 	frameResponse := plugin.Frame(response)
 	require.NotNil(t, frameResponse)
-	experimental.CheckGoldenJSONFrame(t, "testdata", "allTypes", frameResponse, updateGoldenFile)
+	experimental.CheckGoldenJSONFrame(t, "testdata", "framerAllTypes", frameResponse, updateGoldenFile)
 }
