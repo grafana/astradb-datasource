@@ -21,9 +21,8 @@ import (
 )
 
 var (
-	grpcEndpoint     string
-	authEndpoint     string
-	astraDbContainer testcontainers.Container
+	grpcEndpoint string
+	authEndpoint string
 )
 
 func init() {
