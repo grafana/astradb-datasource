@@ -122,7 +122,7 @@ func TestFramer(t *testing.T) {
 
 	// read from table
 	query = &pb.Query{
-		Cql: "SELECT * FROM grafana.tempTable1",
+		Cql: "SELECT timestampvalue as time, decimalvalue, textvalue FROM grafana.tempTable1",
 	}
 	response, err = stargateClient.ExecuteQuery(query)
 	require.NoError(t, err)

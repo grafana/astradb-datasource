@@ -1,15 +1,17 @@
 //  🌟 This was machine generated.  Do not edit. 🌟
 //  
-//  Frame[0] 
+//  Frame[0] {
+//      "type": "timeseries-wide"
+//  }
 //  Name: response
-//  Dimensions: 23 Fields by 1 Rows
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
-//  | Name: id        | Name: asciivalue | Name: bigintvalue | Name: blobvalue | Name: booleanvalue | Name: datevalue    | Name: decimalvalue | Name: doublevalue | Name: floatvalue | Name: inetvalue | Name: intvalue | Name: listvalue | Name: mapvalue  | Name: setvalue  | Name: smallintvalue | Name: textvalue | Name: timestampvalue              | Name: timeuuidvalue | Name: timevalue | Name: tinyintvalue | Name: tuplevalue | Name: varcharvalue | Name: varintvalue |
-//  | Labels:         | Labels:          | Labels:           | Labels:         | Labels:            | Labels:            | Labels:            | Labels:           | Labels:          | Labels:         | Labels:        | Labels:         | Labels:         | Labels:         | Labels:             | Labels:         | Labels:                           | Labels:             | Labels:         | Labels:            | Labels:          | Labels:            | Labels:           |
-//  | Type: []*string | Type: []*string  | Type: []*int64    | Type: []*string | Type: []*bool      | Type: []*time.Time | Type: []*float64   | Type: []*float64  | Type: []*float64 | Type: []*string | Type: []*int64 | Type: []*string | Type: []*string | Type: []*string | Type: []*int64      | Type: []*string | Type: []*time.Time                | Type: []*string     | Type: []*uint64 | Type: []*int64     | Type: []*string  | Type: []*string    | Type: []*uint64   |
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
-//  | null            | null             | 1                 | null            | true               | null               | 1.1                | 2.2               | 3.3              | null            | 2              | null            | null            | null            | 3                   | bravo           | 2021-09-07 16:40:31.123 +0000 UTC | null                | 36930123456789  | 5                  | null             | charlie            | 4                 |
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  Dimensions: 2 Fields by 1 Rows
+//  +-----------------------------------+-------------------------+
+//  | Name: time                        | Name: decimalvalue      |
+//  | Labels:                           | Labels: textvalue=bravo |
+//  | Type: []time.Time                 | Type: []*float64        |
+//  +-----------------------------------+-------------------------+
+//  | 2021-09-07 16:40:31.123 +0000 UTC | 1.1                     |
+//  +-----------------------------------+-------------------------+
 //  
 //  
 //  🌟 This was machine generated.  Do not edit. 🌟
@@ -18,71 +20,15 @@
     {
       "schema": {
         "name": "response",
+        "meta": {
+          "type": "timeseries-wide"
+        },
         "fields": [
           {
-            "name": "id",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "id"
-            }
-          },
-          {
-            "name": "asciivalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "asciivalue"
-            }
-          },
-          {
-            "name": "bigintvalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "int64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "bigintvalue"
-            }
-          },
-          {
-            "name": "blobvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "blobvalue"
-            }
-          },
-          {
-            "name": "booleanvalue",
-            "type": "boolean",
-            "typeInfo": {
-              "frame": "bool",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "booleanvalue"
-            }
-          },
-          {
-            "name": "datevalue",
+            "name": "time",
             "type": "time",
             "typeInfo": {
-              "frame": "time.Time",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "datevalue"
+              "frame": "time.Time"
             }
           },
           {
@@ -92,184 +38,8 @@
               "frame": "float64",
               "nullable": true
             },
-            "config": {
-              "displayName": "decimalvalue"
-            }
-          },
-          {
-            "name": "doublevalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "float64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "doublevalue"
-            }
-          },
-          {
-            "name": "floatvalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "float64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "floatvalue"
-            }
-          },
-          {
-            "name": "inetvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "inetvalue"
-            }
-          },
-          {
-            "name": "intvalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "int64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "intvalue"
-            }
-          },
-          {
-            "name": "listvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "listvalue"
-            }
-          },
-          {
-            "name": "mapvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "mapvalue"
-            }
-          },
-          {
-            "name": "setvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "setvalue"
-            }
-          },
-          {
-            "name": "smallintvalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "int64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "smallintvalue"
-            }
-          },
-          {
-            "name": "textvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "textvalue"
-            }
-          },
-          {
-            "name": "timestampvalue",
-            "type": "time",
-            "typeInfo": {
-              "frame": "time.Time",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "timestampvalue"
-            }
-          },
-          {
-            "name": "timeuuidvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "timeuuidvalue"
-            }
-          },
-          {
-            "name": "timevalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "uint64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "timevalue"
-            }
-          },
-          {
-            "name": "tinyintvalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "int64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "tinyintvalue"
-            }
-          },
-          {
-            "name": "tuplevalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "tuplevalue"
-            }
-          },
-          {
-            "name": "varcharvalue",
-            "type": "string",
-            "typeInfo": {
-              "frame": "string",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "varcharvalue"
-            }
-          },
-          {
-            "name": "varintvalue",
-            "type": "number",
-            "typeInfo": {
-              "frame": "uint64",
-              "nullable": true
-            },
-            "config": {
-              "displayName": "varintvalue"
+            "labels": {
+              "textvalue": "bravo"
             }
           }
         ]
@@ -277,73 +47,10 @@
       "data": {
         "values": [
           [
-            null
-          ],
-          [
-            null
-          ],
-          [
-            1
-          ],
-          [
-            null
-          ],
-          [
-            true
-          ],
-          [
-            null
-          ],
-          [
-            1.1
-          ],
-          [
-            2.2
-          ],
-          [
-            3.3
-          ],
-          [
-            null
-          ],
-          [
-            2
-          ],
-          [
-            null
-          ],
-          [
-            null
-          ],
-          [
-            null
-          ],
-          [
-            3
-          ],
-          [
-            "bravo"
-          ],
-          [
             1631032831123
           ],
           [
-            null
-          ],
-          [
-            36930123456789
-          ],
-          [
-            5
-          ],
-          [
-            null
-          ],
-          [
-            "charlie"
-          ],
-          [
-            4
+            1.1
           ]
         ]
       }

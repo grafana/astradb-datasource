@@ -27,16 +27,6 @@ func Frame(res *pb.Response) *data.Frame {
 
 	frame := data.NewFrame("response", fields...)
 
-	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
-
-		fillMode := &data.FillMissing{data.FillMode(0), 0} // unsure of how fillNode works here
-		frame, err := data.LongToWide(frame, fillMode)     // unsure of how fillNode works here
-		if err != nil {
-			return nil
-		}
-		return frame
-	}
-
 	for _, row := range result.Rows {
 
 		var vals []interface{}
@@ -55,6 +45,16 @@ func Frame(res *pb.Response) *data.Frame {
 
 		frame.AppendRow(vals...)
 	}
+
+	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
+		fillMode := &data.FillMissing{data.FillMode(0), 0} // unsure of how fillNode works here
+		frame, err := data.LongToWide(frame, fillMode)     // unsure of how fillNode works here
+		if err != nil {
+			return nil
+		}
+		return frame
+	}
+
 	return frame
 }
 
