@@ -47,8 +47,8 @@ func Frame(res *pb.Response) *data.Frame {
 	}
 
 	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
-		fillMode := &data.FillMissing{data.FillMode(0), 0} // unsure of how fillNode works here
-		frame, err := data.LongToWide(frame, fillMode)     // unsure of how fillNode works here
+		fillMode := &data.FillMissing{Mode: data.FillModePrevious}
+		frame, err := data.LongToWide(frame, fillMode)
 		if err != nil {
 			return nil
 		}
