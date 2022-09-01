@@ -9,7 +9,8 @@
     "dev": "grafana-toolkit plugin:dev",
     "watch": "grafana-toolkit plugin:dev --watch",
     "sign": "grafana-toolkit plugin:sign",
-    "start": "yarn watch"
+    "start": "yarn watch",
+    "prettier:write": "prettier --list-different \"**/*.{js,ts,tsx,scss,md,mdx}\" --write"
   },
   "author": "Grafana Labs",
   "license": "Apache-2.0",
