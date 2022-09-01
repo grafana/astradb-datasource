@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -67,12 +68,24 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 	switch col.Type.Spec.(type) {
 	case *pb.TypeSpec_Basic_:
 		return newBasicColumn(col, config)
-	case *pb.TypeSpec_Map_:
-		// TODO
-	case *pb.TypeSpec_List_:
-		// TODO
-	case *pb.TypeSpec_Set_:
-		// TODO
+	case *pb.TypeSpec_Map_, *pb.TypeSpec_List_, *pb.TypeSpec_Set_:
+		return column{
+			field: data.NewField(col.Name, nil, []*string{}),
+			converter: data.FieldConverter{
+				Converter: func(v interface{}) (interface{}, error) {
+					v1, err := translateType(v.(*pb.Value), col.Type)
+					if err != nil {
+						return nil, err
+					}
+					b, err := json.Marshal(v1)
+					if err != nil {
+						return nil, err
+					}
+					str := string(b)
+					return &str, err
+				},
+			},
+		}
 	case *pb.TypeSpec_Udt_:
 		// TODO
 	case *pb.TypeSpec_Tuple_:
@@ -148,6 +161,9 @@ func getValue(col column, raw *pb.Value) (any, error) {
 		return col.converter.Converter(raw.GetTime())
 	case pb.TypeSpec_TIMESTAMP.String():
 		return col.converter.Converter(raw.GetInt())
+	}
+	if col.converter.Converter != nil {
+		return col.converter.Converter(raw)
 	}
 	return nil, nil
 }

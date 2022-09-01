@@ -3,13 +3,13 @@
 //  Frame[0] 
 //  Name: response
 //  Dimensions: 23 Fields by 1 Rows
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
-//  | Name: id        | Name: asciivalue | Name: bigintvalue | Name: blobvalue | Name: booleanvalue | Name: datevalue    | Name: decimalvalue | Name: doublevalue | Name: floatvalue | Name: inetvalue | Name: intvalue | Name: listvalue | Name: mapvalue  | Name: setvalue  | Name: smallintvalue | Name: textvalue | Name: timestampvalue              | Name: timeuuidvalue | Name: timevalue | Name: tinyintvalue | Name: tuplevalue | Name: varcharvalue | Name: varintvalue |
-//  | Labels:         | Labels:          | Labels:           | Labels:         | Labels:            | Labels:            | Labels:            | Labels:           | Labels:          | Labels:         | Labels:        | Labels:         | Labels:         | Labels:         | Labels:             | Labels:         | Labels:                           | Labels:             | Labels:         | Labels:            | Labels:          | Labels:            | Labels:           |
-//  | Type: []*string | Type: []*string  | Type: []*int64    | Type: []*string | Type: []*bool      | Type: []*time.Time | Type: []*float64   | Type: []*float64  | Type: []*float64 | Type: []*string | Type: []*int64 | Type: []*string | Type: []*string | Type: []*string | Type: []*int64      | Type: []*string | Type: []*time.Time                | Type: []*string     | Type: []*uint64 | Type: []*int64     | Type: []*string  | Type: []*string    | Type: []*uint64   |
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
-//  | null            | null             | 1                 | null            | true               | null               | 1.1                | 2.2               | 3.3              | null            | 2              | null            | null            | null            | 3                   | bravo           | 2021-09-07 16:40:31.123 +0000 UTC | null                | 36930123456789  | 5                  | null             | charlie            | 4                 |
-//  +-----------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+---------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  +------------------------------------------------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+---------------------------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+------------------------------------------------------------------------+-----------------+--------------------+----------------------------------------------------------------------------+--------------------+-------------------+
+//  | Name: id                                             | Name: asciivalue | Name: bigintvalue | Name: blobvalue | Name: booleanvalue | Name: datevalue    | Name: decimalvalue | Name: doublevalue | Name: floatvalue | Name: inetvalue                 | Name: intvalue | Name: listvalue | Name: mapvalue  | Name: setvalue  | Name: smallintvalue | Name: textvalue | Name: timestampvalue              | Name: timeuuidvalue                                                    | Name: timevalue | Name: tinyintvalue | Name: tuplevalue                                                           | Name: varcharvalue | Name: varintvalue |
+//  | Labels:                                              | Labels:          | Labels:           | Labels:         | Labels:            | Labels:            | Labels:            | Labels:           | Labels:          | Labels:                         | Labels:        | Labels:         | Labels:         | Labels:         | Labels:             | Labels:         | Labels:                           | Labels:                                                                | Labels:         | Labels:            | Labels:                                                                    | Labels:            | Labels:           |
+//  | Type: []*string                                      | Type: []*string  | Type: []*int64    | Type: []*string | Type: []*bool      | Type: []*time.Time | Type: []*float64   | Type: []*float64  | Type: []*float64 | Type: []*string                 | Type: []*int64 | Type: []*string | Type: []*string | Type: []*string | Type: []*int64      | Type: []*string | Type: []*time.Time                | Type: []*string                                                        | Type: []*uint64 | Type: []*int64     | Type: []*string                                                            | Type: []*string    | Type: []*uint64   |
+//  +------------------------------------------------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+---------------------------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+------------------------------------------------------------------------+-----------------+--------------------+----------------------------------------------------------------------------+--------------------+-------------------+
+//  | uuid:{value:"\xf0f\xf7m^\x96KR\x8d\x8a\x0fQ8}\xf7k"} | string:"alpha"   | 1                 | bytes:"foo"     | true               | null               | 1.1                | 2.2               | 3.3              | inet:{value:"\x7f\x00\x00\x01"} | 2              | ["a","b","c"]   | null            | ["a","b","c"]   | 3                   | bravo           | 2021-09-07 16:40:31.123 +0000 UTC | uuid:{value:"0\x82\x164\x13\xad\x11\xeb\xad\xc1\x02B\xac\x12\x00\x02"} | 36930123456789  | 5                  | collection:{elements:{int:3} elements:{string:"bar"} elements:{float:2.1}} | charlie            | 4                 |
+//  +------------------------------------------------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+---------------------------------+----------------+-----------------+-----------------+-----------------+---------------------+-----------------+-----------------------------------+------------------------------------------------------------------------+-----------------+--------------------+----------------------------------------------------------------------------+--------------------+-------------------+
 //  
 //  
 //  🌟 This was machine generated.  Do not edit. 🌟
@@ -146,9 +146,6 @@
             "typeInfo": {
               "frame": "string",
               "nullable": true
-            },
-            "config": {
-              "displayName": "listvalue"
             }
           },
           {
@@ -157,9 +154,6 @@
             "typeInfo": {
               "frame": "string",
               "nullable": true
-            },
-            "config": {
-              "displayName": "mapvalue"
             }
           },
           {
@@ -168,9 +162,6 @@
             "typeInfo": {
               "frame": "string",
               "nullable": true
-            },
-            "config": {
-              "displayName": "setvalue"
             }
           },
           {
@@ -277,16 +268,16 @@
       "data": {
         "values": [
           [
-            null
+            "uuid:{value:\"\\xf0f\\xf7m^\\x96KR\\x8d\\x8a\\x0fQ8}\\xf7k\"}"
           ],
           [
-            null
+            "string:\"alpha\""
           ],
           [
             1
           ],
           [
-            null
+            "bytes:\"foo\""
           ],
           [
             true
@@ -304,19 +295,19 @@
             3.3
           ],
           [
-            null
+            "inet:{value:\"\\x7f\\x00\\x00\\x01\"}"
           ],
           [
             2
           ],
           [
-            null
+            "[\"a\",\"b\",\"c\"]"
           ],
           [
             null
           ],
           [
-            null
+            "[\"a\",\"b\",\"c\"]"
           ],
           [
             3
@@ -328,7 +319,7 @@
             1631032831123
           ],
           [
-            null
+            "uuid:{value:\"0\\x82\\x164\\x13\\xad\\x11\\xeb\\xad\\xc1\\x02B\\xac\\x12\\x00\\x02\"}"
           ],
           [
             36930123456789
@@ -337,7 +328,7 @@
             5
           ],
           [
-            null
+            "collection:{elements:{int:3} elements:{string:\"bar\"} elements:{float:2.1}}"
           ],
           [
             "charlie"
