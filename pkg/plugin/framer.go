@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"encoding/json"
 	"fmt"
 	"sort"
 	"strings"
@@ -130,14 +131,52 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 	case *pb.TypeSpec_Basic_:
 		return newBasicColumn(col, config)
 	case *pb.TypeSpec_Map_:
-		// TODO
-	case *pb.TypeSpec_List_:
-		// TODO
-	case *pb.TypeSpec_Set_:
-		// TODO
+		return column{
+			field: data.NewField(col.Name, nil, []*string{}),
+			converter: data.FieldConverter{
+				Converter: func(v interface{}) (interface{}, error) {
+					v1, err := translateType(v.(*pb.Value), col.Type)
+					if err != nil {
+						return nil, err
+					}
+					mapInterface, ok := v1.(map[interface{}]interface{})
+					if !ok {
+						return nil, nil
+					}
+					mapString := make(map[string]interface{})
+					for key, value := range mapInterface {
+						strKey := fmt.Sprintf("%v", key)
+						strValue := value
+						mapString[strKey] = strValue
+					}
+					b, err := json.Marshal(mapString)
+					if err != nil {
+						return nil, err
+					}
+					str := string(b)
+					return &str, err
+				},
+			},
+		}
+	case *pb.TypeSpec_List_, *pb.TypeSpec_Set_, *pb.TypeSpec_Tuple_:
+		return column{
+			field: data.NewField(col.Name, nil, []*string{}),
+			converter: data.FieldConverter{
+				Converter: func(v interface{}) (interface{}, error) {
+					v1, err := translateType(v.(*pb.Value), col.Type)
+					if err != nil {
+						return nil, err
+					}
+					b, err := json.Marshal(v1)
+					if err != nil {
+						return nil, err
+					}
+					str := string(b)
+					return &str, err
+				},
+			},
+		}
 	case *pb.TypeSpec_Udt_:
-		// TODO
-	case *pb.TypeSpec_Tuple_:
 		// TODO
 	}
 
@@ -146,7 +185,7 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 	return column{
 		field,
 		converters.AnyToNullableString,
-		"",
+		kind,
 	}
 }
 
@@ -178,6 +217,53 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		return newColumn[uint64](col.Name, config, TimeConverter, v.String())
 	case pb.TypeSpec_TIMESTAMP:
 		return newColumn[time.Time](col.Name, config, TimestampConverter, v.String())
+	case pb.TypeSpec_INET:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok && v1 != nil {
+					if val := v1.GetInet(); val != nil {
+						s := fmt.Sprintf("%v", val.GetValue())
+						return &s, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
+	case pb.TypeSpec_TIMEUUID:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok {
+					if u, err := client.ToTimeUUID(v1); err == nil && u != nil {
+						val := u.String()
+						return &val, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
+	case pb.TypeSpec_ASCII:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok {
+					if u, err := client.ToString(v1); err == nil {
+						return &u, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
+	case pb.TypeSpec_UUID:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok {
+					if u, err := client.ToUUID(v1); err == nil && u != nil {
+						val := u.String()
+						return &val, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
 	default:
 		return newColumn[string](col.Name, config, converters.AnyToNullableString, v.String())
 	}
@@ -211,6 +297,9 @@ func getValue(col column, raw *pb.Value) (any, error) {
 			return nil, err
 		}
 		return col.converter.Converter(string(v))
+	}
+	if col.converter.Converter != nil {
+		return col.converter.Converter(raw)
 	}
 	return nil, nil
 }

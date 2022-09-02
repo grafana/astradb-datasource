@@ -37,6 +37,7 @@
     "stretchr",
     "testdata",
     "TimeSeries",
+    "TIMEUUID",
     "TINYINT",
     "vals",
     "VARCHAR",

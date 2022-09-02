@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/var/lib/grafana/plugins/grafana-astradb-datasource
       - ./provisioning/config/license:/etc/license
-      - ./provisioning/provisioning:/etc/grafana/provisioning
+      - ./provisioning:/etc/grafana/provisioning
     environment:
       - TERM=linux
       - GF_LOG_LEVEL=debug

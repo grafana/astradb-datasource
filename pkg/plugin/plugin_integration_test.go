@@ -40,6 +40,7 @@ func TestMain(m *testing.M) {
 	setup()
 	m.Run()
 	teardown()
+	os.Exit(0)
 }
 
 func setup() {

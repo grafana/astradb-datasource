@@ -29,10 +29,6 @@ func TestFramer(t *testing.T) {
 	require.NoError(t, err)
 	assert.Nil(t, response.GetResultSet())
 
-	response, err = insertTestData(stargateClient)
-	require.NoError(t, err)
-	assert.Nil(t, response.GetResultSet())
-
 	// read from table
 	query = &pb.Query{
 		Cql: "SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1",
@@ -50,31 +46,31 @@ func TestFramer(t *testing.T) {
 func createTestTable(stargateClient *client.StargateClient) (*pb.Response, error) {
 	// add table to keyspace
 	cql := `
-		CREATE TABLE IF NOT EXISTS grafana.tempTable1 (
-			id uuid PRIMARY KEY,
-			asciivalue ascii,
-			textvalue text,
-			varcharvalue varchar,
-			blobvalue blob,
-			booleanvalue boolean,
-			decimalvalue decimal,
-			doublevalue double,
-			floatvalue float,
-			inetvalue inet,
-			bigintvalue bigint,
-			intvalue int,
-			smallintvalue smallint,
-			varintvalue varint,
-			tinyintvalue tinyint,
-			timevalue time,
-			timestampvalue timestamp,
-			datevalue date,
-			timeuuidvalue timeuuid,
-			mapvalue map<int,text>,
-			listvalue list<text>,
-			setvalue set<text>,
-			tuplevalue tuple<int, text, float>
-		);`
+	CREATE TABLE IF NOT EXISTS grafana.tempTable1 (
+		id uuid PRIMARY KEY,
+		asciivalue ascii,
+		textvalue text,
+		varcharvalue varchar,
+		blobvalue blob,
+		booleanvalue boolean,
+		decimalvalue decimal,
+		doublevalue double,
+		floatvalue float,
+		inetvalue inet,
+		bigintvalue bigint,
+		intvalue int,
+		smallintvalue smallint,
+		varintvalue varint,
+		tinyintvalue tinyint,
+		timevalue time,
+		timestampvalue timestamp,
+		datevalue date,
+		timeuuidvalue timeuuid,
+		mapvalue map<int,text>,
+		listvalue list<text>,
+		setvalue set<text>,
+		tuplevalue tuple<int, text, float>
+	);`
 	query := &pb.Query{
 		Cql: cql,
 	}
