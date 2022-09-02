@@ -78,7 +78,7 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 	}
 
 	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
-		fillMode := &data.FillMissing{Mode: data.FillModePrevious}
+		fillMode := &data.FillMissing{Mode: data.FillModeNull}
 
 		if shouldSort(qm.RawCql) {
 			sortByTime(frame)
