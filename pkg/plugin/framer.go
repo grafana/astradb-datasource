@@ -125,7 +125,7 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 	return column{
 		field,
 		converters.AnyToNullableString,
-		"",
+		kind,
 	}
 }
 
@@ -157,11 +157,23 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		return newColumn[uint64](col.Name, config, TimeConverter, v.String())
 	case pb.TypeSpec_TIMESTAMP:
 		return newColumn[time.Time](col.Name, config, TimestampConverter, v.String())
+	case pb.TypeSpec_INET:
+		return newColumn[string](col.Name, config, data.FieldConverter{
+			Converter: func(v interface{}) (interface{}, error) {
+				if v1, ok := v.(*pb.Value); ok && v1 != nil {
+					if val := v1.GetInet(); val != nil {
+						s := fmt.Sprintf("%v", val.GetValue())
+						return &s, nil
+					}
+				}
+				return nil, nil
+			},
+		}, v.String())
 	case pb.TypeSpec_TIMEUUID:
 		return newColumn[string](col.Name, config, data.FieldConverter{
 			Converter: func(v interface{}) (interface{}, error) {
 				if v1, ok := v.(*pb.Value); ok {
-					if u, err := client.ToTimeUUID(v1); err == nil {
+					if u, err := client.ToTimeUUID(v1); err == nil && u != nil {
 						val := u.String()
 						return &val, nil
 					}
@@ -184,7 +196,7 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		return newColumn[string](col.Name, config, data.FieldConverter{
 			Converter: func(v interface{}) (interface{}, error) {
 				if v1, ok := v.(*pb.Value); ok {
-					if u, err := client.ToUUID(v1); err == nil {
+					if u, err := client.ToUUID(v1); err == nil && u != nil {
 						val := u.String()
 						return &val, nil
 					}
