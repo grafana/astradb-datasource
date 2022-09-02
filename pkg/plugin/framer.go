@@ -27,6 +27,7 @@ func Frame(res *pb.Response) *data.Frame {
 	columns, fields := getColumns(result)
 
 	frame := data.NewFrame("response", fields...)
+
 	for _, row := range result.Rows {
 
 		var vals []interface{}
