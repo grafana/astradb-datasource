@@ -186,78 +186,121 @@ func anyToNullable[T Number](val any, f func(val any) (T, error)) (T, error) {
 	return f(val)
 }
 
-// TODO - code to reference for converting these types
+func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
+	switch spec.GetSpec().(type) {
+	case *pb.TypeSpec_Basic_:
+		return translateBasicType(value, spec)
+	case *pb.TypeSpec_Map_:
+		elements := make(map[interface{}]interface{})
 
-// func translateType(spec *pb.TypeSpec) (interface{}, error) {
-// 	switch spec.GetSpec().(type) {
-// 	case *pb.TypeSpec_Basic_:
-// 		return translateBasicType(value, spec)
-// 	case *pb.TypeSpec_Map_:
-// 		elements := make(map[interface{}]interface{})
+		for i := 0; i < len(value.GetCollection().Elements)-1; i += 2 {
+			key, err := translateType(value.GetCollection().Elements[i], spec.GetMap().Key)
+			if err != nil {
+				return nil, err
+			}
+			mapVal, err := translateType(value.GetCollection().Elements[i+1], spec.GetMap().Value)
+			if err != nil {
+				return nil, err
+			}
+			elements[key] = mapVal
+		}
+		return elements, nil
+	case *pb.TypeSpec_List_:
+		var elements []interface{}
 
-// 		for i := 0; i < len(value.GetCollection().Elements)-1; i += 2 {
-// 			key, err := translateType(value.GetCollection().Elements[i], spec.GetMap().Key)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 			mapVal, err := translateType(value.GetCollection().Elements[i+1], spec.GetMap().Value)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 			elements[key] = mapVal
-// 		}
-// 		return elements, nil
-// 	case *pb.TypeSpec_List_:
-// 		var elements []interface{}
+		for i := range value.GetCollection().Elements {
+			element, err := translateType(value.GetCollection().Elements[i], spec.GetList().Element)
+			if err != nil {
+				return nil, err
+			}
+			elements = append(elements, element)
+		}
 
-// 		for i := range value.GetCollection().Elements {
-// 			element, err := translateType(value.GetCollection().Elements[i], spec.GetList().Element)
-// 			if err != nil {
-// 				return nil, err
-// 			}
-// 			elements = append(elements, element)
-// 		}
+		return elements, nil
+	case *pb.TypeSpec_Set_:
+		var elements []interface{}
+		for _, element := range value.GetCollection().Elements {
+			element, err := translateType(element, spec.GetSet().Element)
+			if err != nil {
+				return nil, err
+			}
 
-// 		return elements, nil
-// 	case *pb.TypeSpec_Set_:
-// 		var elements []interface{}
-// 		for _, element := range value.GetCollection().Elements {
-// 			element, err := translateType(element, spec.GetSet().Element)
-// 			if err != nil {
-// 				return nil, err
-// 			}
+			elements = append(elements, element)
+		}
 
-// 			elements = append(elements, element)
-// 		}
+		return elements, nil
+	case *pb.TypeSpec_Udt_:
+		fields := map[string]interface{}{}
+		for key, val := range value.GetUdt().Fields {
+			element, err := translateType(val, spec.GetUdt().Fields[key])
+			if err != nil {
+				return nil, err
+			}
 
-// 		return elements, nil
-// 	case *pb.TypeSpec_Udt_:
-// 		fields := map[string]interface{}{}
-// 		for key, val := range value.GetUdt().Fields {
-// 			element, err := translateType(val, spec.GetUdt().Fields[key])
-// 			if err != nil {
-// 				return nil, err
-// 			}
+			fields[key] = element
+		}
 
-// 			fields[key] = element
-// 		}
+		return fields, nil
+	case *pb.TypeSpec_Tuple_:
+		var elements []interface{}
+		numElements := len(spec.GetTuple().Elements)
+		for i := 0; i <= len(value.GetCollection().Elements)-numElements; i++ {
+			for j, typeSpec := range spec.GetTuple().Elements {
+				element, err := translateType(value.GetCollection().Elements[i+j], typeSpec)
+				if err != nil {
+					return nil, err
+				}
 
-// 		return fields, nil
-// 	case *pb.TypeSpec_Tuple_:
-// 		var elements []interface{}
-// 		numElements := len(spec.GetTuple().Elements)
-// 		for i := 0; i <= len(value.GetCollection().Elements)-numElements; i++ {
-// 			for j, typeSpec := range spec.GetTuple().Elements {
-// 				element, err := translateType(value.GetCollection().Elements[i+j], typeSpec)
-// 				if err != nil {
-// 					return nil, err
-// 				}
+				elements = append(elements, element)
+			}
+		}
 
-// 				elements = append(elements, element)
-// 			}
-// 		}
+		return elements, nil
+	}
+	return nil, errors.New("unsupported type")
+}
 
-// 		return elements, nil
-// 	}
-// 	return nil, errors.New("unsupported type")
-// }
+func translateBasicType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
+	switch spec.GetBasic() {
+	case pb.TypeSpec_CUSTOM:
+		return client.ToBlob(value)
+	case pb.TypeSpec_ASCII, pb.TypeSpec_TEXT, pb.TypeSpec_VARCHAR:
+		return client.ToString(value)
+	case pb.TypeSpec_BIGINT:
+		return client.ToBigInt(value)
+	case pb.TypeSpec_BLOB:
+		return client.ToBlob(value)
+	case pb.TypeSpec_BOOLEAN:
+		return client.ToBoolean(value)
+	case pb.TypeSpec_COUNTER:
+		return client.ToInt(value)
+	case pb.TypeSpec_DECIMAL:
+		return client.ToDecimal(value)
+	case pb.TypeSpec_DOUBLE:
+		return client.ToDouble(value)
+	case pb.TypeSpec_FLOAT:
+		return client.ToFloat(value)
+	case pb.TypeSpec_INT:
+		return client.ToInt(value)
+	case pb.TypeSpec_TIMESTAMP:
+		return client.ToTimestamp(value)
+	case pb.TypeSpec_UUID:
+		return client.ToUUID(value)
+	case pb.TypeSpec_VARINT:
+		return client.ToVarInt(value)
+	case pb.TypeSpec_TIMEUUID:
+		return client.ToTimeUUID(value)
+	case pb.TypeSpec_INET:
+		return client.ToInet(value)
+	case pb.TypeSpec_DATE:
+		return client.ToDate(value)
+	case pb.TypeSpec_TIME:
+		return client.ToTime(value)
+	case pb.TypeSpec_SMALLINT:
+		return client.ToSmallInt(value)
+	case pb.TypeSpec_TINYINT:
+		return client.ToTinyInt(value)
+	}
+
+	return nil, errors.New("unsupported type")
+}
