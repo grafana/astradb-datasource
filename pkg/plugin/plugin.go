@@ -87,29 +87,6 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 	return response
 }
 
-func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
-	var status = backend.HealthStatusOk
-	var message = "Data source is working"
-
-	err := d.connect()
-	if err != nil {
-		status = backend.HealthStatusError
-		message = err.Error()
-	}
-	if err == nil {
-		_, err := client.NewStargateClientWithConn(d.conn)
-		if err != nil {
-			status = backend.HealthStatusError
-			message = err.Error()
-		}
-	}
-
-	return &backend.CheckHealthResult{
-		Status:  status,
-		Message: message,
-	}, nil
-}
-
 func (d *AstraDatasource) connect() error {
 	// grpc - connect and stay connected
 	if d.conn != nil {
