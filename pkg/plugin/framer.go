@@ -3,10 +3,13 @@ package plugin
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
+	"github.com/grafana/grafana-plugin-sdk-go/experimental"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
@@ -17,11 +20,23 @@ type column struct {
 	kind      string
 }
 
-func Frame(res *pb.Response) *data.Frame {
+// FormatQueryOption defines how the user has chosen to represent the data
+type FormatQueryOption uint32
+
+const (
+	// FormatOptionTimeSeries formats the query results as a timeseries using "WideToLong"
+	FormatOptionTimeSeries FormatQueryOption = iota
+	// FormatOptionTable formats the query results as a table using "LongToWide"
+	FormatOptionTable
+	// FormatOptionLogs sets the preferred visualization to logs
+	FormatOptionLogs
+)
+
+func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 
 	result := res.GetResultSet()
 	if result == nil {
-		return data.NewFrame("response", nil)
+		return data.NewFrame("response", nil), nil
 	}
 
 	columns, fields := getColumns(result)
@@ -46,7 +61,52 @@ func Frame(res *pb.Response) *data.Frame {
 
 		frame.AppendRow(vals...)
 	}
-	return frame
+
+	frame.Meta = &data.FrameMeta{
+		ExecutedQueryString:    qm.RawCql,
+		PreferredVisualization: data.VisTypeGraph,
+	}
+
+	if qm.Format == FormatOptionTable {
+		frame.Meta.PreferredVisualization = data.VisTypeTable
+		return frame, nil
+	}
+
+	if qm.Format == FormatOptionLogs {
+		frame.Meta.PreferredVisualization = data.VisTypeLogs
+		return frame, nil
+	}
+
+	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
+		fillMode := &data.FillMissing{Mode: data.FillModeNull}
+
+		if shouldSort(qm.RawCql) {
+			sortByTime(frame)
+		}
+
+		frame, err := data.LongToWide(frame, fillMode)
+		if err != nil {
+			return nil, err
+		}
+		return frame, nil
+	}
+
+	return frame, nil
+}
+
+func shouldSort(cql string) bool {
+	lower := strings.ToLower(cql)
+	return !strings.Contains(lower, "order by")
+}
+
+func sortByTime(frame *data.Frame) {
+	for _, f := range frame.Fields {
+		if f.Name == "time" {
+			sorter := experimental.NewFrameSorter(frame, f)
+			sort.Sort(sorter)
+			return
+		}
+	}
 }
 
 func getColumns(result *pb.ResultSet) ([]column, []*data.Field) {

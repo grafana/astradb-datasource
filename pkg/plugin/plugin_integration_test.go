@@ -46,47 +46,51 @@ func TestMain(m *testing.M) {
 func setup() {
 	_, shouldRun := os.LookupEnv("RUN_ASTRA_INTEGRATION_TESTS")
 	if !shouldRun {
+		fmt.Print("integration tests disabled.  set env var ")
 		os.Exit(0)
 	}
 
-	ctx := context.Background()
+	_, runLocal := os.LookupEnv("RUN_LOCAL")
+	if runLocal {
+		ctx := context.Background()
 
-	astraDbContainer, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: testcontainers.ContainerRequest{
-			Image: "stargateio/stargate-3_11:v1.0.40",
-			Env: map[string]string{
-				"CLUSTER_NAME":    "test",
-				"CLUSTER_VERSION": "3.11",
-				"DEVELOPER_MODE":  "true",
-				"ENABLE_AUTH":     "true",
+		astraDbContainer, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+			ContainerRequest: testcontainers.ContainerRequest{
+				Image: "stargateio/stargate-3_11:v1.0.40",
+				Env: map[string]string{
+					"CLUSTER_NAME":    "test",
+					"CLUSTER_VERSION": "3.11",
+					"DEVELOPER_MODE":  "true",
+					"ENABLE_AUTH":     "true",
+				},
+				ExposedPorts: []string{"8090/tcp", "8081/tcp", "8084/tcp", "9042/tcp"},
+				WaitingFor:   wait.ForHTTP("/checker/readiness").WithPort("8084/tcp").WithStartupTimeout(90 * time.Second),
 			},
-			ExposedPorts: []string{"8090/tcp", "8081/tcp", "8084/tcp", "9042/tcp"},
-			WaitingFor:   wait.ForHTTP("/checker/readiness").WithPort("8084/tcp").WithStartupTimeout(90 * time.Second),
-		},
-		Started: true,
-	})
-	if err != nil {
-		log.Fatalf("Failed to start Stargate container: %v", err)
-	}
+			Started: true,
+		})
+		if err != nil {
+			log.Fatalf("Failed to start Stargate container: %v", err)
+		}
 
-	grpcPort, err := nat.NewPort("tcp", "8090")
-	if err != nil {
-		log.Fatalf("Failed to get port: %v", err)
-	}
+		grpcPort, err := nat.NewPort("tcp", "8090")
+		if err != nil {
+			log.Fatalf("Failed to get port: %v", err)
+		}
 
-	authPort, err := nat.NewPort("tcp", "8081")
-	if err != nil {
-		log.Fatalf("Failed to get port: %v", err)
-	}
+		authPort, err := nat.NewPort("tcp", "8081")
+		if err != nil {
+			log.Fatalf("Failed to get port: %v", err)
+		}
 
-	grpcEndpoint, err = astraDbContainer.PortEndpoint(ctx, grpcPort, "")
-	if err != nil {
-		log.Fatalf("Failed to get endpoint: %v", err)
-	}
+		grpcEndpoint, err = astraDbContainer.PortEndpoint(ctx, grpcPort, "")
+		if err != nil {
+			log.Fatalf("Failed to get endpoint: %v", err)
+		}
 
-	authEndpoint, err = astraDbContainer.PortEndpoint(ctx, authPort, "")
-	if err != nil {
-		log.Fatalf("Failed to get endpoint: %v", err)
+		authEndpoint, err = astraDbContainer.PortEndpoint(ctx, authPort, "")
+		if err != nil {
+			log.Fatalf("Failed to get endpoint: %v", err)
+		}
 	}
 }
 
@@ -123,8 +127,8 @@ func TestConnect(t *testing.T) {
 	response, err := stargateClient.ExecuteQuery(selectQuery)
 	assert.Nil(t, err)
 
-	frame := plugin.Frame(response)
-
+	qm := plugin.QueryModel{RawCql: selectQuery.Cql, Format: 0}
+	frame, err := plugin.Frame(response, qm)
 	res := &backend.DataResponse{Frames: data.Frames{frame}, Error: err}
 
 	experimental.CheckGoldenJSONResponse(t, "testdata", "connection", res, updateGoldenFile)
@@ -144,6 +148,27 @@ func TestQueryWithInts(t *testing.T) {
 // 	r := runQuery(t, "SELECT * FROM grafana.covid19 limit 10;")
 // 	experimental.CheckGoldenJSONResponse(t, "testdata", "covid19", r, updateGoldenFile)
 // }
+
+func TestQueryWithTimeSeries(t *testing.T) {
+	client := createRemoteClient(t)
+
+	// createTestTable(client)
+	_, err := insertTestData(client)
+	require.NoError(t, err)
+
+	// read from table
+	query := &pb.Query{
+		Cql: "SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1",
+	}
+	response, err := client.ExecuteQuery(query)
+	require.NoError(t, err)
+
+	qm := plugin.QueryModel{RawCql: query.Cql, Format: 0}
+	frameResponse, err := plugin.Frame(response, qm)
+	require.Nil(t, err)
+	require.NotNil(t, frameResponse)
+	experimental.CheckGoldenJSONFrame(t, "testdata", "timeseries", frameResponse, updateGoldenFile)
+}
 
 func runQuery(t *testing.T, cql string) *backend.DataResponse {
 	query := fmt.Sprintf(`{"rawCql": "%s;"}`, cql)
@@ -192,4 +217,23 @@ func createClient(t *testing.T) *client.StargateClient {
 	astraDbClient, err := client.NewStargateClientWithConn(conn)
 	require.NoError(t, err)
 	return astraDbClient
+}
+
+func createRemoteClient(t *testing.T) *client.StargateClient {
+	config := &tls.Config{
+		InsecureSkipVerify: false,
+	}
+
+	conn, err := grpc.Dial(astra_uri, grpc.WithTransportCredentials(credentials.NewTLS(config)),
+		grpc.WithBlock(),
+		grpc.WithPerRPCCredentials(
+			auth.NewStaticTokenProvider(token),
+		),
+	)
+
+	require.NoError(t, err)
+
+	stargateClient, err := client.NewStargateClientWithConn(conn)
+	require.NoError(t, err)
+	return stargateClient
 }

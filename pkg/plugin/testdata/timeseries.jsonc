@@ -1,0 +1,101 @@
+//  🌟 This was machine generated.  Do not edit. 🌟
+//  
+//  Frame[0] {
+//      "type": "timeseries-wide",
+//      "preferredVisualisationType": "graph",
+//      "executedQueryString": "SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1"
+//  }
+//  Name: response
+//  Dimensions: 4 Fields by 3 Rows
+//  +-----------------------------------+-------------------------+-------------------------+---------------------------+
+//  | Name: time                        | Name: bigintvalue       | Name: bigintvalue       | Name: bigintvalue         |
+//  | Labels:                           | Labels: textvalue=brave | Labels: textvalue=bravo | Labels: textvalue=brother |
+//  | Type: []time.Time                 | Type: []*int64          | Type: []*int64          | Type: []*int64            |
+//  +-----------------------------------+-------------------------+-------------------------+---------------------------+
+//  | 2021-09-07 16:40:31.123 +0000 UTC | null                    | null                    | 111                       |
+//  | 2021-10-07 16:40:31.123 +0000 UTC | 33                      | 2                       | 222                       |
+//  | 2021-11-07 16:40:31.123 +0000 UTC | 44                      | 5                       | 444                       |
+//  +-----------------------------------+-------------------------+-------------------------+---------------------------+
+//  
+//  
+//  🌟 This was machine generated.  Do not edit. 🌟
+{
+  "frames": [
+    {
+      "schema": {
+        "name": "response",
+        "meta": {
+          "type": "timeseries-wide",
+          "preferredVisualisationType": "graph",
+          "executedQueryString": "SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1"
+        },
+        "fields": [
+          {
+            "name": "time",
+            "type": "time",
+            "typeInfo": {
+              "frame": "time.Time"
+            }
+          },
+          {
+            "name": "bigintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "labels": {
+              "textvalue": "brave"
+            }
+          },
+          {
+            "name": "bigintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "labels": {
+              "textvalue": "bravo"
+            }
+          },
+          {
+            "name": "bigintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "labels": {
+              "textvalue": "brother"
+            }
+          }
+        ]
+      },
+      "data": {
+        "values": [
+          [
+            1631032831123,
+            1633624831123,
+            1636303231123
+          ],
+          [
+            null,
+            33,
+            44
+          ],
+          [
+            null,
+            2,
+            5
+          ],
+          [
+            111,
+            222,
+            444
+          ]
+        ]
+      }
+    }
+  ]
+}
