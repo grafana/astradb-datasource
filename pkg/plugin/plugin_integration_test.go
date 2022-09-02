@@ -153,7 +153,8 @@ func TestQueryWithTimeSeries(t *testing.T) {
 	client := createRemoteClient(t)
 
 	// createTestTable(client)
-	insertTestData(client)
+	_, err := insertTestData(client)
+	require.NoError(t, err)
 
 	// read from table
 	query := &pb.Query{
