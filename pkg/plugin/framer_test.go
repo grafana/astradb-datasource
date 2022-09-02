@@ -31,12 +31,12 @@ func TestFramer(t *testing.T) {
 
 	// read from table
 	query = &pb.Query{
-		Cql: "SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1",
+		Cql: "SELECT * FROM grafana.tempTable1",
 	}
 	response, err = stargateClient.ExecuteQuery(query)
 	require.NoError(t, err)
 
-	qm := plugin.QueryModel{RawCql: "foo", Format: 0}
+	qm := plugin.QueryModel{RawCql: query.Cql, Format: 0}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)
