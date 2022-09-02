@@ -2,10 +2,13 @@ package plugin
 
 import (
 	"fmt"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
+	"github.com/grafana/grafana-plugin-sdk-go/experimental"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
@@ -28,11 +31,11 @@ const (
 	FormatOptionLogs
 )
 
-func Frame(res *pb.Response, qm QueryModel) *data.Frame {
+func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 
 	result := res.GetResultSet()
 	if result == nil {
-		return data.NewFrame("response", nil)
+		return data.NewFrame("response", nil), nil
 	}
 
 	columns, fields := getColumns(result)
@@ -65,24 +68,44 @@ func Frame(res *pb.Response, qm QueryModel) *data.Frame {
 
 	if qm.Format == FormatOptionTable {
 		frame.Meta.PreferredVisualization = data.VisTypeTable
-		return frame
+		return frame, nil
 	}
 
 	if qm.Format == FormatOptionLogs {
 		frame.Meta.PreferredVisualization = data.VisTypeLogs
-		return frame
+		return frame, nil
 	}
 
 	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
 		fillMode := &data.FillMissing{Mode: data.FillModePrevious}
+
+		if shouldSort(qm.RawCql) {
+			sortByTime(frame)
+		}
+
 		frame, err := data.LongToWide(frame, fillMode)
 		if err != nil {
-			return nil
+			return nil, err
 		}
-		return frame
+		return frame, nil
 	}
 
-	return frame
+	return frame, nil
+}
+
+func shouldSort(cql string) bool {
+	lower := strings.ToLower(cql)
+	return !strings.Contains(lower, "order by")
+}
+
+func sortByTime(frame *data.Frame) {
+	for _, f := range frame.Fields {
+		if f.Name == "time" {
+			sorter := experimental.NewFrameSorter(frame, f)
+			sort.Sort(sorter)
+			return
+		}
+	}
 }
 
 func getColumns(result *pb.ResultSet) ([]column, []*data.Field) {

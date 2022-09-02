@@ -82,7 +82,11 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 
 	// nolint:staticcheck,ineffassign
 	queryResponse, err := stargateClient.ExecuteQuery(selectQuery)
-	frame := Frame(queryResponse, qm)
+	frame, err := Frame(queryResponse, qm)
+	if err != nil {
+		response.Error = err
+		return response
+	}
 	response.Frames = append(response.Frames, frame)
 
 	return response
