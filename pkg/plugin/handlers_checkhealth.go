@@ -29,7 +29,7 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
 			Message: err.Error(),
-		}, err
+		}, nil
 	}
 
 	c, err := client.NewStargateClientWithConn(d.conn)
@@ -37,7 +37,7 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
 			Message: err.Error(),
-		}, err
+		}, nil
 	}
 
 	_, err = c.ExecuteQuery(&pb.Query{
@@ -47,7 +47,7 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
 			Message: err.Error(),
-		}, err
+		}, nil
 	}
 
 	return &backend.CheckHealthResult{
