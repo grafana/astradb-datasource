@@ -59,7 +59,7 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 
 type QueryModel struct {
 	RawCql    string
-	Format    FormatQueryOption
+	Format    sqlds.FormatQueryOption
 	ActualCql string
 }
 

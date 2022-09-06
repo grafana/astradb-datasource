@@ -10,6 +10,7 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
+	"github.com/grafana/sqlds/v2"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
@@ -19,18 +20,6 @@ type column struct {
 	converter data.FieldConverter
 	kind      string
 }
-
-// FormatQueryOption defines how the user has chosen to represent the data
-type FormatQueryOption uint32
-
-const (
-	// FormatOptionTimeSeries formats the query results as a timeseries using "WideToLong"
-	FormatOptionTimeSeries FormatQueryOption = iota
-	// FormatOptionTable formats the query results as a table using "LongToWide"
-	FormatOptionTable
-	// FormatOptionLogs sets the preferred visualization to logs
-	FormatOptionLogs
-)
 
 func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 
@@ -43,18 +32,16 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 
 	frame := data.NewFrame("response", fields...)
 
-	for _, row := range result.Rows {
+	var notices []data.Notice
 
+	for _, row := range result.Rows {
 		var vals []any
-		var errors []error
 
 		for i, col := range columns {
 			raw := row.Values[i]
 			val, err := getValue(col, raw)
 			if err != nil {
-				fmt.Println(err.Error())
-				// nolint:staticcheck
-				errors = append(errors)
+				notices = append(notices, data.Notice{Severity: data.NoticeSeverityWarning, Text: err.Error()})
 			}
 			vals = append(vals, val)
 		}
@@ -65,14 +52,15 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 	frame.Meta = &data.FrameMeta{
 		ExecutedQueryString:    qm.ActualCql,
 		PreferredVisualization: data.VisTypeGraph,
+		Notices:                notices,
 	}
 
-	if qm.Format == FormatOptionTable {
+	if qm.Format == sqlds.FormatOptionTable {
 		frame.Meta.PreferredVisualization = data.VisTypeTable
 		return frame, nil
 	}
 
-	if qm.Format == FormatOptionLogs {
+	if qm.Format == sqlds.FormatOptionLogs {
 		frame.Meta.PreferredVisualization = data.VisTypeLogs
 		return frame, nil
 	}
