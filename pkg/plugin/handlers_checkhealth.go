@@ -5,9 +5,10 @@ import (
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
+	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
 
-func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
+func (d *AstraDatasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 
 	if d.settings.URI == "" {
 		return &backend.CheckHealthResult{
@@ -33,7 +34,17 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 		message = err.Error()
 	}
 	if err == nil {
-		_, err := client.NewStargateClientWithConn(d.conn)
+		c, err := client.NewStargateClientWithConn(d.conn)
+		if err != nil {
+			status = backend.HealthStatusError
+			message = err.Error()
+		}
+
+		cql := "select keyspace_name from system_schema.keyspaces;"
+		selectQuery := &pb.Query{
+			Cql: cql,
+		}
+		_, err = c.ExecuteQuery(selectQuery)
 		if err != nil {
 			status = backend.HealthStatusError
 			message = err.Error()
