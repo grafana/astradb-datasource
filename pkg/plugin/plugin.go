@@ -9,6 +9,7 @@ import (
 	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
+	sqlds "github.com/grafana/sqlds/v2"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
@@ -33,9 +34,7 @@ func NewDatasource(s backend.DataSourceInstanceSettings) (instancemgmt.Instance,
 
 type AstraDatasource struct {
 	settings models.Settings
-	// nolint:unused
-	client *client.StargateClient
-	conn   *grpc.ClientConn
+	conn     *grpc.ClientConn
 }
 
 func (d *AstraDatasource) Dispose() {
@@ -44,8 +43,10 @@ func (d *AstraDatasource) Dispose() {
 }
 
 func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
-	//nolint:errcheck
-	d.connect()
+	err := d.connect()
+	if err != nil {
+		return nil, err
+	}
 
 	response := backend.NewQueryDataResponse()
 	for _, q := range req.Queries {
@@ -57,15 +58,16 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 }
 
 type QueryModel struct {
-	RawCql string
-	Format FormatQueryOption
+	RawCql    string
+	Format    FormatQueryOption
+	ActualCql string
 }
 
 func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	response := backend.DataResponse{}
 
-	var qm QueryModel
-	response.Error = json.Unmarshal(query.JSON, &qm)
+	qm := &QueryModel{}
+	response.Error = json.Unmarshal(query.JSON, qm)
 	if response.Error != nil {
 		return response
 	}
@@ -76,13 +78,27 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 		return response
 	}
 
-	selectQuery := &pb.Query{
-		Cql: qm.RawCql,
+	queryToEvaluate := &sqlds.Query{
+		RawSQL:    qm.RawCql,
+		TimeRange: query.TimeRange,
+		Format:    sqlds.FormatQueryOption(qm.Format),
+	}
+	qm.ActualCql, err = sqlds.Interpolate(BaseDriver{}, queryToEvaluate)
+	if err != nil {
+		response.Error = err
+		return response
 	}
 
-	// nolint:staticcheck,ineffassign
+	selectQuery := &pb.Query{
+		Cql: qm.ActualCql,
+	}
+
 	queryResponse, err := stargateClient.ExecuteQuery(selectQuery)
-	frame, err := Frame(queryResponse, qm)
+	if err != nil {
+		response.Error = err
+		return response
+	}
+	frame, err := Frame(queryResponse, *qm)
 	if err != nil {
 		response.Error = err
 		return response

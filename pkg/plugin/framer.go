@@ -45,7 +45,7 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 
 	for _, row := range result.Rows {
 
-		var vals []interface{}
+		var vals []any
 		var errors []error
 
 		for i, col := range columns {
@@ -63,7 +63,7 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 	}
 
 	frame.Meta = &data.FrameMeta{
-		ExecutedQueryString:    qm.RawCql,
+		ExecutedQueryString:    qm.ActualCql,
 		PreferredVisualization: data.VisTypeGraph,
 	}
 
@@ -134,16 +134,16 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 		return column{
 			field: data.NewField(col.Name, nil, []*string{}),
 			converter: data.FieldConverter{
-				Converter: func(v interface{}) (interface{}, error) {
+				Converter: func(v any) (any, error) {
 					v1, err := translateType(v.(*pb.Value), col.Type)
 					if err != nil {
 						return nil, err
 					}
-					mapInterface, ok := v1.(map[interface{}]interface{})
+					mapInterface, ok := v1.(map[any]any)
 					if !ok {
 						return nil, nil
 					}
-					mapString := make(map[string]interface{})
+					mapString := make(map[string]any)
 					for key, value := range mapInterface {
 						strKey := fmt.Sprintf("%v", key)
 						strValue := value
@@ -162,7 +162,7 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 		return column{
 			field: data.NewField(col.Name, nil, []*string{}),
 			converter: data.FieldConverter{
-				Converter: func(v interface{}) (interface{}, error) {
+				Converter: func(v any) (any, error) {
 					v1, err := translateType(v.(*pb.Value), col.Type)
 					if err != nil {
 						return nil, err
@@ -219,7 +219,7 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		return newColumn[time.Time](col.Name, config, TimestampConverter, v.String())
 	case pb.TypeSpec_INET:
 		return newColumn[string](col.Name, config, data.FieldConverter{
-			Converter: func(v interface{}) (interface{}, error) {
+			Converter: func(v any) (any, error) {
 				if v1, ok := v.(*pb.Value); ok && v1 != nil {
 					if val := v1.GetInet(); val != nil {
 						s := fmt.Sprintf("%v", val.GetValue())
@@ -231,7 +231,7 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		}, v.String())
 	case pb.TypeSpec_TIMEUUID:
 		return newColumn[string](col.Name, config, data.FieldConverter{
-			Converter: func(v interface{}) (interface{}, error) {
+			Converter: func(v any) (any, error) {
 				if v1, ok := v.(*pb.Value); ok {
 					if u, err := client.ToTimeUUID(v1); err == nil && u != nil {
 						val := u.String()
@@ -243,7 +243,7 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		}, v.String())
 	case pb.TypeSpec_ASCII:
 		return newColumn[string](col.Name, config, data.FieldConverter{
-			Converter: func(v interface{}) (interface{}, error) {
+			Converter: func(v any) (any, error) {
 				if v1, ok := v.(*pb.Value); ok {
 					if u, err := client.ToString(v1); err == nil {
 						return &u, nil
@@ -254,7 +254,7 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 		}, v.String())
 	case pb.TypeSpec_UUID:
 		return newColumn[string](col.Name, config, data.FieldConverter{
-			Converter: func(v interface{}) (interface{}, error) {
+			Converter: func(v any) (any, error) {
 				if v1, ok := v.(*pb.Value); ok {
 					if u, err := client.ToUUID(v1); err == nil && u != nil {
 						val := u.String()
