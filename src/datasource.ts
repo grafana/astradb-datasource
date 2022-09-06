@@ -26,6 +26,7 @@ import { CompletionItemKind, LanguageCompletionProvider } from '@grafana/experim
 import { fetchColumns, fetchTables, getFunctions, getSqlCompletionProvider } from './components/sqlCompletionProvider';
 
 export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings> {
+  annotations = {};
   db: DB;
   dataset?: string;
 
