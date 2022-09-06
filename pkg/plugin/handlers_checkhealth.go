@@ -18,8 +18,7 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 		return newHealthResult(backend.HealthStatusError, "Invalid AstraDB Token")
 	}
 
-	err := d.connect()
-	if err != nil {
+	if err := d.connect(); err != nil {
 		return newHealthResult(backend.HealthStatusError, err.Error())
 	}
 
@@ -28,10 +27,9 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 		return newHealthResult(backend.HealthStatusError, err.Error())
 	}
 
-	_, err = c.ExecuteQuery(&pb.Query{
+	if _, err = c.ExecuteQuery(&pb.Query{
 		Cql: "select keyspace_name from system_schema.keyspaces;",
-	})
-	if err != nil {
+	}); err != nil {
 		return newHealthResult(backend.HealthStatusError, err.Error())
 	}
 
