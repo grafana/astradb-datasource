@@ -5,7 +5,7 @@ import { AstraSettings, SecureSettings } from '../types';
 
 const { SecretFormField, FormField } = LegacyForms;
 
-interface Props extends DataSourcePluginOptionsEditorProps<AstraSettings> {}
+interface Props extends DataSourcePluginOptionsEditorProps<AstraSettings> { }
 
 export const ConfigEditor = (props: Props) => {
   const onUriChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,11 +34,11 @@ export const ConfigEditor = (props: Props) => {
       ...options,
       secureJsonFields: {
         ...options.secureJsonFields,
-        apiKey: false,
+        token: false,
       },
       secureJsonData: {
         ...options.secureJsonData,
-        apiKey: '',
+        token: '',
       },
     });
   };
