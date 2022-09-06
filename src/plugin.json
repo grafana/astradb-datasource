@@ -7,19 +7,28 @@
   "backend": true,
   "annotations": true,
   "executable": "gpx_astradb",
+  "category": "sql",
   "info": {
     "description": "AstraDB datasource plugin for Grafana",
     "author": {
       "name": "Grafana Labs"
     },
-    "keywords": ["astra"],
+    "keywords": [
+      "astra"
+    ],
     "logos": {
       "small": "img/astra-logo.svg",
       "large": "img/astra-logo.svg"
     },
     "links": [
-      { "name": "Website", "url": "https://github.com/grafana/grafana-starter-datasource-backend" },
-      { "name": "License", "url": "https://github.com/grafana/grafana-starter-datasource-backend/blob/master/LICENSE" }
+      {
+        "name": "Website",
+        "url": "https://github.com/grafana/grafana-starter-datasource-backend"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/grafana/grafana-starter-datasource-backend/blob/master/LICENSE"
+      }
     ],
     "screenshots": [],
     "version": "%VERSION%",
