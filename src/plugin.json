@@ -31,7 +31,7 @@
       },
       {
         "name": "License",
-        "url": "https://github.com/grafana/astradb-datasource/blob/master/LICENSE"
+        "url": "https://github.com/grafana/astradb-datasource/blob/main/LICENSE"
       }
     ],
     "screenshots": [],
