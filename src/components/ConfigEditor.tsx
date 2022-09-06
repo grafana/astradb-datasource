@@ -34,11 +34,11 @@ export const ConfigEditor = (props: Props) => {
       ...options,
       secureJsonFields: {
         ...options.secureJsonFields,
-        apiKey: false,
+        token: false,
       },
       secureJsonData: {
         ...options.secureJsonData,
-        apiKey: '',
+        token: '',
       },
     });
   };
