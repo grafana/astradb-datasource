@@ -8,7 +8,7 @@ import (
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
 
-func (d *AstraDatasource) CheckHealth(ctx context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
+func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 
 	if d.settings.URI == "" {
 		return &backend.CheckHealthResult{
