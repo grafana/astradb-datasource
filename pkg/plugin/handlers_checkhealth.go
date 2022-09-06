@@ -40,12 +40,14 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 			message = err.Error()
 		}
 
-		_, err = c.ExecuteQuery(&pb.Query{
-			Cql: "select keyspace_name from system_schema.keyspaces;",
-		})
-		if err != nil {
-			status = backend.HealthStatusError
-			message = err.Error()
+		if err == nil {
+			_, err = c.ExecuteQuery(&pb.Query{
+				Cql: "select keyspace_name from system_schema.keyspaces;",
+			})
+			if err != nil {
+				status = backend.HealthStatusError
+				message = err.Error()
+			}
 		}
 	}
 
