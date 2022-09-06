@@ -11,48 +11,36 @@ import (
 func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 
 	if d.settings.URI == "" {
-		return &backend.CheckHealthResult{
-			Status:  backend.HealthStatusError,
-			Message: "Invalid AstraDB URL",
-		}, nil
+		return newHealthResult(backend.HealthStatusError, "Invalid AstraDB URL")
 	}
 
 	if d.settings.Token == "" {
-		return &backend.CheckHealthResult{
-			Status:  backend.HealthStatusError,
-			Message: "Invalid AstraDB Token",
-		}, nil
+		return newHealthResult(backend.HealthStatusError, "Invalid AstraDB Token")
 	}
 
 	err := d.connect()
 	if err != nil {
-		return &backend.CheckHealthResult{
-			Status:  backend.HealthStatusError,
-			Message: err.Error(),
-		}, nil
+		return newHealthResult(backend.HealthStatusError, err.Error())
 	}
 
 	c, err := client.NewStargateClientWithConn(d.conn)
 	if err != nil {
-		return &backend.CheckHealthResult{
-			Status:  backend.HealthStatusError,
-			Message: err.Error(),
-		}, nil
+		return newHealthResult(backend.HealthStatusError, err.Error())
 	}
 
 	_, err = c.ExecuteQuery(&pb.Query{
 		Cql: "select keyspace_name from system_schema.keyspaces;",
 	})
 	if err != nil {
-		return &backend.CheckHealthResult{
-			Status:  backend.HealthStatusError,
-			Message: err.Error(),
-		}, nil
+		return newHealthResult(backend.HealthStatusError, err.Error())
 	}
 
-	return &backend.CheckHealthResult{
-		Status:  backend.HealthStatusOk,
-		Message: "Data source is working",
-	}, nil
+	return newHealthResult(backend.HealthStatusOk, "Data source is working")
+}
 
+func newHealthResult(status backend.HealthStatus, message string) (*backend.CheckHealthResult, error) {
+	return &backend.CheckHealthResult{
+		Status:  status,
+		Message: message,
+	}, nil
 }
