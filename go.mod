@@ -64,6 +64,7 @@ require (
 	github.com/google/flatbuffers v2.0.0+incompatible // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/grafana/sqlds/v2 v2.3.8
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/hashicorp/go-hclog v0.14.1 // indirect

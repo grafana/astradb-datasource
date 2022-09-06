@@ -1,70 +1,82 @@
-# Grafana Data Source Backend Plugin Template
+# Astra DB data source plugin for Grafana
 
-[![Build](https://github.com/grafana/grafana-starter-datasource-backend/workflows/CI/badge.svg)](https://github.com/grafana/grafana-datasource-backend/actions?query=workflow%3A%22CI%22)
+The Astra DB plugin allows a direct connection to Astra DB to query and visualize data in Grafana.
 
-This template is a starting point for building Grafana Data Source Backend Plugins
+This plugin provides a CQL editor to format and color code your CQL statements, along with auto complete when entering keyspaces, tables and fields.
 
-## What is Grafana Data Source Backend Plugin?
+# Beta
 
-Grafana supports a wide range of data sources, including Prometheus, MySQL, and even Datadog. There’s a good chance you can already visualize metrics from the systems you have set up. In some cases, though, you already have an in-house metrics solution that you’d like to add to your Grafana dashboards. Grafana Data Source Plugins enables integrating such solutions with Grafana.
+This plugin is currently in Beta development.  Breaking changes could occur but are not expected.
 
-For more information about backend plugins, refer to the documentation on [Backend plugins](https://grafana.com/docs/grafana/latest/developers/plugins/backend/).
+## Installation
 
-## Getting started
+For detailed instructions on how to install the plugin on Grafana Cloud or
+locally, please checkout the [Plugin installation docs](https://grafana.com/docs/grafana/latest/plugins/installation/).
 
-A data source backend plugin consists of both frontend and backend components.
+### Manual configuration
 
-### Frontend
+Once the plugin is installed on your Grafana instance, follow [these
+instructions](https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/)
+to add a new Astra DB data source, and enter configuration options.
 
-1. Install dependencies
+### With a configuration file
 
-   ```bash
-   yarn install
-   ```
+It is possible to configure data sources using configuration files with
+Grafana’s provisioning system. To read about how it works, including all the
+settings that you can set for this data source, refer to [Provisioning Grafana
+data sources](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
-2. Build plugin in development mode or run in watch mode
+Here are some provisioning examples for this data source using basic authentication:
 
-   ```bash
-   yarn dev
-   ```
+```yaml
+apiVersion: 1
+datasources:
+  - name: AstraDB
+    type: grafana-astradb-datasource
+    jsonData:
+      uri: [datacenter_id]-[region].apps.astra.datastax.com:443
+    secureJsonData:
+      token: token
+```
 
-   or
+### Time series
 
-   ```bash
-   yarn watch
-   ```
+Time series visualization options are selectable after adding a `timestamp`
+field type to your query. This field will be used as the timestamp. You can
+select time series visualizations using the visualization options. Grafana
+interprets timestamp rows without explicit time zone as UTC.
 
-3. Build plugin in production mode
+#### Multi-line time series
 
-   ```bash
-   yarn build
-   ```
+To create multi-line time series, the query must return at least 3 fields in
+the following order:
 
-### Backend
+- field 1: `timestamp` field with an alias of `time`
+- field 2: value to group by
+- field 3+: the metric values
 
-1. Update [Grafana plugin SDK for Go](https://grafana.com/docs/grafana/latest/developers/plugins/backend/grafana-plugin-sdk-for-go/) dependency to the latest minor version:
+For example:
 
-   ```bash
-   go get -u github.com/grafana/grafana-plugin-sdk-go
-   go mod tidy
-   ```
+```sql
+SELECT time_field AS time, metric_name, avg(metric_value) AS avg_metric_value
+FROM keyspace.table
+GROUP BY metric_name, time_field
+ORDER BY time_field
+```
 
-2. Build backend plugin binaries for Linux, Windows and Darwin:
+### Templates and variables
 
-   ```bash
-   mage -v
-   ```
+To add a new query variable, refer to [Add a query
+variable](https://grafana.com/docs/grafana/latest/variables/variable-types/add-query-variable/).
 
-3. List all available Mage targets for additional commands:
-
-   ```bash
-   mage -l
-   ```
+After creating a variable, you can use it in your CQL queries by using
+[Variable syntax](https://grafana.com/docs/grafana/latest/variables/syntax/).
+For more information about variables, refer to [Templates and
+variables](https://grafana.com/docs/grafana/latest/variables/).
 
 ## Learn more
 
-- [Build a data source backend plugin tutorial](https://grafana.com/tutorials/build-a-data-source-backend-plugin)
-- [Grafana documentation](https://grafana.com/docs/)
-- [Grafana Tutorials](https://grafana.com/tutorials/) - Grafana Tutorials are step-by-step guides that help you make the most of Grafana
-- [Grafana UI Library](https://developers.grafana.com/ui) - UI components to help you build interfaces using Grafana Design System
-- [Grafana plugin SDK for Go](https://grafana.com/docs/grafana/latest/developers/plugins/backend/grafana-plugin-sdk-for-go/)
+- Add [Annotations](https://grafana.com/docs/grafana/latest/dashboards/annotations/).
+- Configure and use [Templates and variables](https://grafana.com/docs/grafana/latest/variables/).
+- Add [Transformations](https://grafana.com/docs/grafana/latest/panels/transformations/).
+- Set up alerting; refer to [Alerts overview](https://grafana.com/docs/grafana/latest/alerting/).
