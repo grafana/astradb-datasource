@@ -24,36 +24,35 @@ func (d *AstraDatasource) CheckHealth(_ context.Context, req *backend.CheckHealt
 		}, nil
 	}
 
-	var status = backend.HealthStatusOk
-	var message = "Data source is working"
-
 	err := d.connect()
-
 	if err != nil {
-		status = backend.HealthStatusError
-		message = err.Error()
+		return &backend.CheckHealthResult{
+			Status:  backend.HealthStatusError,
+			Message: err.Error(),
+		}, err
 	}
-	if err == nil {
-		c, err := client.NewStargateClientWithConn(d.conn)
-		if err != nil {
-			status = backend.HealthStatusError
-			message = err.Error()
-		}
 
-		if err == nil {
-			_, err = c.ExecuteQuery(&pb.Query{
-				Cql: "select keyspace_name from system_schema.keyspaces;",
-			})
-			if err != nil {
-				status = backend.HealthStatusError
-				message = err.Error()
-			}
-		}
+	c, err := client.NewStargateClientWithConn(d.conn)
+	if err != nil {
+		return &backend.CheckHealthResult{
+			Status:  backend.HealthStatusError,
+			Message: err.Error(),
+		}, err
+	}
+
+	_, err = c.ExecuteQuery(&pb.Query{
+		Cql: "select keyspace_name from system_schema.keyspaces;",
+	})
+	if err != nil {
+		return &backend.CheckHealthResult{
+			Status:  backend.HealthStatusError,
+			Message: err.Error(),
+		}, err
 	}
 
 	return &backend.CheckHealthResult{
-		Status:  status,
-		Message: message,
+		Status:  backend.HealthStatusOk,
+		Message: "Data source is working",
 	}, nil
 
 }
