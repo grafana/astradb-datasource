@@ -13,6 +13,13 @@ This plugin is currently in Beta development.  Breaking changes could occur but 
 For detailed instructions on how to install the plugin on Grafana Cloud or
 locally, please checkout the [Plugin installation docs](https://grafana.com/docs/grafana/latest/plugins/installation/).
 
+## Connecting
+
+Provide an Astra DB URI in the following format: $ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443
+Provide an Astra DB token in the following format: AstraCS:xxxxx
+
+See [Manage Application Tokens] (https://docs.datastax.com/en/astra-serverless/docs/manage/org/managing-org.html#_manage_application_tokens) for more on authentication.
+
 ### Manual configuration
 
 Once the plugin is installed on your Grafana instance, follow [these
@@ -34,9 +41,9 @@ datasources:
   - name: AstraDB
     type: grafana-astradb-datasource
     jsonData:
-      uri: [datacenter_id]-[region].apps.astra.datastax.com:443
+      uri: $ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443
     secureJsonData:
-      token: token
+      token: AstraCS:xxxxx
 ```
 
 ### Time series
