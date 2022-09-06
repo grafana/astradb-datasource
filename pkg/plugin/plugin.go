@@ -83,7 +83,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 		TimeRange: query.TimeRange,
 		Format:    sqlds.FormatQueryOption(qm.Format),
 	}
-	qm.ActualCql, err = sqlds.Interpolate(AstraDriver{}, queryToEvaluate)
+	qm.ActualCql, err = sqlds.Interpolate(BaseDriver{}, queryToEvaluate)
 	if err != nil {
 		response.Error = err
 		return response
