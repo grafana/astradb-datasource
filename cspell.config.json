@@ -47,6 +47,12 @@
     "sugg",
     "RAQB",
     "datetime",
-    "raqb"
+    "raqb",
+    "sqlutil",
+    "sqlds",
+    "datacenter",
+    "timestampvalue",
+    "bigintvalue",
+    "textvalue"
   ]
 }
