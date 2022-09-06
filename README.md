@@ -64,6 +64,22 @@ GROUP BY metric_name, time_field
 ORDER BY time_field
 ```
 
+### Macros
+
+To allowing injection of date range filters, the query can contain macros.
+
+Here is an example of a query with a macros that will use the dashboard time range:
+```sql
+SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1
+where timestampvalue $__timeFrom and timestampvalue $__timeTo Allow Filtering
+```
+
+The query is converted to:
+```sql
+SELECT timestampvalue as time, bigintvalue, textvalue FROM grafana.tempTable1
+where timestampvalue  >= '2021-07-07T12:04:16Z' and timestampvalue  <= '2021-11-08T21:26:04Z' Allow Filtering
+```
+
 ### Templates and variables
 
 To add a new query variable, refer to [Add a query
