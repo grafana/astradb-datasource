@@ -168,30 +168,30 @@ func toInt64[V Int](val V) *int64 {
 	return &v
 }
 
-type Number interface {
-	*int | *int64 | *uint64 | *float64 | *time.Time
+type Nullable interface {
+	*int | *int64 | *uint64 | *float64 | *time.Time | *string
 }
 
-func toNullable[T Number](val *pb.Value, f func(val *pb.Value) (T, error)) (T, error) {
+func toNullable[T Nullable](val *pb.Value, f func(val *pb.Value) (T, error)) (T, error) {
 	if val == nil {
 		return nil, nil
 	}
 	return f(val)
 }
 
-func anyToNullable[T Number](val any, f func(val any) (T, error)) (T, error) {
+func anyToNullable[T Nullable](val any, f func(val any) (T, error)) (T, error) {
 	if val == nil {
 		return nil, nil
 	}
 	return f(val)
 }
 
-func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
+func translateType(value *pb.Value, spec *pb.TypeSpec) (any, error) {
 	switch spec.GetSpec().(type) {
 	case *pb.TypeSpec_Basic_:
 		return translateBasicType(value, spec)
 	case *pb.TypeSpec_Map_:
-		elements := make(map[interface{}]interface{})
+		elements := make(map[any]any)
 
 		for i := 0; i < len(value.GetCollection().Elements)-1; i += 2 {
 			key, err := translateType(value.GetCollection().Elements[i], spec.GetMap().Key)
@@ -206,7 +206,7 @@ func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
 		}
 		return elements, nil
 	case *pb.TypeSpec_List_:
-		var elements []interface{}
+		var elements []any
 
 		for i := range value.GetCollection().Elements {
 			element, err := translateType(value.GetCollection().Elements[i], spec.GetList().Element)
@@ -218,7 +218,7 @@ func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
 
 		return elements, nil
 	case *pb.TypeSpec_Set_:
-		var elements []interface{}
+		var elements []any
 		for _, element := range value.GetCollection().Elements {
 			element, err := translateType(element, spec.GetSet().Element)
 			if err != nil {
@@ -230,7 +230,7 @@ func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
 
 		return elements, nil
 	case *pb.TypeSpec_Udt_:
-		fields := map[string]interface{}{}
+		fields := map[string]any{}
 		for key, val := range value.GetUdt().Fields {
 			element, err := translateType(val, spec.GetUdt().Fields[key])
 			if err != nil {
@@ -242,7 +242,7 @@ func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
 
 		return fields, nil
 	case *pb.TypeSpec_Tuple_:
-		var elements []interface{}
+		var elements []any
 		numElements := len(spec.GetTuple().Elements)
 		for i := 0; i <= len(value.GetCollection().Elements)-numElements; i++ {
 			for j, typeSpec := range spec.GetTuple().Elements {
@@ -260,7 +260,7 @@ func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
 	return nil, errors.New("unsupported type")
 }
 
-func translateBasicType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
+func translateBasicType(value *pb.Value, spec *pb.TypeSpec) (any, error) {
 	switch spec.GetBasic() {
 	case pb.TypeSpec_CUSTOM:
 		return client.ToBlob(value)

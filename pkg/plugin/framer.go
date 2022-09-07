@@ -146,26 +146,27 @@ func NewColumn(col *pb.ColumnSpec, name string, alias string, kind string, label
 				},
 			},
 		}
-	case *pb.TypeSpec_List_, *pb.TypeSpec_Set_, *pb.TypeSpec_Tuple_:
+	case *pb.TypeSpec_List_, *pb.TypeSpec_Set_, *pb.TypeSpec_Tuple_, *pb.TypeSpec_Udt_:
 		return column{
 			field: data.NewField(col.Name, nil, []*string{}),
 			converter: data.FieldConverter{
 				Converter: func(v any) (any, error) {
-					v1, err := translateType(v.(*pb.Value), col.Type)
-					if err != nil {
-						return nil, err
+					convert := func(val *pb.Value) (*string, error) {
+						v1, err := translateType(val, col.Type)
+						if err != nil {
+							return nil, err
+						}
+						b, err := json.Marshal(v1)
+						if err != nil {
+							return nil, err
+						}
+						str := string(b)
+						return &str, nil
 					}
-					b, err := json.Marshal(v1)
-					if err != nil {
-						return nil, err
-					}
-					str := string(b)
-					return &str, err
+					return toNullable(v.(*pb.Value), convert)
 				},
 			},
 		}
-	case *pb.TypeSpec_Udt_:
-		// TODO
 	}
 
 	field := data.NewField(name, labels, []*string{})
