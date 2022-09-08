@@ -192,69 +192,80 @@ func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
 		return translateBasicType(value, spec)
 	case *pb.TypeSpec_Map_:
 		elements := make(map[interface{}]interface{})
-
-		for i := 0; i < len(value.GetCollection().Elements)-1; i += 2 {
-			key, err := translateType(value.GetCollection().Elements[i], spec.GetMap().Key)
-			if err != nil {
-				return nil, err
+		if value != nil {
+			if c := value.GetCollection(); c != nil {
+				for i := 0; i < len(c.Elements)-1; i += 2 {
+					key, err := translateType(c.Elements[i], spec.GetMap().Key)
+					if err != nil {
+						return nil, err
+					}
+					mapVal, err := translateType(c.Elements[i+1], spec.GetMap().Value)
+					if err != nil {
+						return nil, err
+					}
+					elements[key] = mapVal
+				}
 			}
-			mapVal, err := translateType(value.GetCollection().Elements[i+1], spec.GetMap().Value)
-			if err != nil {
-				return nil, err
-			}
-			elements[key] = mapVal
 		}
 		return elements, nil
 	case *pb.TypeSpec_List_:
 		var elements []interface{}
-
-		for i := range value.GetCollection().Elements {
-			element, err := translateType(value.GetCollection().Elements[i], spec.GetList().Element)
-			if err != nil {
-				return nil, err
+		if value != nil {
+			if c := value.GetCollection(); c != nil {
+				for i := range c.Elements {
+					element, err := translateType(c.Elements[i], spec.GetList().Element)
+					if err != nil {
+						return nil, err
+					}
+					elements = append(elements, element)
+				}
 			}
-			elements = append(elements, element)
 		}
-
 		return elements, nil
 	case *pb.TypeSpec_Set_:
 		var elements []interface{}
-		for _, element := range value.GetCollection().Elements {
-			element, err := translateType(element, spec.GetSet().Element)
-			if err != nil {
-				return nil, err
+		if value != nil {
+			if c := value.GetCollection(); c != nil {
+				for _, element := range c.Elements {
+					element, err := translateType(element, spec.GetSet().Element)
+					if err != nil {
+						return nil, err
+					}
+					elements = append(elements, element)
+				}
 			}
-
-			elements = append(elements, element)
 		}
-
 		return elements, nil
 	case *pb.TypeSpec_Udt_:
 		fields := map[string]interface{}{}
-		for key, val := range value.GetUdt().Fields {
-			element, err := translateType(val, spec.GetUdt().Fields[key])
-			if err != nil {
-				return nil, err
+		if value != nil {
+			if c := value.GetUdt(); c != nil {
+				for key, val := range c.Fields {
+					element, err := translateType(val, spec.GetUdt().Fields[key])
+					if err != nil {
+						return nil, err
+					}
+					fields[key] = element
+				}
 			}
-
-			fields[key] = element
 		}
-
 		return fields, nil
 	case *pb.TypeSpec_Tuple_:
 		var elements []interface{}
 		numElements := len(spec.GetTuple().Elements)
-		for i := 0; i <= len(value.GetCollection().Elements)-numElements; i++ {
-			for j, typeSpec := range spec.GetTuple().Elements {
-				element, err := translateType(value.GetCollection().Elements[i+j], typeSpec)
-				if err != nil {
-					return nil, err
+		if value != nil {
+			if c := value.GetCollection(); c != nil {
+				for i := 0; i <= len(c.Elements)-numElements; i++ {
+					for j, typeSpec := range spec.GetTuple().Elements {
+						element, err := translateType(c.Elements[i+j], typeSpec)
+						if err != nil {
+							return nil, err
+						}
+						elements = append(elements, element)
+					}
 				}
-
-				elements = append(elements, element)
 			}
 		}
-
 		return elements, nil
 	}
 	return nil, errors.New("unsupported type")

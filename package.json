@@ -1,6 +1,6 @@
 {
   "name": "astradb-datasource",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Grafana Data Source Backend Plugin for Astra DB",
   "scripts": {
     "spellcheck": "cspell -c cspell.config.json \"**/*.{ts,tsx,js,go,md,mdx,yml,yaml,json,scss,css}\"",
