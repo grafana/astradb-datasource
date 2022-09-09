@@ -4,7 +4,7 @@ The Astra DB plugin allows a direct connection to Astra DB to query and visualiz
 
 This plugin provides a CQL editor to format and color code your CQL statements, along with auto complete when entering keyspaces, tables and fields.
 
-# Beta
+## Beta
 
 This plugin is currently in Beta development. Breaking changes could occur but are not expected.
 
@@ -18,7 +18,7 @@ locally, please checkout the [Plugin installation docs](https://grafana.com/docs
 Provide an Astra DB URI in the following format: $ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443
 Provide an Astra DB token in the following format: AstraCS:xxxxx
 
-See [Manage Application Tokens] (https://docs.datastax.com/en/astra-serverless/docs/manage/org/managing-org.html#_manage_application_tokens) for more on authentication.
+See [Manage Application Tokens](https://docs.datastax.com/en/astra-serverless/docs/manage/org/managing-org.html#_manage_application_tokens) for more on authentication.
 
 ### Manual configuration
 

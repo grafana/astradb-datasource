@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/docker/go-connections/nat"
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/sqlds/v2"
@@ -128,7 +129,7 @@ func TestConnect(t *testing.T) {
 	response, err := stargateClient.ExecuteQuery(selectQuery)
 	assert.Nil(t, err)
 	tsFormat := sqlds.FormatOptionTimeSeries
-	qm := plugin.QueryModel{RawCql: selectQuery.Cql, Format: &tsFormat}
+	qm := models.QueryModel{RawCql: selectQuery.Cql, Format: &tsFormat}
 	frame, err := plugin.Frame(response, qm)
 	res := &backend.DataResponse{Frames: data.Frames{frame}, Error: err}
 
@@ -172,7 +173,7 @@ func TestQueryWithTimeSeries(t *testing.T) {
 	require.NoError(t, err)
 
 	tsFormat := sqlds.FormatOptionTimeSeries
-	qm := plugin.QueryModel{RawCql: query.Cql, Format: &tsFormat}
+	qm := models.QueryModel{RawCql: query.Cql, Format: &tsFormat}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)

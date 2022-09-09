@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
@@ -15,27 +16,29 @@ import (
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 )
 
+func ErrorFrame(err error, executeQueryString string) (*data.Frame, error) {
+	return data.NewFrame("response").SetMeta(&data.FrameMeta{
+		ExecutedQueryString:    executeQueryString,
+		PreferredVisualization: data.VisTypeTable,
+	}), err
+}
+
 type column struct {
 	field     *data.Field
 	converter data.FieldConverter
 	kind      string
 }
 
-func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
+func Frame(res *pb.Response, qm models.QueryModel) (*data.Frame, error) {
 
-	frame := data.NewFrame("response")
 	result := res.GetResultSet()
 	if result == nil {
-		frame.SetMeta(&data.FrameMeta{
-			ExecutedQueryString:    qm.ActualCql,
-			PreferredVisualization: data.VisTypeTable,
-		})
-		return frame, nil
+		return ErrorFrame(nil, qm.ActualCql)
 	}
 
 	columns, fields := getColumns(result)
 
-	frame = data.NewFrame("response", fields...)
+	frame := data.NewFrame("response", fields...)
 
 	var notices []data.Notice
 
@@ -69,7 +72,7 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 			}
 			frame, err := data.LongToWide(frame, fillMode)
 			if err != nil {
-				return nil, err
+				return ErrorFrame(err, qm.ActualCql)
 			}
 			return frame, nil
 		}

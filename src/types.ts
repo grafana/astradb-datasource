@@ -1,4 +1,5 @@
 import { CompletionItemKind, LanguageCompletionProvider, OperatorType } from '@grafana/experimental';
+import { Format } from './constants';
 import type { DataQuery, DataSourceJsonData, SelectableValue, TimeRange } from '@grafana/data';
 
 //#region Settings
@@ -21,11 +22,6 @@ export interface AstraQuery extends DataQuery {
   table?: string;
 }
 
-export enum Format {
-  TIMESERIES = 0,
-  TABLE = 1,
-  LOGS = 2,
-}
 //#endregion
 
 //#region Misc

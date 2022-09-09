@@ -3,6 +3,7 @@ package plugin_test
 import (
 	"testing"
 
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
 	sqlds "github.com/grafana/sqlds/v2"
@@ -35,7 +36,7 @@ func TestFramer(t *testing.T) {
 	require.NoError(t, err)
 
 	tsFormat := sqlds.FormatOptionTimeSeries
-	qm := plugin.QueryModel{RawCql: query.Cql, Format: &tsFormat}
+	qm := models.QueryModel{RawCql: query.Cql, Format: &tsFormat}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)

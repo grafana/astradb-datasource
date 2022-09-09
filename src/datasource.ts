@@ -1,14 +1,4 @@
-import {
-  DataFrame,
-  DataFrameView,
-  DataQuery,
-  DataQueryRequest,
-  DataQueryResponse,
-  DataSourceInstanceSettings,
-  ScopedVars,
-  TimeRange,
-  vectorator,
-} from '@grafana/data';
+import { DataFrameView, vectorator } from '@grafana/data';
 import {
   BackendDataSourceResponse,
   DataSourceWithBackend,
@@ -17,13 +7,23 @@ import {
   getTemplateSrv,
   toDataQueryResponse,
 } from '@grafana/runtime';
-import { buildColumnQuery, buildTableQuery, showDatabases } from './components/metaQuery';
+import { CompletionItemKind, LanguageCompletionProvider } from '@grafana/experimental';
 import { uniqueId } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AstraQuery, AstraSettings, DB, Format } from './types';
-import { CompletionItemKind, LanguageCompletionProvider } from '@grafana/experimental';
+import { Format } from './constants';
+import { buildColumnQuery, buildTableQuery, showDatabases } from './components/metaQuery';
 import { fetchColumns, fetchTables, getFunctions, getSqlCompletionProvider } from './components/sqlCompletionProvider';
+import type {
+  DataFrame,
+  DataQuery,
+  DataQueryRequest,
+  DataQueryResponse,
+  DataSourceInstanceSettings,
+  ScopedVars,
+  TimeRange,
+} from '@grafana/data/types';
+import type { AstraQuery, AstraSettings, DB } from './types';
 
 export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings> {
   annotations = {};
@@ -40,6 +40,10 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
   applyTemplateVariables(query: AstraQuery, scopedVars: ScopedVars) {
     const sql = this.replace(query.rawCql || '', scopedVars) || '';
     return { ...query, rawCql: sql };
+  }
+
+  filterQuery(query: AstraQuery): boolean {
+    return !query.hide;
   }
 
   replace(value?: string, scopedVars?: ScopedVars) {

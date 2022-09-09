@@ -1,4 +1,4 @@
-package plugin
+package models
 
 import "github.com/grafana/sqlds/v2"
 

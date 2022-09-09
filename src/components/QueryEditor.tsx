@@ -5,8 +5,8 @@ import { DataSource } from '../datasource';
 import { CQLEditor } from './CQLEditor';
 // @ts-ignore
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { DEFAULT_QUERY_FORMAT } from '../constants';
-import { AstraQuery, AstraSettings, AutoSizerProps, Format } from '../types';
+import { DEFAULT_QUERY_FORMAT, Format } from '../constants';
+import type { AstraQuery, AstraSettings, AutoSizerProps } from '../types';
 
 type Props = QueryEditorProps<DataSource, AstraQuery, AstraSettings>;
 
