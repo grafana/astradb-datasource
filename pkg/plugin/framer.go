@@ -56,12 +56,12 @@ func Frame(res *pb.Response, qm models.QueryModel) (*data.Frame, error) {
 		Notices:                notices,
 	}
 
-	if qm.Format == sqlds.FormatOptionTable {
+	if *qm.Format == sqlds.FormatOptionTable {
 		frame.Meta.PreferredVisualization = data.VisTypeTable
 		return frame, nil
 	}
 
-	if qm.Format == sqlds.FormatOptionLogs {
+	if *qm.Format == sqlds.FormatOptionLogs {
 		frame.Meta.PreferredVisualization = data.VisTypeLogs
 		return frame, nil
 	}

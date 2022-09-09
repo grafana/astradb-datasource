@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import { LanguageCompletionProvider, SQLEditor } from '@grafana/experimental';
 
-import { AstraQuery, Format } from '../types';
+import { AstraQuery } from '../types';
 import { formatSQL } from '../utils/formatSql';
 import { DataSource } from 'datasource';
 import { css } from '@emotion/css';
@@ -40,8 +40,7 @@ export function CQLEditor({ children, onChange, onRunQuery, query, width, height
 
   const onSqlChange = (sql: string) => {
     if (sql.trim() !== '') {
-      const format = sql.toLowerCase().includes('as time') ? Format.TIMESERIES : Format.TABLE;
-      onChange({ ...query, rawCql: sql, format }, true);
+      onChange({ ...query, rawCql: sql }, true);
       onRunQuery();
     }
   };

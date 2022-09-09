@@ -128,7 +128,7 @@ func TestConnect(t *testing.T) {
 	response, err := stargateClient.ExecuteQuery(selectQuery)
 	assert.Nil(t, err)
 
-	qm := models.QueryModel{RawCql: selectQuery.Cql, Format: 0}
+	qm := models.QueryModel{RawCql: selectQuery.Cql, Format: &models.TimeSeriesFormat}
 	frame, err := plugin.Frame(response, qm)
 	res := &backend.DataResponse{Frames: data.Frames{frame}, Error: err}
 
@@ -164,7 +164,7 @@ func TestQueryWithTimeSeries(t *testing.T) {
 	response, err := client.ExecuteQuery(query)
 	require.NoError(t, err)
 
-	qm := models.QueryModel{RawCql: query.Cql, Format: 0}
+	qm := models.QueryModel{RawCql: query.Cql, Format: &models.TimeSeriesFormat}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)

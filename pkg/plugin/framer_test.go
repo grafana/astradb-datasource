@@ -37,7 +37,7 @@ func TestFramer(t *testing.T) {
 	response, err = stargateClient.ExecuteQuery(query)
 	require.NoError(t, err)
 
-	qm := models.QueryModel{RawCql: query.Cql, Format: 0}
+	qm := models.QueryModel{RawCql: query.Cql, Format: &models.TimeSeriesFormat}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)

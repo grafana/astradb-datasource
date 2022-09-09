@@ -75,7 +75,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 	queryToEvaluate := &sqlds.Query{
 		RawSQL:    qm.RawCql,
 		TimeRange: query.TimeRange,
-		Format:    sqlds.FormatQueryOption(qm.Format),
+		Format:    sqlds.FormatQueryOption(*qm.Format),
 	}
 	qm.ActualCql, err = sqlds.Interpolate(BaseDriver{}, queryToEvaluate)
 	if err != nil {
