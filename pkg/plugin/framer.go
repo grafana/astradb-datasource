@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
@@ -21,7 +22,7 @@ type column struct {
 	kind      string
 }
 
-func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
+func Frame(res *pb.Response, qm models.QueryModel) (*data.Frame, error) {
 
 	result := res.GetResultSet()
 	if result == nil {

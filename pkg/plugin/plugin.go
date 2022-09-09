@@ -57,18 +57,12 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 	return response, nil
 }
 
-type QueryModel struct {
-	RawCql    string
-	Format    sqlds.FormatQueryOption
-	ActualCql string
-}
-
 func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	response := backend.DataResponse{}
 
-	qm := &QueryModel{}
-	response.Error = json.Unmarshal(query.JSON, qm)
-	if response.Error != nil {
+	qm, err := models.LoadQueryModel(query)
+	if err != nil {
+		response.Error = json.Unmarshal(query.JSON, qm)
 		return response
 	}
 
