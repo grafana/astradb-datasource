@@ -140,16 +140,6 @@ func TestQueryWithInts(t *testing.T) {
 	experimental.CheckGoldenJSONResponse(t, "testdata", "movies", r, updateGoldenFile)
 }
 
-// func TestQueryWithTime(t *testing.T) {
-// 	r := runQuery(t, "SELECT * FROM grafana.covidtime limit 10;")
-// 	experimental.CheckGoldenJSONResponse(t, "testdata", "covidtime2", r, updateGoldenFile)
-// }
-
-// func TestQueryWithTimestamp(t *testing.T) {
-// 	r := runQuery(t, "SELECT * FROM grafana.covid19 limit 10;")
-// 	experimental.CheckGoldenJSONResponse(t, "testdata", "covid19", r, updateGoldenFile)
-// }
-
 func TestQueryWithTimeSeries(t *testing.T) {
 	client := createRemoteClient(t)
 
