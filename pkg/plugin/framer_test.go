@@ -3,6 +3,7 @@ package plugin_test
 import (
 	"testing"
 
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
@@ -36,7 +37,7 @@ func TestFramer(t *testing.T) {
 	response, err = stargateClient.ExecuteQuery(query)
 	require.NoError(t, err)
 
-	qm := plugin.QueryModel{RawCql: query.Cql, Format: 0}
+	qm := models.QueryModel{RawCql: query.Cql, Format: &models.TimeSeriesFormat}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)

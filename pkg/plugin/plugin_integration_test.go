@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/docker/go-connections/nat"
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/testcontainers/testcontainers-go"
@@ -127,7 +128,7 @@ func TestConnect(t *testing.T) {
 	response, err := stargateClient.ExecuteQuery(selectQuery)
 	assert.Nil(t, err)
 
-	qm := plugin.QueryModel{RawCql: selectQuery.Cql, Format: 0}
+	qm := models.QueryModel{RawCql: selectQuery.Cql, Format: &models.TimeSeriesFormat}
 	frame, err := plugin.Frame(response, qm)
 	res := &backend.DataResponse{Frames: data.Frames{frame}, Error: err}
 
@@ -138,16 +139,6 @@ func TestQueryWithInts(t *testing.T) {
 	r := runQuery(t, "SELECT show_id, date_added, release_year from grafana.movies_and_tv2 limit 10;")
 	experimental.CheckGoldenJSONResponse(t, "testdata", "movies", r, updateGoldenFile)
 }
-
-// func TestQueryWithTime(t *testing.T) {
-// 	r := runQuery(t, "SELECT * FROM grafana.covidtime limit 10;")
-// 	experimental.CheckGoldenJSONResponse(t, "testdata", "covidtime2", r, updateGoldenFile)
-// }
-
-// func TestQueryWithTimestamp(t *testing.T) {
-// 	r := runQuery(t, "SELECT * FROM grafana.covid19 limit 10;")
-// 	experimental.CheckGoldenJSONResponse(t, "testdata", "covid19", r, updateGoldenFile)
-// }
 
 func TestQueryWithTimeSeries(t *testing.T) {
 	client := createRemoteClient(t)
@@ -163,7 +154,7 @@ func TestQueryWithTimeSeries(t *testing.T) {
 	response, err := client.ExecuteQuery(query)
 	require.NoError(t, err)
 
-	qm := plugin.QueryModel{RawCql: query.Cql, Format: 0}
+	qm := models.QueryModel{RawCql: query.Cql, Format: &models.TimeSeriesFormat}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)

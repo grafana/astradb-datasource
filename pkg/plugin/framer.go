@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/converters"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
@@ -21,7 +22,7 @@ type column struct {
 	kind      string
 }
 
-func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
+func Frame(res *pb.Response, qm models.QueryModel) (*data.Frame, error) {
 
 	result := res.GetResultSet()
 	if result == nil {
@@ -55,12 +56,12 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 		Notices:                notices,
 	}
 
-	if qm.Format == sqlds.FormatOptionTable {
+	if *qm.Format == sqlds.FormatOptionTable {
 		frame.Meta.PreferredVisualization = data.VisTypeTable
 		return frame, nil
 	}
 
-	if qm.Format == sqlds.FormatOptionLogs {
+	if *qm.Format == sqlds.FormatOptionLogs {
 		frame.Meta.PreferredVisualization = data.VisTypeLogs
 		return frame, nil
 	}
