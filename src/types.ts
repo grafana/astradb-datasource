@@ -1,5 +1,5 @@
-import { DataQuery, DataSourceJsonData, SelectableValue, TimeRange } from '@grafana/data';
 import { CompletionItemKind, LanguageCompletionProvider, OperatorType } from '@grafana/experimental';
+import type { DataQuery, DataSourceJsonData, SelectableValue, TimeRange } from '@grafana/data';
 
 //#region Settings
 export interface AstraSettings extends DataSourceJsonData {
@@ -14,6 +14,7 @@ export interface SecureSettings {
 
 //#region Query
 export interface AstraQuery extends DataQuery {
+  queryType?: string;
   dataset: string;
   rawCql: string;
   format: Format;

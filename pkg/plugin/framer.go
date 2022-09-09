@@ -23,14 +23,19 @@ type column struct {
 
 func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 
+	frame := data.NewFrame("response")
 	result := res.GetResultSet()
 	if result == nil {
-		return data.NewFrame("response", nil), nil
+		frame.SetMeta(&data.FrameMeta{
+			ExecutedQueryString:    qm.ActualCql,
+			PreferredVisualization: data.VisTypeTable,
+		})
+		return frame, nil
 	}
 
 	columns, fields := getColumns(result)
 
-	frame := data.NewFrame("response", fields...)
+	frame = data.NewFrame("response", fields...)
 
 	var notices []data.Notice
 
@@ -51,35 +56,34 @@ func Frame(res *pb.Response, qm QueryModel) (*data.Frame, error) {
 
 	frame.Meta = &data.FrameMeta{
 		ExecutedQueryString:    qm.ActualCql,
-		PreferredVisualization: data.VisTypeGraph,
+		PreferredVisualization: data.VisTypeTable,
 		Notices:                notices,
 	}
 
-	if qm.Format == sqlds.FormatOptionTable {
-		frame.Meta.PreferredVisualization = data.VisTypeTable
+	if *qm.Format == sqlds.FormatOptionTimeSeries {
+		frame.Meta.PreferredVisualization = data.VisTypeGraph
+		if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
+			fillMode := &data.FillMissing{Mode: data.FillModeNull}
+			if shouldSort(qm.RawCql) {
+				sortByTime(frame)
+			}
+			frame, err := data.LongToWide(frame, fillMode)
+			if err != nil {
+				return nil, err
+			}
+			return frame, nil
+		}
 		return frame, nil
 	}
 
-	if qm.Format == sqlds.FormatOptionLogs {
+	if *qm.Format == sqlds.FormatOptionLogs {
 		frame.Meta.PreferredVisualization = data.VisTypeLogs
 		return frame, nil
 	}
 
-	if frame.TimeSeriesSchema().Type == data.TimeSeriesTypeLong {
-		fillMode := &data.FillMissing{Mode: data.FillModeNull}
-
-		if shouldSort(qm.RawCql) {
-			sortByTime(frame)
-		}
-
-		frame, err := data.LongToWide(frame, fillMode)
-		if err != nil {
-			return nil, err
-		}
-		return frame, nil
-	}
-
+	frame.Meta.PreferredVisualization = data.VisTypeTable
 	return frame, nil
+
 }
 
 func shouldSort(cql string) bool {
@@ -210,6 +214,9 @@ func newBasicColumn(col *pb.ColumnSpec, config *data.FieldConfig) column {
 			Converter: func(v any) (any, error) {
 				if v1, ok := v.(*pb.Value); ok && v1 != nil {
 					if val := v1.GetInet(); val != nil {
+						//TODO: val.GetValue() returns data in `[172 25 147 3]` format.
+						// Needs to properly format that into a ip address
+						// possibly inet can also hold ipv6?
 						s := fmt.Sprintf("%v", val.GetValue())
 						return &s, nil
 					}

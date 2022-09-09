@@ -58,18 +58,32 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 }
 
 type QueryModel struct {
-	RawCql    string
-	Format    sqlds.FormatQueryOption
+	QueryType string                   `json:"queryType"`
+	RawCql    string                   `json:"rawCql"`
+	Format    *sqlds.FormatQueryOption `json:"format"`
+	Dataset   string                   `json:"dataset"`
+	Table     string                   `json:"table"`
 	ActualCql string
+}
+
+func LoadQuery(query backend.DataQuery) (*QueryModel, error) {
+	qm := &QueryModel{}
+	err := json.Unmarshal(query.JSON, qm)
+	if qm.Format == nil {
+		qm.Format = &defaultQueryFormat
+	}
+	return qm, err
 }
 
 func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	response := backend.DataResponse{}
 
-	qm := &QueryModel{}
-	response.Error = json.Unmarshal(query.JSON, qm)
-	if response.Error != nil {
-		return response
+	qm, err := LoadQuery(query)
+	if err != nil {
+		response.Error = json.Unmarshal(query.JSON, qm)
+		if response.Error != nil {
+			return response
+		}
 	}
 
 	stargateClient, err := client.NewStargateClientWithConn(d.conn)
@@ -81,7 +95,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 	queryToEvaluate := &sqlds.Query{
 		RawSQL:    qm.RawCql,
 		TimeRange: query.TimeRange,
-		Format:    sqlds.FormatQueryOption(qm.Format),
+		Format:    sqlds.FormatQueryOption(*qm.Format),
 	}
 	qm.ActualCql, err = sqlds.Interpolate(BaseDriver{}, queryToEvaluate)
 	if err != nil {

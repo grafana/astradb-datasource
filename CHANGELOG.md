@@ -2,6 +2,7 @@
 
 ## 0.0.2
 
+- **Feature**: Added the ability to select response format (table/timeseries/logs)
 - **Bug Fix**: Fixed a bug where null results causing panic/crash in some cases.
 
 ## 0.0.1

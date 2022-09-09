@@ -5,15 +5,13 @@ import (
 
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental"
+	sqlds "github.com/grafana/sqlds/v2"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-// TODO: TestFramer currently tests for Frame() method returns correct frame
-// But various data type fields returns null instead of actual data. This needs to be fixed
-// Also later different types can be added
 func TestFramer(t *testing.T) {
 	stargateClient := createClient(t)
 
@@ -36,7 +34,8 @@ func TestFramer(t *testing.T) {
 	response, err = stargateClient.ExecuteQuery(query)
 	require.NoError(t, err)
 
-	qm := plugin.QueryModel{RawCql: query.Cql, Format: 0}
+	tsFormat := sqlds.FormatOptionTimeSeries
+	qm := plugin.QueryModel{RawCql: query.Cql, Format: &tsFormat}
 	frameResponse, err := plugin.Frame(response, qm)
 	require.Nil(t, err)
 	require.NotNil(t, frameResponse)
