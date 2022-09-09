@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.2
+
+- **Bug Fix** - Fixed a bug where null values in result causing panic
+
 ## 0.0.1
 
 - Initial Beta release - Features
