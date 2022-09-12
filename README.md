@@ -4,36 +4,34 @@ The Astra DB plugin allows a direct connection to Astra DB to query and visualiz
 
 This plugin provides a CQL editor to format and color code your CQL statements, along with auto complete when entering keyspaces, tables and fields.
 
-# Beta
+## Beta
 
-This plugin is currently in Beta development. Breaking changes could occur but are not expected.
+This plugin is currently in **Beta** development. Breaking changes could occur but are not expected.
 
 ## Installation
 
 For detailed instructions on how to install the plugin on Grafana Cloud or
 locally, please checkout the [Plugin installation docs](https://grafana.com/docs/grafana/latest/plugins/installation/).
 
-## Connecting
-
-Provide an Astra DB URI in the following format: $ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443
-Provide an Astra DB token in the following format: AstraCS:xxxxx
-
-See [Manage Application Tokens] (https://docs.datastax.com/en/astra-serverless/docs/manage/org/managing-org.html#_manage_application_tokens) for more on authentication.
-
-### Manual configuration
+## Configuration
 
 Once the plugin is installed on your Grafana instance, follow [these
 instructions](https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/)
 to add a new Astra DB data source, and enter configuration options.
 
-### With a configuration file
+| Key   | Description                                                                                                                                                                                                                                 |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| URI   | Provide an Astra DB URI in the following format: `$ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443`                                                                                                                              |
+| Token | Provide an Astra DB token in the following format: `AstraCS:xxxxx`. See [Manage Application Tokens](https://docs.datastax.com/en/astra-serverless/docs/manage/org/managing-org.html#_manage_application_tokens) for more on authentication. |
+
+### Configure via provisioning file
 
 It is possible to configure data sources using configuration files with
 Grafana’s provisioning system. To read about how it works, including all the
 settings that you can set for this data source, refer to [Provisioning Grafana
 data sources](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
-Here are some provisioning examples for this data source using basic authentication:
+Here is a provisioning example for this data source using token authentication:
 
 ```yaml
 apiVersion: 1

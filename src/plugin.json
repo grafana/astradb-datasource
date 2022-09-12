@@ -13,25 +13,19 @@
     "author": {
       "name": "Grafana Labs"
     },
-    "keywords": [
-      "astra"
-    ],
+    "keywords": ["astra"],
     "logos": {
       "small": "img/astra-logo.svg",
       "large": "img/astra-logo.svg"
     },
     "links": [
       {
-        "name": "Website",
-        "url": "https://github.com/grafana/astradb-datasource"
-      },
-      {
         "name": "Docs",
         "url": "https://grafana.com/grafana/plugins/grafana-astradb-datasource/"
       },
       {
         "name": "License",
-        "url": "https://github.com/grafana/astradb-datasource/blob/main/LICENSE"
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
       }
     ],
     "screenshots": [],
