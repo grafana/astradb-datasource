@@ -2,16 +2,16 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import { LanguageCompletionProvider, SQLEditor } from '@grafana/experimental';
 
-import { AstraQuery } from '../types';
 import { formatSQL } from '../utils/formatSql';
 import { DataSource } from 'datasource';
 import { css } from '@emotion/css';
+import { SQLQuery } from 'plugin-ui';
 
 type Props = {
-  query: AstraQuery;
+  query: SQLQuery;
   datasource: DataSource;
   onRunQuery: () => void;
-  onChange: (value: AstraQuery, processQuery: boolean) => void;
+  onChange: (value: SQLQuery, processQuery: boolean) => void;
   children?: (props: { formatQuery: () => void }) => React.ReactNode;
   width?: number;
   height?: number;
@@ -20,7 +20,7 @@ type Props = {
 
 export function CQLEditor({ children, onChange, onRunQuery, query, width, height, completionProvider }: Props) {
   // We need to pass query via ref to SQLEditor as onChange is executed via monacoEditor.onDidChangeModelContent callback, not onChange property
-  const queryRef = useRef<AstraQuery>(query);
+  const queryRef = useRef<SQLQuery>(query);
   useEffect(() => {
     queryRef.current = query;
   }, [query]);
@@ -40,12 +40,12 @@ export function CQLEditor({ children, onChange, onRunQuery, query, width, height
 
   const onSqlChange = (sql: string) => {
     if (sql.trim() !== '') {
-      onChange({ ...query, rawCql: sql }, true);
+      onChange({ ...query, rawSql: sql }, true);
       onRunQuery();
     }
   };
 
-  const run = () => onSqlChange(query.rawCql || '');
+  const run = () => onSqlChange(query.rawSql || '');
 
   const onQueryChange = useCallback(
     (rawCql: string, processQuery: boolean) => {
@@ -67,7 +67,7 @@ export function CQLEditor({ children, onChange, onRunQuery, query, width, height
       <SQLEditor
         width={width}
         height={height}
-        query={query.rawCql!}
+        query={query.rawSql!}
         onChange={onQueryChange}
         language={{ id: 'sql', completionProvider, formatter: formatSQL }}
       >

@@ -1,26 +1,26 @@
 import { DataSource } from 'datasource';
+import { SQLQuery } from 'plugin-ui';
 import React, { useState } from 'react';
 import { CQLEditor } from './CQLEditor';
-import { AstraQuery } from 'types';
 
 export type CqlVariableQueryEditorProps = {
   datasource: DataSource;
-  onChange: (query: AstraQuery, definition: string) => void;
-  query: AstraQuery;
+  onChange: (query: SQLQuery, definition: string) => void;
+  query: SQLQuery;
 };
 
 export const VariableQueryEditor = (props: CqlVariableQueryEditorProps) => {
   const { datasource, onChange } = props;
-  const [cql, setCql] = useState<string>(props.query.rawCql || '');
+  const [cql, setCql] = useState<string>(props.query.rawSql || '');
   const [query, setQuery] = useState(props.query);
-  const handleChange = (query: AstraQuery) => {
-    setCql(query.rawCql || '');
+  const handleChange = (query: SQLQuery) => {
+    setCql(query.rawSql || '');
     setQuery(query);
   };
   const onRun = () => {
-    onChange({ ...query, rawCql: cql }, `Query: ${cql}`);
+    onChange({ ...query, rawSql: cql }, `Query: ${cql}`);
   };
   return (
-    <CQLEditor datasource={datasource} onChange={handleChange} onRunQuery={onRun} query={{ ...query, rawCql: cql }} />
+    <CQLEditor datasource={datasource} onChange={handleChange} onRunQuery={onRun} query={{ ...query, rawSql: cql }} />
   );
 };

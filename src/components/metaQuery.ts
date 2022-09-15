@@ -1,4 +1,4 @@
-import { AstraQuery } from 'types';
+import { SQLQuery } from 'plugin-ui';
 
 const DATASET_NAME = 'keyspace_name';
 const DATASETS = 'keyspaces';
@@ -12,7 +12,7 @@ export function buildTableQuery(dataset?: string) {
   return `SELECT table_name FROM ${SCHEMA}.tables where ${DATASET_NAME} = '${dataset}';`;
 }
 
-export function buildColumnQuery(queryModel: Partial<AstraQuery>, table: string, type?: string, timeColumn?: string) {
+export function buildColumnQuery(queryModel: Partial<SQLQuery>, table: string, type?: string, timeColumn?: string) {
   let query = `SELECT column_name, type FROM ${SCHEMA}.columns WHERE `;
   query += buildTableConstraint(queryModel, table);
 
@@ -41,7 +41,7 @@ export function buildColumnQuery(queryModel: Partial<AstraQuery>, table: string,
   return query;
 }
 
-export function buildTableConstraint(queryModel: Partial<AstraQuery>, table: string) {
+export function buildTableConstraint(queryModel: Partial<SQLQuery>, table: string) {
   let query = '';
 
   // check for schema qualified table
