@@ -11,7 +11,7 @@ import (
 type QueryModel struct {
 	RawCql    string `json:"rawSql"`
 	Format    any
-	ActualCql string
+	ActualCql string `json:"-"`
 }
 
 func LoadQueryModel(query backend.DataQuery) (*QueryModel, error) {
