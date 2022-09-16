@@ -11,8 +11,11 @@ import {
   TableDefinition,
   TokenType,
 } from '@grafana/experimental';
-import { Aggregate, AGGREGATE_FNS, AstraQuery, DB, MetaDefinition, OPERATORS } from '../types';
+import { AGGREGATE_FNS, OPERATORS } from './constants';
 import { FUNCTIONS } from './functions';
+import type { Aggregate, DB, MetaDefinition } from 'plugin-ui';
+import type { SelectableValue } from '@grafana/data';
+import type { AstraQuery } from 'types';
 
 interface CompletionProviderGetterArgs {
   getColumns: React.MutableRefObject<(t: AstraQuery) => Promise<ColumnDefinition[]>>;
@@ -269,7 +272,7 @@ function tokenValue(token: LinkedToken | null): string | undefined {
 export async function fetchColumns(db: DB, q: AstraQuery) {
   const cols = await db.fields(q);
   if (cols.length > 0) {
-    return cols.map((c) => {
+    return cols.map((c: SelectableValue) => {
       return { name: c.value, type: c.value, description: c.value };
     });
   } else {

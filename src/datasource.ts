@@ -21,9 +21,10 @@ import { buildColumnQuery, buildTableQuery, showDatabases } from './components/m
 import { uniqueId } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AstraQuery, AstraSettings, DB, Format } from './types';
+import type { AstraQuery, AstraSettings } from './types';
 import { CompletionItemKind, LanguageCompletionProvider } from '@grafana/experimental';
 import { fetchColumns, fetchTables, getFunctions, getSqlCompletionProvider } from './components/sqlCompletionProvider';
+import { QueryFormat, DB } from 'plugin-ui';
 
 export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings> {
   annotations = {};
@@ -38,8 +39,8 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
   }
 
   applyTemplateVariables(query: AstraQuery, scopedVars: ScopedVars) {
-    const sql = this.replace(query.rawCql || '', scopedVars) || '';
-    return { ...query, rawCql: sql };
+    const rawSql = this.replace(query.rawSql || '', scopedVars) || '';
+    return { ...query, rawSql };
   }
 
   replace(value?: string, scopedVars?: ScopedVars) {
@@ -57,7 +58,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
   }
 
   async metricFindQuery(query: AstraQuery) {
-    if (!query.rawCql) {
+    if (!query.rawSql) {
       return [];
     }
     const frame = await this.runQuery(query);
@@ -128,7 +129,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
   }
 
   async runSql<T>(query: string, options?: RunSQLOptions) {
-    const frame = await this.runMetaQuery({ rawCql: query, format: Format.TABLE, refId: options?.refId }, options);
+    const frame = await this.runMetaQuery({ rawSql: query, format: QueryFormat.Table, refId: options?.refId }, options);
     return new DataFrameView<T>(frame);
   }
 
@@ -200,6 +201,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
       lookup: (path?: string) => this.fetchMeta(path),
       getSqlCompletionProvider: () => this.getSqlCompletionProvider(this.db),
       functions: async () => getFunctions(),
+      labels: new Map([['dataset', 'Keyspace']]),
     };
   }
 }

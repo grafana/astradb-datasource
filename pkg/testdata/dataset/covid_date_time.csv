@@ -1,4 +1,4 @@
-Date,Country,Confirmed,Recovered,Deaths
+date,country,confirmed,recovered,deaths
 2020-01-22 00:00:00,Afghanistan,0,0,0
 2020-01-23 00:00:00,Afghanistan,0,0,0
 2020-01-24 00:00:00,Afghanistan,0,0,0
@@ -49,6 +49,7 @@ Date,Country,Confirmed,Recovered,Deaths
 2020-03-09 00:00:00,Afghanistan,8,0,0
 2020-03-10 00:00:00,Afghanistan,8,0,0
 2020-03-11 00:00:00,Afghanistan,11,0,0
+2020-03-11 01:00:00,US,11,0,0
 2020-03-12 00:00:00,Afghanistan,11,0,0
 2020-03-13 00:00:00,Afghanistan,11,0,0
 2020-03-14 00:00:00,Afghanistan,14,0,0
@@ -142,3 +143,4 @@ Date,Country,Confirmed,Recovered,Deaths
 2020-06-10 00:00:00,Afghanistan,22228,3013,409
 2020-06-11 00:00:00,Afghanistan,22976,3326,430
 2020-06-12 00:00:00,Afghanistan,23632,3928,450
+2020-06-13 00:00:00,US,23632,3928,450

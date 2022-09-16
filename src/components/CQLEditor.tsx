@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useRef } from 'react';
 
 import { LanguageCompletionProvider, SQLEditor } from '@grafana/experimental';
 
-import { AstraQuery } from '../types';
 import { formatSQL } from '../utils/formatSql';
-import { DataSource } from 'datasource';
+import type { DataSource } from 'datasource';
+import type { AstraQuery } from 'types';
+
 import { css } from '@emotion/css';
 
 type Props = {
@@ -40,12 +41,12 @@ export function CQLEditor({ children, onChange, onRunQuery, query, width, height
 
   const onSqlChange = (sql: string) => {
     if (sql.trim() !== '') {
-      onChange({ ...query, rawCql: sql }, true);
+      onChange({ ...query, rawSql: sql }, true);
       onRunQuery();
     }
   };
 
-  const run = () => onSqlChange(query.rawCql || '');
+  const run = () => onSqlChange(query.rawSql || '');
 
   const onQueryChange = useCallback(
     (rawCql: string, processQuery: boolean) => {
@@ -67,7 +68,7 @@ export function CQLEditor({ children, onChange, onRunQuery, query, width, height
       <SQLEditor
         width={width}
         height={height}
-        query={query.rawCql!}
+        query={query.rawSql!}
         onChange={onQueryChange}
         language={{ id: 'sql', completionProvider, formatter: formatSQL }}
       >

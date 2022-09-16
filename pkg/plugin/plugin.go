@@ -31,5 +31,7 @@ type AstraDatasource struct {
 
 func (d *AstraDatasource) Dispose() {
 	// Clean up datasource instance resources.
-	d.conn.Close()
+	if d.conn != nil {
+		d.conn.Close()
+	}
 }

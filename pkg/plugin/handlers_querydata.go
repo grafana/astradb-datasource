@@ -4,9 +4,12 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"strings"
+	"time"
 
 	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
+	"github.com/grafana/grafana-plugin-sdk-go/data"
 	sqlds "github.com/grafana/sqlds/v2"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
@@ -39,6 +42,13 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 		return response
 	}
 
+	if qm.RawCql == "" {
+		notice := data.Notice{Severity: data.NoticeSeverityWarning, Text: "empty query"}
+		frame := data.Frame{Name: "warn", Meta: &data.FrameMeta{Notices: []data.Notice{notice}}, RefID: query.RefID}
+		response.Frames = data.Frames{&frame}
+		return response
+	}
+
 	stargateClient, err := client.NewStargateClientWithConn(d.conn)
 	if err != nil {
 		response.Error = err
@@ -48,7 +58,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 	queryToEvaluate := &sqlds.Query{
 		RawSQL:    qm.RawCql,
 		TimeRange: query.TimeRange,
-		Format:    sqlds.FormatQueryOption(*qm.Format),
+		Format:    sqlds.FormatQueryOption(getFormat(qm.Format)),
 	}
 	qm.ActualCql, err = sqlds.Interpolate(BaseDriver{}, queryToEvaluate)
 	if err != nil {
@@ -85,7 +95,10 @@ func (d *AstraDatasource) connect() error {
 		InsecureSkipVerify: false,
 	}
 
-	conn, err := grpc.Dial(d.settings.URI, grpc.WithTransportCredentials(credentials.NewTLS(config)),
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	conn, err := grpc.DialContext(ctx, d.settings.URI, grpc.WithTransportCredentials(credentials.NewTLS(config)),
 		grpc.WithBlock(),
 		grpc.WithPerRPCCredentials(
 			auth.NewStaticTokenProvider(d.settings.Token),
@@ -97,4 +110,26 @@ func (d *AstraDatasource) connect() error {
 
 	d.conn = conn
 	return nil
+}
+
+func getFormat(v any) sqlds.FormatQueryOption {
+	if v == nil {
+		return sqlds.FormatOptionTable
+	}
+
+	if fmt, ok := v.(string); ok {
+		if strings.EqualFold(fmt, "time_series") {
+			return sqlds.FormatOptionTimeSeries
+		} else if strings.EqualFold(fmt, "logs") {
+			return sqlds.FormatOptionLogs
+		}
+	}
+	// for backwards compatibility with old format
+	if fmt, ok := v.(*sqlds.FormatQueryOption); ok {
+		return *fmt
+	}
+	if fmt, ok := v.(sqlds.FormatQueryOption); ok {
+		return fmt
+	}
+	return sqlds.FormatOptionTable
 }

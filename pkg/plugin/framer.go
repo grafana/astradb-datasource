@@ -56,12 +56,12 @@ func Frame(res *pb.Response, qm models.QueryModel) (*data.Frame, error) {
 		Notices:                notices,
 	}
 
-	if *qm.Format == sqlds.FormatOptionTable {
+	if getFormat(qm.Format) == sqlds.FormatOptionTable {
 		frame.Meta.PreferredVisualization = data.VisTypeTable
 		return frame, nil
 	}
 
-	if *qm.Format == sqlds.FormatOptionLogs {
+	if getFormat(qm.Format) == sqlds.FormatOptionLogs {
 		frame.Meta.PreferredVisualization = data.VisTypeLogs
 		return frame, nil
 	}
@@ -89,8 +89,17 @@ func shouldSort(cql string) bool {
 }
 
 func sortByTime(frame *data.Frame) {
+	// if the "as time" alias is used, use that first
 	for _, f := range frame.Fields {
 		if f.Name == "time" {
+			sorter := experimental.NewFrameSorter(frame, f)
+			sort.Sort(sorter)
+			return
+		}
+	}
+	// "as time" not used, just choose the first time field
+	for _, f := range frame.Fields {
+		if f.Type() == data.FieldTypeNullableTime || f.Type() == data.FieldTypeTime {
 			sorter := experimental.NewFrameSorter(frame, f)
 			sort.Sort(sorter)
 			return
