@@ -1,18 +1,17 @@
 import React, { useCallback } from 'react';
-import { QueryEditorProps } from '@grafana/data';
-import { DataSource } from '../datasource';
-import { AstraSettings } from '../types';
-// import { CQLEditor } from './CQLEditor';
-// @ts-ignore
-import { SqlQueryEditor, SqlDatasource, SQLQuery, SQLOptions } from 'plugin-ui';
+import type { QueryEditorProps } from '@grafana/data';
+import type { DataSource } from '../datasource';
+import type { AstraQuery, AstraSettings } from '../types';
+import { SqlQueryEditor } from 'plugin-ui';
+import type { SqlDatasource } from 'plugin-ui';
 // @ts-ignore
 import AutoSizer from 'react-virtualized-auto-sizer';
 
-type Props = QueryEditorProps<DataSource, SQLQuery, AstraSettings>;
+type Props = QueryEditorProps<DataSource, AstraQuery, AstraSettings>;
 
 export const QueryEditor = ({ query, datasource, onChange, onRunQuery, range }: Props) => {
   const processQuery = useCallback(
-    (q: SQLQuery) => {
+    (q: AstraQuery) => {
       if (isQueryValid(q) && onRunQuery) {
         onRunQuery();
       }
@@ -20,36 +19,14 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery, range }: 
     [onRunQuery]
   );
 
-  const onQueryChange = (q: SQLQuery, process = false) => {
+  const onQueryChange = (q: AstraQuery, process = false) => {
     onChange(q);
     if (process) {
       processQuery(q);
     }
   };
 
-  // const onRun = () => {
-  //   onRunQuery();
-  // }
-  // const completionProvider = useMemo(() => datasource.getDB().getSqlCompletionProvider(), [datasource]);
-
-  // type Props = QueryEditorProps<SqlDatasource, SQLQuery, SQLOptions>;
-
   return (
-    // <div style={{ width: '100%', height: '300px' }}>
-    //   <AutoSizer defaultHeight="300px" defaultWidth="100%">
-    //     {(props: AutoSizerProps) => (
-    //       <CQLEditor
-    //         query={query}
-    //         datasource={datasource}
-    //         onRunQuery={onRunQuery}
-    //         onChange={onQueryChange}
-    //         width={props.width}
-    //         height={props.height}
-    //         completionProvider={completionProvider}
-    //       />
-    //     )}
-    //   </AutoSizer>
-    // </div>
     <SqlQueryEditor
       query={query}
       datasource={datasource as unknown as SqlDatasource}
@@ -60,6 +37,6 @@ export const QueryEditor = ({ query, datasource, onChange, onRunQuery, range }: 
   );
 };
 
-const isQueryValid = (q: SQLQuery) => {
+const isQueryValid = (q: AstraQuery) => {
   return Boolean(q.rawSql);
 };

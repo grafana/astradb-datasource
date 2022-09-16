@@ -4,10 +4,12 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
+	"github.com/grafana/grafana-plugin-sdk-go/data"
 	sqlds "github.com/grafana/sqlds/v2"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
@@ -41,6 +43,9 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 	}
 
 	if qm.RawCql == "" {
+		notice := data.Notice{Severity: data.NoticeSeverityWarning, Text: "empty query"}
+		frame := data.Frame{Name: "warn", Meta: &data.FrameMeta{Notices: []data.Notice{notice}}, RefID: query.RefID}
+		response.Frames = data.Frames{&frame}
 		return response
 	}
 
@@ -111,10 +116,11 @@ func getFormat(v any) sqlds.FormatQueryOption {
 	if v == nil {
 		return sqlds.FormatOptionTable
 	}
+
 	if fmt, ok := v.(string); ok {
-		if fmt == "time_series" {
+		if strings.EqualFold(fmt, "time_series") {
 			return sqlds.FormatOptionTimeSeries
-		} else if fmt == "logs" {
+		} else if strings.EqualFold(fmt, "logs") {
 			return sqlds.FormatOptionLogs
 		}
 	}

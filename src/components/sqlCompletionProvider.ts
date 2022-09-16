@@ -13,11 +13,12 @@ import {
 } from '@grafana/experimental';
 import { AGGREGATE_FNS, OPERATORS } from './constants';
 import { FUNCTIONS } from './functions';
-import { Aggregate, DB, MetaDefinition, SQLQuery } from 'plugin-ui';
-import { SelectableValue } from '@grafana/data';
+import type { Aggregate, DB, MetaDefinition } from 'plugin-ui';
+import type { SelectableValue } from '@grafana/data';
+import type { AstraQuery } from 'types';
 
 interface CompletionProviderGetterArgs {
-  getColumns: React.MutableRefObject<(t: SQLQuery) => Promise<ColumnDefinition[]>>;
+  getColumns: React.MutableRefObject<(t: AstraQuery) => Promise<ColumnDefinition[]>>;
   getTables: React.MutableRefObject<(d?: string) => Promise<TableDefinition[]>>;
   fetchMeta: React.MutableRefObject<(d?: string) => Promise<MetaDefinition[]>>;
   getFunctions: React.MutableRefObject<(d?: string) => Aggregate[]>;
@@ -25,13 +26,13 @@ interface CompletionProviderGetterArgs {
 
 export const getSqlCompletionProvider: (args: CompletionProviderGetterArgs) => LanguageCompletionProvider =
   ({ getColumns, getTables, fetchMeta, getFunctions }) =>
-  () => ({
-    triggerCharacters: ['.', ' ', '$', ',', '(', "'"],
-    supportedFunctions: () => getFunctions.current(),
-    supportedOperators: () => OPERATORS,
-    customSuggestionKinds: customSuggestionKinds(getTables, getColumns, fetchMeta),
-    customStatementPlacement,
-  });
+    () => ({
+      triggerCharacters: ['.', ' ', '$', ',', '(', "'"],
+      supportedFunctions: () => getFunctions.current(),
+      supportedOperators: () => OPERATORS,
+      customSuggestionKinds: customSuggestionKinds(getTables, getColumns, fetchMeta),
+      customStatementPlacement,
+    });
 
 export enum CustomStatementPlacement {
   AfterDataset = 'afterDataset',
@@ -62,8 +63,8 @@ export const customStatementPlacement: StatementPlacementProvider = () => [
     resolve: (currentToken, previousKeyword) => {
       const is = Boolean(
         currentToken?.is(TokenType.Delimiter, '.') ||
-          (currentToken?.is(TokenType.Whitespace) && currentToken?.previous?.is(TokenType.Delimiter, '.')) ||
-          (currentToken?.is(TokenType.Identifier) && currentToken.value.endsWith('.'))
+        (currentToken?.is(TokenType.Whitespace) && currentToken?.previous?.is(TokenType.Delimiter, '.')) ||
+        (currentToken?.is(TokenType.Identifier) && currentToken.value.endsWith('.'))
       );
       console.log(is);
       return is;
@@ -268,7 +269,7 @@ function tokenValue(token: LinkedToken | null): string | undefined {
   return undefined;
 }
 
-export async function fetchColumns(db: DB, q: SQLQuery) {
+export async function fetchColumns(db: DB, q: AstraQuery) {
   const cols = await db.fields(q);
   if (cols.length > 0) {
     return cols.map((c: SelectableValue) => {
@@ -279,7 +280,7 @@ export async function fetchColumns(db: DB, q: SQLQuery) {
   }
 }
 
-export async function fetchTables(db: DB, q: Partial<SQLQuery>) {
+export async function fetchTables(db: DB, q: Partial<AstraQuery>) {
   const tables = await db.lookup(q.dataset);
   return tables;
 }

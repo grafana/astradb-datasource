@@ -21,12 +21,13 @@ import { buildColumnQuery, buildTableQuery, showDatabases } from './components/m
 import { uniqueId } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AstraSettings } from './types';
+import type { AstraQuery, AstraSettings } from './types';
 import { CompletionItemKind, LanguageCompletionProvider } from '@grafana/experimental';
 import { fetchColumns, fetchTables, getFunctions, getSqlCompletionProvider } from './components/sqlCompletionProvider';
-import { DB, QueryFormat, SQLQuery } from 'plugin-ui';
+import type { DB } from 'plugin-ui';
+import { QueryFormat } from 'plugin-ui';
 
-export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
+export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings> {
   annotations = {};
   db: DB;
   dataset?: string;
@@ -38,9 +39,9 @@ export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
     this.db = this.getDB();
   }
 
-  applyTemplateVariables(query: SQLQuery, scopedVars: ScopedVars) {
-    const sql = this.replace(query.rawSql || '', scopedVars) || '';
-    return { ...query, rawCql: sql };
+  applyTemplateVariables(query: AstraQuery, scopedVars: ScopedVars) {
+    const rawSql = this.replace(query.rawSql || '', scopedVars) || '';
+    return { ...query, rawSql };
   }
 
   replace(value?: string, scopedVars?: ScopedVars) {
@@ -57,7 +58,7 @@ export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
     return value;
   }
 
-  async metricFindQuery(query: SQLQuery) {
+  async metricFindQuery(query: AstraQuery) {
     if (!query.rawSql) {
       return [];
     }
@@ -87,7 +88,7 @@ export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
     return tables.map((t) => t[0]);
   }
 
-  async fetchFields(query: Partial<SQLQuery>) {
+  async fetchFields(query: Partial<AstraQuery>) {
     let ds = this.dataset || query.dataset;
     if (!ds || !query.table) {
       return [];
@@ -133,7 +134,7 @@ export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
     return new DataFrameView<T>(frame);
   }
 
-  private runMetaQuery(request: Partial<SQLQuery>, options?: MetricFindQueryOptions): Promise<DataFrame> {
+  private runMetaQuery(request: Partial<AstraQuery>, options?: MetricFindQueryOptions): Promise<DataFrame> {
     // TODO - if we need this we need to update grafana to export it
     // https://github.com/grafana/grafana/blob/main/public/app/features/dashboard/index.ts
     // const range = getTimeSrv().timeRange();
@@ -161,11 +162,11 @@ export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
     );
   }
 
-  runQuery(request: Partial<SQLQuery>): Promise<DataFrame> {
+  runQuery(request: Partial<AstraQuery>): Promise<DataFrame> {
     return new Promise((resolve) => {
       const req = {
         targets: [{ ...request, refId: request.refId || uniqueId() }],
-      } as DataQueryRequest<SQLQuery>;
+      } as DataQueryRequest<AstraQuery>;
       this.query(req).subscribe((res: DataQueryResponse) => {
         resolve(res.data[0] || { fields: [] });
       });
@@ -178,7 +179,7 @@ export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
     }
 
     const args = {
-      getColumns: { current: (query: SQLQuery) => fetchColumns(db, query) },
+      getColumns: { current: (query: AstraQuery) => fetchColumns(db, query) },
       getTables: { current: (dataset?: string) => fetchTables(db, { dataset }) },
       fetchMeta: { current: (path?: string) => this.fetchMeta(path) },
       getFunctions: { current: () => getFunctions() },
@@ -194,8 +195,8 @@ export class DataSource extends DataSourceWithBackend<SQLQuery, AstraSettings> {
     return {
       datasets: () => this.fetchDatasets(),
       tables: (dataset?: string) => this.fetchTables(dataset),
-      fields: (query: SQLQuery) => this.fetchFields(query),
-      validateQuery: (query: SQLQuery, range?: TimeRange) =>
+      fields: (query: AstraQuery) => this.fetchFields(query),
+      validateQuery: (query: AstraQuery, range?: TimeRange) =>
         Promise.resolve({ query, error: '', isError: false, isValid: true }),
       dsID: () => this.id,
       lookup: (path?: string) => this.fetchMeta(path),

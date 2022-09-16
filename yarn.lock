@@ -11178,7 +11178,7 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-"plugin-ui@https://github.com/grafana/plugin-ui":
+"plugin-ui@https://github.com/grafana/plugin-ui#0.1.4":
   version "0.1.4"
   resolved "https://github.com/grafana/plugin-ui#1eae8ea1d2c1a8dbdc693bdf873c4b201be956bc"
   dependencies:
