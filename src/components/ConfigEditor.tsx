@@ -5,7 +5,7 @@ import type { AstraSettings, SecureSettings } from '../types';
 
 const { SecretFormField, FormField } = LegacyForms;
 
-interface Props extends DataSourcePluginOptionsEditorProps<AstraSettings> { }
+interface Props extends DataSourcePluginOptionsEditorProps<AstraSettings> {}
 
 export const ConfigEditor = (props: Props) => {
   const onUriChange = (event: ChangeEvent<HTMLInputElement>) => {
