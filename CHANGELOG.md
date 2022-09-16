@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0
+
+- **Feature** - Add query builder
+
 ## 0.0.2
 
 - **Bug Fix** - Fixed a bug where null values in result causing panic
