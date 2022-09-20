@@ -8,9 +8,22 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
+type AuthType uint8
+
+const (
+	AuthTypeToken AuthType = iota
+	AuthTypeCredentials
+)
+
 type Settings struct {
-	URI   string `json:"uri"`
-	Token string `json:"token"`
+	URI          string   `json:"uri"`
+	Token        string   `json:"token"`
+	GRPCEndpoint string   `json:"grpcEndpoint"`
+	AuthEndpoint string   `json:"authEndpoint"`
+	UserName     string   `json:"user"`
+	Password     string   `json:"password"`
+	Secure       bool     `json:"secure"`
+	AuthKind     AuthType `json:"authKind"`
 }
 
 func LoadSettings(config backend.DataSourceInstanceSettings) (Settings, error) {

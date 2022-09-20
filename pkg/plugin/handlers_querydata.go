@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 
@@ -98,12 +99,38 @@ func (d *AstraDatasource) connect() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	conn, err := grpc.DialContext(ctx, d.settings.URI, grpc.WithTransportCredentials(credentials.NewTLS(config)),
-		grpc.WithBlock(),
-		grpc.WithPerRPCCredentials(
-			auth.NewStaticTokenProvider(d.settings.Token),
-		),
-	)
+	var conn *grpc.ClientConn
+	var err error
+
+	if d.settings.AuthKind == models.AuthTypeToken {
+		conn, err = grpc.DialContext(ctx, d.settings.URI, grpc.WithTransportCredentials(credentials.NewTLS(config)),
+			grpc.WithBlock(),
+			grpc.WithPerRPCCredentials(
+				auth.NewStaticTokenProvider(d.settings.Token),
+			),
+		)
+	} else {
+		if d.settings.Secure {
+			config = &tls.Config{}
+			conn, err = grpc.DialContext(ctx, d.settings.GRPCEndpoint, grpc.WithTransportCredentials(credentials.NewTLS(config)),
+				grpc.WithBlock(),
+				grpc.WithPerRPCCredentials(
+					auth.NewTableBasedTokenProvider(
+						fmt.Sprintf("https://%s/v1/auth", d.settings.AuthEndpoint), d.settings.UserName, d.settings.Password,
+					),
+				),
+			)
+		} else {
+			conn, err = grpc.DialContext(ctx, d.settings.GRPCEndpoint, grpc.WithInsecure(), grpc.WithBlock(),
+				grpc.WithPerRPCCredentials(
+					auth.NewTableBasedTokenProviderUnsafe(
+						fmt.Sprintf("http://%s/v1/auth", d.settings.AuthEndpoint), d.settings.UserName, d.settings.Password,
+					),
+				),
+			)
+		}
+	}
+
 	if err != nil {
 		return err
 	}
