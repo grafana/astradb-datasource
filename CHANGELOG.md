@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0
+
+- **Feature** - Authenticate with Credentials
+
 ## 0.1.0
 
 - **Feature** - Add query builder
