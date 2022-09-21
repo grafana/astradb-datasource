@@ -7,5 +7,6 @@
   "javascript.format.enable": false,
   "go.testEnvVars": {
     "RUN_ASTRA_INTEGRATION_TESTS": "true",
+    "DOCKER_RUNNING": "true",
   },
 }

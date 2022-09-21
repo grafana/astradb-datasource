@@ -25,6 +25,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 var (
@@ -92,6 +93,12 @@ func setup() {
 		if err != nil {
 			log.Fatalf("Failed to get endpoint: %v", err)
 		}
+	}
+
+	_, dockerRunning := os.LookupEnv("DOCKER_RUNNING")
+	if dockerRunning {
+		grpcEndpoint = "localhost:8090"
+		authEndpoint = "localhost:8081"
 	}
 }
 
@@ -227,4 +234,34 @@ func createRemoteClient(t *testing.T) *client.StargateClient {
 	stargateClient, err := client.NewStargateClientWithConn(conn)
 	require.NoError(t, err)
 	return stargateClient
+}
+
+func TestConnectDocker(t *testing.T) {
+	grpcEndpoint = "localhost:8090"
+	authEndpoint = "localhost:8081"
+
+	// Create a context to add a timeout to the gRPC dial
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	conn, err := grpc.DialContext(ctx, grpcEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(),
+		grpc.WithPerRPCCredentials(
+			auth.NewTableBasedTokenProviderUnsafe(
+				fmt.Sprintf("http://%s/v1/auth", authEndpoint), "cassandra", "cassandra",
+			),
+		),
+	)
+	if err != nil {
+		log.Fatalf("error dialing connection %v", err)
+	}
+
+	stargateClient, err := client.NewStargateClientWithConn(conn)
+	if err != nil {
+		log.Fatalf("error creating client %v", err)
+	}
+	require.NoError(t, err)
+	require.NotNil(t, stargateClient)
+
+	err = conn.Close()
+	require.NoError(t, err)
 }
