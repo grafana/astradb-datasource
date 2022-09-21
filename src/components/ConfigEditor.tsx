@@ -6,12 +6,12 @@ import { css } from '@emotion/css';
 
 const { SecretFormField, FormField } = LegacyForms;
 
-interface Props extends DataSourcePluginOptionsEditorProps<AstraSettings> { }
+interface Props extends DataSourcePluginOptionsEditorProps<AstraSettings> {}
 
 export enum Connection {
   TOKEN = 0,
   CREDENTIALS = 1,
-};
+}
 
 const types = [
   { label: 'Token', value: Connection.TOKEN },
@@ -25,7 +25,6 @@ export const styles = {
 };
 
 export const ConfigEditor = (props: Props) => {
-
   const onSecureSettingChange = (setting: 'password' | 'token') => (event: ChangeEvent<HTMLInputElement>) => {
     const { onOptionsChange, options } = props;
     onOptionsChange({
@@ -36,14 +35,16 @@ export const ConfigEditor = (props: Props) => {
     });
   };
 
-  const onSettingChange = (setting: 'uri' | 'authEndpoint' | 'authKind' | 'grpcEndpoint' | 'user') => (event: ChangeEvent<HTMLInputElement>) => {
-    const { onOptionsChange, options } = props;
-    const jsonData = {
-      ...options.jsonData,
-      [setting]: event.target.value,
+  const onSettingChange =
+    (setting: 'uri' | 'authEndpoint' | 'authKind' | 'grpcEndpoint' | 'user') =>
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { onOptionsChange, options } = props;
+      const jsonData = {
+        ...options.jsonData,
+        [setting]: event.target.value,
+      };
+      onOptionsChange({ ...options, jsonData });
     };
-    onOptionsChange({ ...options, jsonData });
-  };
 
   const onReset = (setting: 'password' | 'token') => {
     const { onOptionsChange, options } = props;
@@ -76,7 +77,7 @@ export const ConfigEditor = (props: Props) => {
         <RadioButtonGroup options={types} value={kind} onChange={(v) => setConnectionType(v!)} size={'md'} />
       </div>
 
-      {kind === Connection.TOKEN &&
+      {kind === Connection.TOKEN && (
         <>
           <div className="gf-form">
             <FormField
@@ -104,9 +105,9 @@ export const ConfigEditor = (props: Props) => {
             </div>
           </div>
         </>
-      }
+      )}
 
-      {kind === Connection.CREDENTIALS &&
+      {kind === Connection.CREDENTIALS && (
         <>
           <div className="gf-form">
             <FormField
@@ -164,13 +165,11 @@ export const ConfigEditor = (props: Props) => {
             </div>
           </div>
         </>
-      }
-
+      )}
     </div>
   );
 };
 
 const asEvent = (value: string | number): ChangeEvent<HTMLInputElement> => {
-  return ({ target: { value } } as unknown) as ChangeEvent<HTMLInputElement>;
-}
-
+  return { target: { value } } as unknown as ChangeEvent<HTMLInputElement>;
+};

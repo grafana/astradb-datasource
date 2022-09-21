@@ -19,4 +19,4 @@ export interface SecureSettings {
 }
 //#endregion
 
-export interface AstraQuery extends SQLQuery { }
+export interface AstraQuery extends SQLQuery {}
