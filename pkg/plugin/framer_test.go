@@ -30,6 +30,9 @@ func TestFramer(t *testing.T) {
 	require.NoError(t, err)
 	assert.Nil(t, response.GetResultSet())
 
+	_, err = insertTestData(stargateClient)
+	require.NoError(t, err)
+
 	// read from table
 	query = &pb.Query{
 		Cql: "SELECT * FROM grafana.tempTable1",

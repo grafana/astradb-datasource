@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react';
-import { InlineLabel, LegacyForms, RadioButtonGroup } from '@grafana/ui';
-import type { DataSourcePluginOptionsEditorProps } from '@grafana/data';
+import { InlineLabel, LegacyForms, RadioButtonGroup, Checkbox, InlineFormLabel } from '@grafana/ui';
+import { DataSourcePluginOptionsEditorProps, onUpdateDatasourceJsonDataOptionChecked } from '@grafana/data';
 import type { AstraSettings, SecureSettings } from '../types';
+import { css } from '@emotion/css';
 
 const { SecretFormField, FormField } = LegacyForms;
 
@@ -16,6 +17,12 @@ const types = [
   { label: 'Token', value: Connection.TOKEN },
   { label: 'Credentials', value: Connection.CREDENTIALS },
 ];
+
+export const styles = {
+  check: css`
+    margin-top: 5px;
+  `,
+};
 
 export const ConfigEditor = (props: Props) => {
 
@@ -75,7 +82,7 @@ export const ConfigEditor = (props: Props) => {
             <FormField
               label="URI"
               labelWidth={6}
-              inputWidth={20}
+              inputWidth={30}
               onChange={(v) => onSettingChange('uri')(v)}
               value={jsonData.uri || ''}
               placeholder="$ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443"
@@ -90,7 +97,7 @@ export const ConfigEditor = (props: Props) => {
                 label="Token"
                 placeholder="AstraCS:xxxxx"
                 labelWidth={6}
-                inputWidth={20}
+                inputWidth={30}
                 onReset={() => onReset('token')}
                 onChange={(v) => onSecureSettingChange('token')(v)}
               />
@@ -104,7 +111,7 @@ export const ConfigEditor = (props: Props) => {
           <div className="gf-form">
             <FormField
               label="GRPC Endpoint"
-              labelWidth={6}
+              labelWidth={7}
               inputWidth={20}
               onChange={(v) => onSettingChange('grpcEndpoint')(v)}
               value={jsonData.grpcEndpoint || ''}
@@ -114,7 +121,7 @@ export const ConfigEditor = (props: Props) => {
           <div className="gf-form">
             <FormField
               label="Auth Endpoint"
-              labelWidth={6}
+              labelWidth={7}
               inputWidth={20}
               onChange={(v) => onSettingChange('authEndpoint')(v)}
               value={jsonData.authEndpoint || ''}
@@ -124,7 +131,7 @@ export const ConfigEditor = (props: Props) => {
           <div className="gf-form">
             <FormField
               label="User Name"
-              labelWidth={6}
+              labelWidth={7}
               inputWidth={20}
               onChange={(v) => onSettingChange('user')(v)}
               value={jsonData.user || ''}
@@ -138,10 +145,21 @@ export const ConfigEditor = (props: Props) => {
                 value={secureJsonData.password || ''}
                 label="Password"
                 placeholder="xxxxx"
-                labelWidth={6}
+                labelWidth={7}
                 inputWidth={20}
                 onReset={() => onReset('password')}
                 onChange={(v) => onSecureSettingChange('password')(v)}
+              />
+            </div>
+          </div>
+          <div className="gf-form">
+            <InlineFormLabel width={7}>Secure</InlineFormLabel>
+            <div className={styles.check}>
+              <Checkbox
+                value={jsonData.secure}
+                onChange={onUpdateDatasourceJsonDataOptionChecked(props, 'secure')}
+                label=""
+                size={10}
               />
             </div>
           </div>

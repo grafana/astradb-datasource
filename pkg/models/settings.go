@@ -37,11 +37,21 @@ func LoadSettings(config backend.DataSourceInstanceSettings) (Settings, error) {
 		return settings, nil
 	}
 
-	uri := settings.URI
-	if err := mapstructure.Decode(config.DecryptedSecureJSONData, &settings); err != nil {
-		return settings, fmt.Errorf("could not unmarshal secure settings: %w", err)
+	if settings.AuthKind == AuthTypeToken {
+		secureSettings := Settings{}
+		if err := mapstructure.Decode(config.DecryptedSecureJSONData, &secureSettings); err != nil {
+			return settings, fmt.Errorf("could not unmarshal secure settings: %w", err)
+		}
+		settings.Token = secureSettings.Token
 	}
-	settings.URI = uri
+
+	if settings.AuthKind == AuthTypeCredentials {
+		secureSettings := Settings{}
+		if err := mapstructure.Decode(config.DecryptedSecureJSONData, &secureSettings); err != nil {
+			return settings, fmt.Errorf("could not unmarshal secure settings: %w", err)
+		}
+		settings.Password = secureSettings.Password
+	}
 
 	return settings, nil
 }
