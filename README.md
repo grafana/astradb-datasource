@@ -19,10 +19,21 @@ Once the plugin is installed on your Grafana instance, follow [these
 instructions](https://grafana.com/docs/grafana/latest/datasources/add-a-data-source/)
 to add a new Astra DB data source, and enter configuration options.
 
+### Connect to Astra DB with authentication token
 | Key   | Description                                                                                                                                                                                                                                 |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | URI   | Provide an Astra DB URI in the following format: `$ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443`                                                                                                                              |
 | Token | Provide an Astra DB token in the following format: `AstraCS:xxxxx`. See [Manage Application Tokens](https://docs.datastax.com/en/astra-serverless/docs/manage/org/managing-org.html#_manage_application_tokens) for more on authentication. |
+
+### Connect to Cassandra with credentials ( requires [Stargate](https://stargate.io/docs/latest/core-index.html) )
+
+| Key   | Description                                                                                                                                                                                                                                 |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GRPC Endpoint | GRPC Endpoint to Stargate.  Example:  `localhost:8090` |
+| Auth Endpoint | Authentication Endpoint to Stargate.  Example:  `localhost:8081` |
+| User Name | Cassandra database user name |
+| Password | Cassandra database password |
+| Secure | Check if secure connection is required |
 
 ### Configure via provisioning file
 
