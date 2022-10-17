@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import type { QueryEditorProps } from '@grafana/data';
 import type { DataSource } from '../datasource';
 import type { AstraQuery, AstraSettings } from '../types';
-import { SqlQueryEditor, SqlDatasource } from 'plugin-ui';
+import { SqlQueryEditor, SqlDatasource } from '@grafana/plugin-ui';
 // @ts-ignore
 import AutoSizer from 'react-virtualized-auto-sizer';
 

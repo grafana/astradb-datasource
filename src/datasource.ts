@@ -24,7 +24,7 @@ import { map } from 'rxjs/operators';
 import type { AstraQuery, AstraSettings } from './types';
 import { CompletionItemKind, LanguageCompletionProvider } from '@grafana/experimental';
 import { fetchColumns, fetchTables, getFunctions, getSqlCompletionProvider } from './components/sqlCompletionProvider';
-import { QueryFormat, DB } from 'plugin-ui';
+import { QueryFormat, DB } from '@grafana/plugin-ui';
 
 export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings> {
   annotations = {};

@@ -13,7 +13,7 @@ import {
 } from '@grafana/experimental';
 import { AGGREGATE_FNS, OPERATORS } from './constants';
 import { FUNCTIONS } from './functions';
-import type { Aggregate, DB, MetaDefinition } from 'plugin-ui';
+import type { Aggregate, DB, MetaDefinition } from '@grafana/plugin-ui';
 import type { SelectableValue } from '@grafana/data';
 import type { AstraQuery } from 'types';
 
