@@ -1,5 +1,5 @@
 import { DataSourceJsonData } from '@grafana/data';
-import { SQLQuery } from 'plugin-ui';
+import { SQLQuery } from '@grafana/plugin-ui';
 
 //#region Settings
 export interface AstraSettings extends DataSourceJsonData {
