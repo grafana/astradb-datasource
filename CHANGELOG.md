@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.2
+
+- **Chore** - Updated with the latest version of Go (1.19.4)
+- **Chore** - Updated with the latest Grafana backend dependencies
+
+## 0.2.1
+
+- **Chore** - Update docs with credentials based connection
+
 ## 0.2.0
 
 - **Feature** - Authenticate with Credentials
