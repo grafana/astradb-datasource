@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.2
+## 0.3.0
 
 - **Chore** - Updated with the latest version of Go (1.20.3)
 
