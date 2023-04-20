@@ -66,7 +66,6 @@ export const customStatementPlacement: StatementPlacementProvider = () => [
           (currentToken?.is(TokenType.Whitespace) && currentToken?.previous?.is(TokenType.Delimiter, '.')) ||
           (currentToken?.is(TokenType.Identifier) && currentToken.value.endsWith('.'))
       );
-      console.log(is);
       return is;
     },
   },
