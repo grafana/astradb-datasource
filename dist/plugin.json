@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "datasource",
+  "name": "AstraDB",
+  "id": "grafana-astradb-datasource",
+  "metrics": true,
+  "backend": true,
+  "annotations": true,
+  "executable": "gpx_astradb",
+  "category": "sql",
+  "info": {
+    "description": "AstraDB datasource plugin for Grafana",
+    "author": {
+      "name": "Grafana Labs"
+    },
+    "keywords": ["astra"],
+    "logos": {
+      "small": "img/astra-logo.svg",
+      "large": "img/astra-logo.svg"
+    },
+    "links": [
+      {
+        "name": "Docs",
+        "url": "https://grafana.com/grafana/plugins/grafana-astradb-datasource/"
+      },
+      {
+        "name": "License",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      }
+    ],
+    "screenshots": [],
+    "version": "0.3.1",
+    "updated": "2023-05-04"
+  },
+  "dependencies": {
+    "grafanaVersion": "8.4.7",
+    "grafanaDependency": ">=8.4.7",
+    "plugins": []
+  }
+}
