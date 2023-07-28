@@ -4,6 +4,7 @@
   "name": "AstraDB",
   "id": "grafana-astradb-datasource",
   "metrics": true,
+  "logs": true,
   "backend": true,
   "annotations": true,
   "executable": "gpx_astradb",
