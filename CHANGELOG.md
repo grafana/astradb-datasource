@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+- **Chore** - Security update.
+
 ## 0.3.1
 
 - **Chore** - Build with latest Go version 1.20.4
