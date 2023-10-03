@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/grafana/astradb-datasource/pkg/models"
@@ -16,7 +17,7 @@ var (
 	_ instancemgmt.InstanceDisposer = (*AstraDatasource)(nil)
 )
 
-func NewDatasource(s backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
+func NewDatasource(ctx context.Context, s backend.DataSourceInstanceSettings) (instancemgmt.Instance, error) {
 	settings, err := models.LoadSettings(s)
 	if err != nil {
 		return nil, fmt.Errorf("error reading settings: %s", err.Error())
