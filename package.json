@@ -36,7 +36,7 @@
     "tslib": "2.5.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
+    "@babel/core": "^7.23.0",
     "@grafana/e2e": "8.4.7",
     "@grafana/e2e-selectors": "8.4.7",
     "@grafana/eslint-config": "^6.0.0",
