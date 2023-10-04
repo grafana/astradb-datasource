@@ -27,7 +27,7 @@
     "@grafana/data": "8.4.7",
     "@grafana/experimental": "^0.0.2-canary.39",
     "@grafana/plugin-ui": "0.4.0",
-    "@grafana/runtime": "8.4.7",
+    "@grafana/runtime": "10.1.4",
     "@grafana/ui": "8.4.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
