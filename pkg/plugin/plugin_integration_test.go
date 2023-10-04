@@ -173,7 +173,7 @@ func runQuery(t *testing.T, cql string) *backend.DataResponse {
 	params := fmt.Sprintf(`{ "uri": "%s" }`, astra_uri)
 	secure := map[string]string{"token": token}
 	settings := backend.DataSourceInstanceSettings{JSONData: []byte(params), DecryptedSecureJSONData: secure}
-	ds, err := plugin.NewDatasource(settings)
+	ds, err := plugin.NewDatasource(context.Background(), settings)
 	assert.Nil(t, err)
 	if err != nil {
 		return nil
@@ -203,7 +203,7 @@ func runQuery(t *testing.T, cql string) *backend.DataResponse {
 }
 
 func createClient(t *testing.T) *client.StargateClient {
-	conn, err := grpc.Dial(grpcEndpoint, grpc.WithInsecure(), grpc.WithBlock(),
+	conn, err := grpc.Dial(grpcEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(),
 		grpc.WithPerRPCCredentials(
 			auth.NewTableBasedTokenProviderUnsafe(
 				fmt.Sprintf("http://%s/v1/auth", authEndpoint), "cassandra", "cassandra",

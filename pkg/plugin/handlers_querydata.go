@@ -17,6 +17,7 @@ import (
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataRequest) (*backend.QueryDataResponse, error) {
@@ -121,7 +122,7 @@ func (d *AstraDatasource) connect() error {
 				),
 			)
 		} else {
-			conn, err = grpc.DialContext(ctx, d.settings.GRPCEndpoint, grpc.WithInsecure(), grpc.WithBlock(),
+			conn, err = grpc.DialContext(ctx, d.settings.GRPCEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(),
 				grpc.WithPerRPCCredentials(
 					auth.NewTableBasedTokenProviderUnsafe(
 						fmt.Sprintf("http://%s/v1/auth", d.settings.AuthEndpoint), d.settings.UserName, d.settings.Password,
