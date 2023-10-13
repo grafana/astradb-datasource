@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
 	github.com/docker/go-connections v0.4.0
-	github.com/grafana/grafana-plugin-sdk-go v0.180.0
+	github.com/grafana/grafana-plugin-sdk-go v0.181.0
 	github.com/stargate/stargate-grpc-go-client v0.0.0-20220822130422-9a1c6261d4fa
 	github.com/stretchr/testify v1.8.4
 	github.com/testcontainers/testcontainers-go v0.25.0
