@@ -53,7 +53,7 @@
     "@types/react": "17.0.22",
     "@types/testing-library__jest-dom": "^5.9.5",
     "copy-webpack-plugin": "^11.0.0",
-    "cspell": "^7.3.8",
+    "cspell": "^8.0.0",
     "css-loader": "^6.7.3",
     "cypress": "7.7.0",
     "eslint-plugin-deprecation": "^2.0.0",
