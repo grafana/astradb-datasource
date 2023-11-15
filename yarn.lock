@@ -2232,6 +2232,78 @@
     uplot "1.6.26"
     uuid "9.0.0"
 
+"@grafana/ui@10.2.1":
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-10.2.1.tgz#b968752cd912c2c6a53f3eb135bb17cf5d3a4f5d"
+  integrity sha512-RrI3BiukxnC5PtL1Gw7LkIVvonc/AeM/2f0Gry8SpZJlao05gME9XyxXU18LlsfqMzFxrioJOMjf6BfU+r48kQ==
+  dependencies:
+    "@emotion/css" "11.11.2"
+    "@emotion/react" "11.11.1"
+    "@grafana/data" "10.2.1"
+    "@grafana/e2e-selectors" "10.2.1"
+    "@grafana/faro-web-sdk" "1.2.1"
+    "@grafana/schema" "10.2.1"
+    "@leeoniya/ufuzzy" "1.0.8"
+    "@monaco-editor/react" "4.6.0"
+    "@popperjs/core" "2.11.8"
+    "@react-aria/button" "3.8.0"
+    "@react-aria/dialog" "3.5.3"
+    "@react-aria/focus" "3.13.0"
+    "@react-aria/menu" "3.10.0"
+    "@react-aria/overlays" "3.15.0"
+    "@react-aria/utils" "3.18.0"
+    "@react-stately/menu" "3.5.3"
+    ansicolor "1.1.100"
+    calculate-size "1.1.1"
+    classnames "2.3.2"
+    core-js "3.33.0"
+    d3 "7.8.5"
+    date-fns "2.30.0"
+    hoist-non-react-statics "3.3.2"
+    i18next "^22.0.0"
+    i18next-browser-languagedetector "^7.0.2"
+    immutable "4.3.1"
+    is-hotkey "0.2.0"
+    jquery "3.7.0"
+    lodash "4.17.21"
+    micro-memoize "^4.1.2"
+    moment "2.29.4"
+    monaco-editor "0.34.0"
+    ol "7.4.0"
+    prismjs "1.29.0"
+    rc-cascader "3.18.1"
+    rc-drawer "6.5.2"
+    rc-slider "10.3.1"
+    rc-time-picker "^3.7.3"
+    rc-tooltip "6.0.1"
+    react-beautiful-dnd "13.1.1"
+    react-calendar "4.3.0"
+    react-colorful "5.6.1"
+    react-custom-scrollbars-2 "4.5.0"
+    react-dropzone "14.2.3"
+    react-highlight-words "0.20.0"
+    react-hook-form "7.5.3"
+    react-i18next "^12.0.0"
+    react-inlinesvg "3.0.2"
+    react-loading-skeleton "3.3.1"
+    react-popper "2.3.0"
+    react-popper-tooltip "4.4.2"
+    react-router-dom "5.3.3"
+    react-select "5.7.4"
+    react-select-event "^5.1.0"
+    react-table "7.8.0"
+    react-transition-group "4.4.5"
+    react-use "17.4.0"
+    react-window "1.8.9"
+    rxjs "7.8.1"
+    slate "0.47.9"
+    slate-plain-serializer "0.7.13"
+    slate-react "0.22.10"
+    tinycolor2 "1.6.0"
+    tslib "2.6.0"
+    uplot "1.6.27"
+    uuid "9.0.0"
+
 "@grafana/ui@9.5.13", "@grafana/ui@^9.5.13":
   version "9.5.13"
   resolved "https://registry.yarnpkg.com/@grafana/ui/-/ui-9.5.13.tgz#276a15e5388aaa263c6988f94d378bee3347e51d"
@@ -2886,12 +2958,12 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@popperjs/core@2.11.6", "@popperjs/core@^2.11.5":
+"@popperjs/core@2.11.6":
   version "2.11.6"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@popperjs/core@2.11.8":
+"@popperjs/core@2.11.8", "@popperjs/core@^2.11.5":
   version "2.11.8"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
@@ -4947,15 +5019,10 @@ cjs-module-lexer@^1.0.0:
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.3.tgz#6c370ab19f8a3394e318fe682686ec0ac684d107"
   integrity sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==
 
-classnames@2.3.2, classnames@^2.3.2:
+classnames@2.3.2, classnames@2.x, classnames@^2.2.1, classnames@^2.2.5, classnames@^2.2.6, classnames@^2.3.1, classnames@^2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
-
-classnames@2.x, classnames@^2.2.1, classnames@^2.2.5, classnames@^2.2.6, classnames@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
-  integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
 
 clean-stack@^2.0.0:
   version "2.2.0"
