@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- **Chore** - Bump github.com/grafana/grafana-plugin-sdk-go from 0.180.0 to 0.196.0
+- **Chore** - Other dependency updates
+
 ## 0.3.2
 
 - **Chore** - Security update.
