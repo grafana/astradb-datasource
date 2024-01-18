@@ -2080,10 +2080,10 @@
     ua-parser-js "^1.0.32"
     web-vitals "^3.1.1"
 
-"@grafana/plugin-ui@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@grafana/plugin-ui/-/plugin-ui-0.6.0.tgz#28903f7d446c028ca3a8d18b889431088c7bc515"
-  integrity sha512-uZ8ilUoOqd/OJcpD7mdjFu9rqxHweQ4KoU9+ksFwAKFJP3DakhFFhaU4LWtnjkkE1SIw+sL38zr/UL+UGuGJ1A==
+"@grafana/plugin-ui@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@grafana/plugin-ui/-/plugin-ui-0.6.1.tgz#54de06b435cd6cd1670a31441b432a38ce17a8c9"
+  integrity sha512-YBjRwoiniXHxv+9RP3KnB0giawLPZEWEBJjVQlC9gfjdiyh4YOLQ1iqC3mmRwVtV4QOQNNBwfcAOZj//WVvpuQ==
   dependencies:
     "@changesets/read" "^0.5.9"
     "@changesets/write" "^0.2.3"
@@ -2093,6 +2093,7 @@
     "@grafana/runtime" "^9.5.13"
     "@grafana/tsconfig" "1.2.0-rc1"
     "@grafana/ui" "^9.5.13"
+    "@testing-library/user-event" "^12.8.3"
     chance "^1.1.7"
     fast-glob "^3.3.1"
     lodash "^4.17.21"
@@ -3627,6 +3628,13 @@
     "@babel/runtime" "^7.12.5"
     "@testing-library/dom" "^8.0.0"
     "@types/react-dom" "<18.0.0"
+
+"@testing-library/user-event@^12.8.3":
+  version "12.8.3"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-12.8.3.tgz#1aa3ed4b9f79340a1e1836bc7f57c501e838704a"
+  integrity sha512-IR0iWbFkgd56Bu5ZI/ej8yQwrkCv8Qydx6RzwbKz9faXazR/+5tvYKsZQgyXJiwgpcva127YO6JcWy7YlCfofQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 "@testing-library/user-event@^14.5.1":
   version "14.5.1"
@@ -10569,15 +10577,10 @@ react-use@17.4.0:
     ts-easing "^0.2.0"
     tslib "^2.1.0"
 
-react-virtualized-auto-sizer@^1.0.20:
+react-virtualized-auto-sizer@^1.0.20, react-virtualized-auto-sizer@^1.0.6:
   version "1.0.20"
   resolved "https://registry.yarnpkg.com/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.20.tgz#d9a907253a7c221c52fa57dc775a6ef40c182645"
   integrity sha512-OdIyHwj4S4wyhbKHOKM1wLSj/UDXm839Z3Cvfg2a9j+He6yDa6i5p0qQvEiCnyQlGO/HyfSnigQwuxvYalaAXA==
-
-react-virtualized-auto-sizer@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.6.tgz#66c5b1c9278064c5ef1699ed40a29c11518f97ca"
-  integrity sha512-7tQ0BmZqfVF6YYEWcIGuoR3OdYe8I/ZFbNclFlGOC3pMqunkYF/oL30NCjSGl9sMEb17AnzixDz98Kqc3N76HQ==
 
 react-window@1.8.8:
   version "1.8.8"
