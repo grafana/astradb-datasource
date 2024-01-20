@@ -3,14 +3,12 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { LanguageCompletionProvider, SQLEditor } from '@grafana/experimental';
 
 import { formatSQL } from '../utils/formatSql';
-import type { DataSource } from 'datasource';
 import type { AstraQuery } from 'types';
 
 import { css } from '@emotion/css';
 
 type Props = {
   query: AstraQuery;
-  datasource: DataSource;
   onRunQuery: () => void;
   onChange: (value: AstraQuery, processQuery: boolean) => void;
   children?: (props: { formatQuery: () => void }) => React.ReactNode;
