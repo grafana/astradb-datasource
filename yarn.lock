@@ -2002,15 +2002,6 @@
     tslib "2.6.0"
     typescript "4.8.4"
 
-"@grafana/e2e-selectors@10.2.3":
-  version "10.2.3"
-  resolved "https://registry.yarnpkg.com/@grafana/e2e-selectors/-/e2e-selectors-10.2.3.tgz#de89ee7b9262a600539a5a72440d962e0c60e92e"
-  integrity sha512-As8ZAEi0hqxbCKEnetVVSQlUBWBQPdm1995zraPqHbrekfV862T+HUemuOveTnA6NwNl+ocs8thKNgxQAcExtg==
-  dependencies:
-    "@grafana/tsconfig" "^1.2.0-rc1"
-    tslib "2.6.0"
-    typescript "5.2.2"
-
 "@grafana/e2e-selectors@10.3.1":
   version "10.3.1"
   resolved "https://registry.yarnpkg.com/@grafana/e2e-selectors/-/e2e-selectors-10.3.1.tgz#b13676250ee5d80a7f65a58269f0c3a2d63397be"
@@ -2029,16 +2020,16 @@
     tslib "2.5.0"
     typescript "4.8.4"
 
-"@grafana/e2e@10.2.3":
-  version "10.2.3"
-  resolved "https://registry.yarnpkg.com/@grafana/e2e/-/e2e-10.2.3.tgz#56ab92ba3f4938f374a6a5b7125d975eccc834cf"
-  integrity sha512-Cvvj3/fYTQ56Z8OVdcESa4jpHq4KhDq0RqAZpultoBp9OvhJ9vsIR6yeUQClKNNJVdm2RILWT8qJcnq0sx7AGQ==
+"@grafana/e2e@10.3.1":
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/@grafana/e2e/-/e2e-10.3.1.tgz#65dc04d04f00c2b1b0a1ae527c30e2272c02aeaa"
+  integrity sha512-yJt11kkt7HiN3xjZsQLpzzajpGX/j3zK8G76ehxYYaMlLKBwUwo7foW7XF+DX8yiIMhsM/v9aW53Yjifjc0tiw==
   dependencies:
     "@babel/core" "7.23.2"
     "@babel/preset-env" "7.23.2"
     "@cypress/webpack-preprocessor" "5.17.1"
-    "@grafana/e2e-selectors" "10.2.3"
-    "@grafana/schema" "10.2.3"
+    "@grafana/e2e-selectors" "10.3.1"
+    "@grafana/schema" "10.3.1"
     "@grafana/tsconfig" "^1.2.0-rc1"
     "@mochajs/json-file-reporter" "^1.2.0"
     babel-loader "9.1.3"
@@ -2205,13 +2196,6 @@
   version "10.2.2"
   resolved "https://registry.yarnpkg.com/@grafana/schema/-/schema-10.2.2.tgz#7bcb44ffccd72c2a30f99c85bcc188dd4bddfd19"
   integrity sha512-VDMO2Ev/mSsQxOkwo2u3uQocoyfxJGaGTfAMRGgeejmYJVQsK3Ka6/ImGmqvCViE5uade5/rx7kKfLnj6Yc0Yg==
-  dependencies:
-    tslib "2.6.0"
-
-"@grafana/schema@10.2.3":
-  version "10.2.3"
-  resolved "https://registry.yarnpkg.com/@grafana/schema/-/schema-10.2.3.tgz#a33db1c890da6d7d4cbb9d749ee3a070a1ba7d2b"
-  integrity sha512-D/fcdvRy58uBlw6JljItgzzh+ZCazxRgZm61RZ6wQjuk810sW+P9D9J5aDy8z5qWAzDrnroB5/+uMiNwdk4CBA==
   dependencies:
     tslib "2.6.0"
 
