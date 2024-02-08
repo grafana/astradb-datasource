@@ -2065,19 +2065,10 @@
     eslint-plugin-react-hooks "4.6.0"
     typescript "4.8.4"
 
-"@grafana/experimental@1.7.4":
-  version "1.7.4"
-  resolved "https://registry.yarnpkg.com/@grafana/experimental/-/experimental-1.7.4.tgz#5b5efe89abf38b1d3358251148d42b9111de539e"
-  integrity sha512-uYkv9HRx+cqJRktsY43ApG0+kgG4fNR8lv+bkaFvGyCg46dcTeNqokujoPnHp6lt9MEn+0Y3jKEQbvCXjcz2bA==
-  dependencies:
-    "@types/uuid" "^8.3.3"
-    semver "^7.5.4"
-    uuid "^8.3.2"
-
-"@grafana/experimental@1.7.9":
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/@grafana/experimental/-/experimental-1.7.9.tgz#6d4f2a72ff748ea822ec49be8eaaecdb38a0acdc"
-  integrity sha512-AOXqkOZUmkG8Bua3nUrTs7ILsEyeAZiww5COZf4Mi1KZIES4Oeov0/NdiDUXiRcq+dzPdXnOlyHP2SPcL/UrzA==
+"@grafana/experimental@1.7.10":
+  version "1.7.10"
+  resolved "https://registry.yarnpkg.com/@grafana/experimental/-/experimental-1.7.10.tgz#e3903809c263b9e36caf27aa0a37865bcc17d772"
+  integrity sha512-kmTZ6YGCa7zDf7Vq/jvr9G9Z2Af0WGueTMrm9TQ9z17YcZ8/RtsTL2irNwcNdvsdRjpP49yanZ2QWZ00y8J+AA==
   dependencies:
     "@types/uuid" "^8.3.3"
     lodash "^4.17.21"
@@ -2085,6 +2076,15 @@
     react-beautiful-dnd "^13.1.1"
     react-popper-tooltip "^4.4.2"
     react-use "^17.4.2"
+    semver "^7.5.4"
+    uuid "^8.3.2"
+
+"@grafana/experimental@1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@grafana/experimental/-/experimental-1.7.4.tgz#5b5efe89abf38b1d3358251148d42b9111de539e"
+  integrity sha512-uYkv9HRx+cqJRktsY43ApG0+kgG4fNR8lv+bkaFvGyCg46dcTeNqokujoPnHp6lt9MEn+0Y3jKEQbvCXjcz2bA==
+  dependencies:
+    "@types/uuid" "^8.3.3"
     semver "^7.5.4"
     uuid "^8.3.2"
 
