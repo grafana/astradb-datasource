@@ -2011,6 +2011,15 @@
     tslib "2.6.0"
     typescript "5.2.2"
 
+"@grafana/e2e-selectors@10.3.3":
+  version "10.3.3"
+  resolved "https://registry.yarnpkg.com/@grafana/e2e-selectors/-/e2e-selectors-10.3.3.tgz#3eaf6986ea10e58a6c776392ca6cc475ba373097"
+  integrity sha512-VsvdMldC3ARQp5axUAHWVHpUoYwZSTf9wfcT21zh+hxGbuiPbdDS9VqZFKpwVtJtHGjtvnKBtWKODD7ArQyOOw==
+  dependencies:
+    "@grafana/tsconfig" "^1.2.0-rc1"
+    tslib "2.6.0"
+    typescript "5.2.2"
+
 "@grafana/e2e-selectors@9.5.13", "@grafana/e2e-selectors@^9.5.13":
   version "9.5.13"
   resolved "https://registry.yarnpkg.com/@grafana/e2e-selectors/-/e2e-selectors-9.5.13.tgz#e347f9e15b38f850bbde8e9c82714dc6ec5bbfac"
@@ -2020,16 +2029,16 @@
     tslib "2.5.0"
     typescript "4.8.4"
 
-"@grafana/e2e@10.3.1":
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/@grafana/e2e/-/e2e-10.3.1.tgz#65dc04d04f00c2b1b0a1ae527c30e2272c02aeaa"
-  integrity sha512-yJt11kkt7HiN3xjZsQLpzzajpGX/j3zK8G76ehxYYaMlLKBwUwo7foW7XF+DX8yiIMhsM/v9aW53Yjifjc0tiw==
+"@grafana/e2e@10.3.3":
+  version "10.3.3"
+  resolved "https://registry.yarnpkg.com/@grafana/e2e/-/e2e-10.3.3.tgz#9d71b937124f4c0ce461ce8a31731284159ad742"
+  integrity sha512-T6AvGcMM7sy9dOPVCBGwv5PTBDnqVUuO1wcZ6gMj12Kyg5LfjJQ8tidiXvDl5Pj0sz/0bwmzcIMgZSn3nwJXBQ==
   dependencies:
     "@babel/core" "7.23.2"
     "@babel/preset-env" "7.23.2"
     "@cypress/webpack-preprocessor" "5.17.1"
-    "@grafana/e2e-selectors" "10.3.1"
-    "@grafana/schema" "10.3.1"
+    "@grafana/e2e-selectors" "10.3.3"
+    "@grafana/schema" "10.3.3"
     "@grafana/tsconfig" "^1.2.0-rc1"
     "@mochajs/json-file-reporter" "^1.2.0"
     babel-loader "9.1.3"
@@ -2203,6 +2212,13 @@
   version "10.3.1"
   resolved "https://registry.yarnpkg.com/@grafana/schema/-/schema-10.3.1.tgz#c8b43c064b13dfb02e0a4fc604593d370a412845"
   integrity sha512-newt0qGm3ZNQxOFApYBzyTLh0HTslWEfkp+DiKLK/W0Fyxl+RlSYf99gh7gv+/QlIa0wpQRaGIknSlI85Ho7yA==
+  dependencies:
+    tslib "2.6.0"
+
+"@grafana/schema@10.3.3":
+  version "10.3.3"
+  resolved "https://registry.yarnpkg.com/@grafana/schema/-/schema-10.3.3.tgz#fee2a07d087a7c6c5ea0a92d64168bf20bbf5f43"
+  integrity sha512-u5jIBZe6lLsGoFmERJZ35+NTP72gJYYKgUKdiO48l78uSFAmPFgR/t2MeNlY5wJTRgi54GB7giMwzrXnM4qlFg==
   dependencies:
     tslib "2.6.0"
 
