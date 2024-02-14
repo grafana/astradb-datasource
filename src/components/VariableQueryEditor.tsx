@@ -1,16 +1,14 @@
-import type { DataSource } from 'datasource';
 import React, { useState } from 'react';
 import type { AstraQuery } from 'types';
 import { CQLEditor } from './CQLEditor';
 
 export type CqlVariableQueryEditorProps = {
-  datasource: DataSource;
   onChange: (query: AstraQuery, definition: string) => void;
   query: AstraQuery;
 };
 
 export const VariableQueryEditor = (props: CqlVariableQueryEditorProps) => {
-  const { datasource, onChange } = props;
+  const { onChange } = props;
   const [cql, setCql] = useState<string>(props.query.rawSql || '');
   const [query, setQuery] = useState(props.query);
   const handleChange = (query: AstraQuery) => {
@@ -21,6 +19,6 @@ export const VariableQueryEditor = (props: CqlVariableQueryEditorProps) => {
     onChange({ ...query, rawSql: cql }, `Query: ${cql}`);
   };
   return (
-    <CQLEditor datasource={datasource} onChange={handleChange} onRunQuery={onRun} query={{ ...query, rawSql: cql }} />
+    <CQLEditor onChange={handleChange} onRunQuery={onRun} query={{ ...query, rawSql: cql }} />
   );
 };
