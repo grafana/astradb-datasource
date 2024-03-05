@@ -54,6 +54,7 @@
     "typecheck",
     "vals",
     "VARCHAR",
-    "vectorator"
+    "vectorator",
+    "viewports"
   ]
 }
