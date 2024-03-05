@@ -34,3 +34,7 @@ cypress/screenshots/actual
 cypress/videos
 cypress/report.json
 __debug_bin
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
