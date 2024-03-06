@@ -1,77 +1,74 @@
 import { defineConfig, devices } from '@playwright/test';
+import path, { dirname } from 'path';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
+import { PluginOptions } from '@grafana/plugin-e2e';
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
-export default defineConfig({
-  testDir: './e2e',
-  /* Run tests in files in parallel */
+const testDirRoot = 'e2e/plugin-e2e/';
+
+export default defineConfig<PluginOptions>({
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`,
     trace: 'on-first-retry',
+    httpCredentials: {
+      username: 'admin',
+      password: 'admin',
+    },
+    provisioningRootDir: path.join(process.cwd(), process.env.PROV_DIR ?? 'conf/provisioning'),
   },
-
-  /* Configure projects for major browsers */
   projects: [
+    // Login to Grafana with admin user and store the cookie on disk for use in other tests
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'authenticate',
+      testDir: `${dirname(require.resolve('@grafana/plugin-e2e'))}/auth`,
+      testMatch: [/.*\.js/],
     },
-
+    // Login to Grafana with new user with viewer role and store the cookie on disk for use in other tests
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: 'createUserAndAuthenticate',
+      testDir: `${dirname(require.resolve('@grafana/plugin-e2e'))}/auth`,
+      testMatch: [/.*\.js/],
+      use: {
+        user: {
+          user: 'viewer',
+          password: 'password',
+          role: 'Viewer',
+        },
+      },
     },
-
+    // Run all tests in parallel using user with admin role
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      name: 'admin',
+      testDir: path.join(testDirRoot, '/plugin-e2e-api-tests/as-admin-user'),
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/admin.json',
+      },
+      dependencies: ['authenticate'],
     },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    // Run all tests in parallel using user with viewer role
+    {
+      name: 'viewer',
+      testDir: path.join(testDirRoot, '/plugin-e2e-api-tests/as-viewer-user'),
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/viewer.json',
+      },
+      dependencies: ['createUserAndAuthenticate'],
+    },
+    {
+      name: 'astradb',
+      testDir: path.join(testDirRoot, '/astradb'),
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/admin.json',
+      },
+      dependencies: ['authenticate'],
+    },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });

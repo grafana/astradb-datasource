@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "grafana_session",
+      "value": "06f02fdf49df39eeea96c5522f2e2b6c",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1712294487.414,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "grafana_session_expiry",
+      "value": "1709703082",
+      "domain": "localhost",
+      "path": "/",
+      "expires": 1712294487.414,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}

@@ -17,6 +17,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest-setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   testMatch: [
+    '<rootDir>/src/e2e/plugin-e2e/*.spec.ts',
     '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{spec,test,jest}.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{spec,test,jest}.{js,jsx,ts,tsx}',
