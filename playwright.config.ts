@@ -7,20 +7,6 @@ const testDirRoot = 'e2e/plugin-e2e/';
 
 export default defineConfig<PluginOptions>({
   fullyParallel: true,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
-  use: {
-    baseURL: `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`,
-    trace: 'on-first-retry',
-    httpCredentials: {
-      username: 'admin',
-      password: 'admin',
-    },
-    provisioningRootDir: path.join(process.cwd(), process.env.PROV_DIR ?? 'conf/provisioning'),
-  },
   projects: [
     // Login to Grafana with admin user and store the cookie on disk for use in other tests
     {

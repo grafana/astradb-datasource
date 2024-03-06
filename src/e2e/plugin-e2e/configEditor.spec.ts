@@ -1,14 +1,14 @@
 import { expect, test } from '@grafana/plugin-e2e';
 
-// import { formatExpectError } from '../errors';
+import { formatExpectError } from '../errors';
 
 test.describe('test createDataSourceConfigPage fixture, saveAndTest and toBeOK matcher', () => {
   test('invalid credentials should return an error', async ({ createDataSourceConfigPage, page }) => {
     const configPage = await createDataSourceConfigPage({ type: 'astradb-datasource' });
     await page.getByPlaceholder('http://localhost:9090').fill('http://localhost:9090');
     await expect(
-      configPage.saveAndTest()
-      // formatExpectError('Expected save data source config to fail when AstraDB server is not running')
+      configPage.saveAndTest(),
+      formatExpectError('Expected save data source config to fail when AstraDB server is not running')
     ).not.toBeOK();
   });
 
@@ -17,8 +17,8 @@ test.describe('test createDataSourceConfigPage fixture, saveAndTest and toBeOK m
     configPage.mockHealthCheckResponse({ status: 200 });
     await page.getByPlaceholder('http://localhost:9090').fill('http://localhost:9090');
     await expect(
-      configPage.saveAndTest()
-      // formatExpectError('Expected data source config to be successfully saved')
+      configPage.saveAndTest(),
+      formatExpectError('Expected data source config to be successfully saved')
     ).toBeOK();
   });
 });
@@ -28,8 +28,8 @@ test.describe('test data source with frontend only health check', () => {
     const configPage = await createDataSourceConfigPage({ type: 'testdata' });
     await configPage.saveAndTest({ skipWaitForResponse: true });
     await expect(
-      configPage
-      // formatExpectError('Expected data source config to display success alert after save')
+      configPage,
+      formatExpectError('Expected data source config to display success alert after save')
     ).toHaveAlert('success', { hasNotText: 'Datasource updated' });
   });
 });
