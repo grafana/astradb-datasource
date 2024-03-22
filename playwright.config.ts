@@ -1,60 +1,42 @@
 import { defineConfig, devices } from '@playwright/test';
-import path, { dirname } from 'path';
+import type { PluginOptions } from '@grafana/plugin-e2e';
 
-import { PluginOptions } from '@grafana/plugin-e2e';
-
-const testDirRoot = 'e2e/plugin-e2e/';
-
+/**
+ * See https://playwright.dev/docs/test-configuration.
+ */
 export default defineConfig<PluginOptions>({
+  testDir: './e2e/frontend',
+  /* Run tests in files in parallel */
   fullyParallel: true,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
+  forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
+  retries: process.env.CI ? 2 : 0,
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : undefined,
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  reporter: 'html',
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  use: {
+    baseURL: `http://localhost:${process.env.PORT || 3000}`,
+    screenshot: 'only-on-failure',
+    video: 'on',
+  },
+
+  /* Configure projects for major browsers */
   projects: [
-    // Login to Grafana with admin user and store the cookie on disk for use in other tests
     {
-      name: 'authenticate',
-      testDir: `${dirname(require.resolve('@grafana/plugin-e2e'))}/auth`,
+      name: 'auth',
+      testDir: 'node_modules/@grafana/plugin-e2e/dist/auth',
       testMatch: [/.*\.js/],
     },
-    // Login to Grafana with new user with viewer role and store the cookie on disk for use in other tests
     {
-      name: 'createUserAndAuthenticate',
-      testDir: `${dirname(require.resolve('@grafana/plugin-e2e'))}/auth`,
-      testMatch: [/.*\.js/],
-      use: {
-        user: {
-          user: 'viewer',
-          password: 'password',
-          role: 'Viewer',
-        },
-      },
-    },
-    // Run all tests in parallel using user with admin role
-    {
-      name: 'admin',
-      testDir: path.join(testDirRoot, '/plugin-e2e-api-tests/as-admin-user'),
+      name: 'run-tests',
       use: {
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.auth/admin.json',
       },
-      dependencies: ['authenticate'],
-    },
-    // Run all tests in parallel using user with viewer role
-    {
-      name: 'viewer',
-      testDir: path.join(testDirRoot, '/plugin-e2e-api-tests/as-viewer-user'),
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/viewer.json',
-      },
-      dependencies: ['createUserAndAuthenticate'],
-    },
-    {
-      name: 'astradb',
-      testDir: path.join(testDirRoot, '/astradb'),
-      use: {
-        ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/admin.json',
-      },
-      dependencies: ['authenticate'],
+      dependencies: ['auth'],
     },
   ],
 });
