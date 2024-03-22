@@ -2,20 +2,20 @@
   "cookies": [
     {
       "name": "grafana_session",
-      "value": "2ee986942646240cce8b5c0d2e4a3948",
+      "value": "7ac44b2087a6dda28315c46592e9a783",
       "domain": "localhost",
       "path": "/",
-      "expires": 1713709037.191,
+      "expires": 1713724522.491,
       "httpOnly": true,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "grafana_session_expiry",
-      "value": "1711117632",
+      "value": "1711133117",
       "domain": "localhost",
       "path": "/",
-      "expires": 1713709037.191,
+      "expires": 1713724522.491,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
