@@ -5,7 +5,7 @@ import type { PluginOptions } from '@grafana/plugin-e2e';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig<PluginOptions>({
-  testDir: './src/e2e/frontend',
+  testDir: './e2e/frontend',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
