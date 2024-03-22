@@ -3,7 +3,6 @@
     "node_modules/**",
     "coverage/**",
     "provisioning/**",
-    "cypress/**",
     "postman/**",
     "pkg/testdata/**",
     "pkg/**/*_test.go",

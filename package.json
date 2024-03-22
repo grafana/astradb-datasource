@@ -38,7 +38,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
-    "@grafana/e2e": "10.4.0",
     "@grafana/e2e-selectors": "10.4.0",
     "@grafana/eslint-config": "^6.0.0",
     "@grafana/plugin-e2e": "0.18.0",

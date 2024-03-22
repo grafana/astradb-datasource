@@ -30,9 +30,6 @@ e2e-results/
 .idea
 
 provisioning/
-cypress/screenshots/actual
-cypress/videos
-cypress/report.json
 __debug_bin
 /test-results/
 /playwright-report/

@@ -6,6 +6,16 @@ const ASTRA_TOKEN = 'AstraCS:LjDqrEIZyDgduvSZgHUKyfMX:25dc87b1f592f18d93261a45b1
 test.describe('Test ConfigEditor', () => {
   test('invalid credentials should return an error', async ({ createDataSourceConfigPage, page }) => {
     const configPage = await createDataSourceConfigPage({ type: 'astradb-datasource' });
+
+    await page.getByPlaceholder('$ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443').fill(ASTRA_URI);
+    await page.getByPlaceholder('AstraCS:xxxxx').fill(ASTRA_TOKEN);
+    await expect(configPage.saveAndTest()).not.toBeOK();
+  });
+
+  test('valid credentials should return a 200 status code', async ({ createDataSourceConfigPage, page }) => {
+    const configPage = await createDataSourceConfigPage({ type: 'astradb-datasource' });
+    configPage.mockHealthCheckResponse({ status: 200 });
+
     await page.getByPlaceholder('$ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443').fill(ASTRA_URI);
     await page.getByPlaceholder('AstraCS:xxxxx').fill(ASTRA_TOKEN);
     await expect(configPage.saveAndTest()).not.toBeOK();
