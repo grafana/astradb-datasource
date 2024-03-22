@@ -2059,16 +2059,16 @@
     tslib "2.5.0"
     typescript "4.8.4"
 
-"@grafana/e2e@10.4.0":
-  version "10.4.0"
-  resolved "https://registry.yarnpkg.com/@grafana/e2e/-/e2e-10.4.0.tgz#7d3a1c686cdf20cc3a2ecf321a18a6b11268a38a"
-  integrity sha512-7FILSArMl+TbFD6spsU9D+9Uuacf4nPzaI90f6XVWJsudcDzjVTODkUypSRquISPnskUg/1hqhA79Su9UYsbUw==
+"@grafana/e2e@10.4.1":
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/@grafana/e2e/-/e2e-10.4.1.tgz#ef8607476c25c201d5f3f6512c8d64a95a16f00a"
+  integrity sha512-8XQ9EMVg303Ptt3Tq784EQZwAV8ODUkW083rneSobz71sSJmWCZOZeEwbEac/w4tmaAd7sL45lErBh2z0eB7ng==
   dependencies:
     "@babel/core" "7.23.2"
     "@babel/preset-env" "7.23.2"
     "@cypress/webpack-preprocessor" "5.17.1"
-    "@grafana/e2e-selectors" "10.4.0"
-    "@grafana/schema" "10.4.0"
+    "@grafana/e2e-selectors" "10.4.1"
+    "@grafana/schema" "10.4.1"
     "@grafana/tsconfig" "^1.2.0-rc1"
     "@mochajs/json-file-reporter" "^1.2.0"
     babel-loader "9.1.3"
@@ -2241,6 +2241,13 @@
   version "10.4.0"
   resolved "https://registry.yarnpkg.com/@grafana/schema/-/schema-10.4.0.tgz#64edfe3b5ffb8e7ebeede99eece37cfcf3f29462"
   integrity sha512-s94UukYELhK1jjtyEaz02zv6eT6ZgVij1U9tVvsHMXobpDJie54pOjSF7gO8YIAo+8s1HR5Pei3FPF+hUaLnvw==
+  dependencies:
+    tslib "2.6.2"
+
+"@grafana/schema@10.4.1":
+  version "10.4.1"
+  resolved "https://registry.yarnpkg.com/@grafana/schema/-/schema-10.4.1.tgz#acc3b6d0b84585ef4279f203f6f8b64ef6a8bad7"
+  integrity sha512-d6f5ZeWQ0z9Dl1PQ8vtuMdh/1RJaJjhwQFBrKZnGy0daKkPRw+DuFjre7XHcetWBg9dDX8O2FE7ViOMNImf6Iw==
   dependencies:
     tslib "2.6.2"
 
