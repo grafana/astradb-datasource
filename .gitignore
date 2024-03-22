@@ -33,6 +33,7 @@ provisioning/
 __debug_bin
 /test-results/
 /playwright-report/
-/playwright/
+/playwright/.auth/
+/playwright/.cache/
 /blob-report/
-/playwright/
+
