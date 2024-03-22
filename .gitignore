@@ -33,5 +33,6 @@ provisioning/
 __debug_bin
 /test-results/
 /playwright-report/
+/playwright/
 /blob-report/
 /playwright/
