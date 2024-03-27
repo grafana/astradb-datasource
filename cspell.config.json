@@ -3,7 +3,6 @@
     "node_modules/**",
     "coverage/**",
     "provisioning/**",
-    "cypress/**",
     "postman/**",
     "pkg/testdata/**",
     "pkg/**/*_test.go",
@@ -26,11 +25,13 @@
     "datastax",
     "dateparse",
     "datetime",
+    "Dgduv",
     "EndRegion",
     "errcheck",
     "Grafana",
     "ineffassign",
     "instancemgmt",
+    "jackspeak",
     "keyspace",
     "keyspaces",
     "mapstructure",
@@ -54,6 +55,7 @@
     "typecheck",
     "vals",
     "VARCHAR",
-    "vectorator"
+    "vectorator",
+    "viewports"
   ]
 }
