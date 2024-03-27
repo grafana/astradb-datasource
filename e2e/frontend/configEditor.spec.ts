@@ -1,6 +1,6 @@
 import { expect, test } from '@grafana/plugin-e2e';
 
-const ASTRA_URI = '37cd49dc-2aa3-4b91-a5e6-443c74d84c0c-us-east1.apps.astra.datastax.com:443';
+const ASTRA_URI = 'test';
 
 test.describe('Test ConfigEditor', () => {
   test('invalid credentials should return an error', async ({ createDataSourceConfigPage, page }) => {
