@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- **Chore** - Dependency updates
+
 ## 0.4.0
 
 - **Chore** - Bump github.com/grafana/grafana-plugin-sdk-go from 0.180.0 to 0.196.0
