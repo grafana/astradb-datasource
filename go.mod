@@ -7,7 +7,7 @@ toolchain go1.21.4
 require (
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
 	github.com/docker/go-connections v0.5.0
-	github.com/grafana/grafana-plugin-sdk-go v0.230.0
+	github.com/grafana/grafana-plugin-sdk-go v0.232.0
 	github.com/stargate/stargate-grpc-go-client v0.0.0-20220822130422-9a1c6261d4fa
 	github.com/stretchr/testify v1.9.0
 	github.com/testcontainers/testcontainers-go v0.31.0
@@ -97,10 +97,10 @@ require (
 	go.opentelemetry.io/otel/sdk v1.26.0 // indirect
 	go.opentelemetry.io/otel/trace v1.26.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.2.0 // indirect
-	golang.org/x/crypto v0.22.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
 	golang.org/x/mod v0.16.0 // indirect
-	golang.org/x/term v0.19.0 // indirect
+	golang.org/x/term v0.20.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240415180920-8c6c420018be // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240415180920-8c6c420018be // indirect
@@ -118,7 +118,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grafana/sqlds/v2 v2.7.2
 	github.com/hashicorp/go-hclog v1.6.3 // indirect
-	github.com/hashicorp/go-plugin v1.6.0 // indirect
+	github.com/hashicorp/go-plugin v1.6.1 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/magefile/mage v1.15.0 // indirect
@@ -136,7 +136,7 @@ require (
 	github.com/prometheus/procfs v0.14.0 // indirect
 	github.com/rivo/uniseg v0.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	golang.org/x/net v0.24.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
