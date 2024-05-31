@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+- **Chore** - Dependency updates
+- **Chore** - Clean up some deprecated methods
+  
 ## 0.5.0
 
 - **Chore** - Dependency updates
