@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
@@ -97,15 +96,11 @@ func (d *AstraDatasource) connect() error {
 		InsecureSkipVerify: false,
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
 	var conn *grpc.ClientConn
 	var err error
 
 	if d.settings.AuthKind == models.AuthTypeToken {
-		conn, err = grpc.DialContext(ctx, d.settings.URI, grpc.WithTransportCredentials(credentials.NewTLS(config)),
-			grpc.WithBlock(),
+		conn, err = grpc.NewClient(d.settings.URI, grpc.WithTransportCredentials(credentials.NewTLS(config)),
 			grpc.WithPerRPCCredentials(
 				auth.NewStaticTokenProvider(d.settings.Token),
 			),
@@ -113,8 +108,7 @@ func (d *AstraDatasource) connect() error {
 	} else {
 		if d.settings.Secure {
 			config = &tls.Config{}
-			conn, err = grpc.DialContext(ctx, d.settings.GRPCEndpoint, grpc.WithTransportCredentials(credentials.NewTLS(config)),
-				grpc.WithBlock(),
+			conn, err = grpc.NewClient(d.settings.GRPCEndpoint, grpc.WithTransportCredentials(credentials.NewTLS(config)),
 				grpc.WithPerRPCCredentials(
 					auth.NewTableBasedTokenProvider(
 						fmt.Sprintf("https://%s/v1/auth", d.settings.AuthEndpoint), d.settings.UserName, d.settings.Password,
@@ -122,7 +116,7 @@ func (d *AstraDatasource) connect() error {
 				),
 			)
 		} else {
-			conn, err = grpc.DialContext(ctx, d.settings.GRPCEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(),
+			conn, err = grpc.NewClient(d.settings.GRPCEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()),
 				grpc.WithPerRPCCredentials(
 					auth.NewTableBasedTokenProviderUnsafe(
 						fmt.Sprintf("http://%s/v1/auth", d.settings.AuthEndpoint), d.settings.UserName, d.settings.Password,

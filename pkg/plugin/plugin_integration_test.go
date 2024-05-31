@@ -112,8 +112,7 @@ func TestConnect(t *testing.T) {
 		InsecureSkipVerify: false,
 	}
 
-	conn, err := grpc.Dial(astra_uri, grpc.WithTransportCredentials(credentials.NewTLS(config)),
-		grpc.WithBlock(),
+	conn, err := grpc.NewClient(astra_uri, grpc.WithTransportCredentials(credentials.NewTLS(config)),
 		grpc.WithPerRPCCredentials(
 			auth.NewStaticTokenProvider(token),
 		),
@@ -203,7 +202,7 @@ func runQuery(t *testing.T, cql string) *backend.DataResponse {
 }
 
 func createClient(t *testing.T) *client.StargateClient {
-	conn, err := grpc.Dial(grpcEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(),
+	conn, err := grpc.NewClient(grpcEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithPerRPCCredentials(
 			auth.NewTableBasedTokenProviderUnsafe(
 				fmt.Sprintf("http://%s/v1/auth", authEndpoint), "cassandra", "cassandra",
@@ -222,8 +221,7 @@ func createRemoteClient(t *testing.T) *client.StargateClient {
 		InsecureSkipVerify: false,
 	}
 
-	conn, err := grpc.Dial(astra_uri, grpc.WithTransportCredentials(credentials.NewTLS(config)),
-		grpc.WithBlock(),
+	conn, err := grpc.NewClient(astra_uri, grpc.WithTransportCredentials(credentials.NewTLS(config)),
 		grpc.WithPerRPCCredentials(
 			auth.NewStaticTokenProvider(token),
 		),
@@ -240,11 +238,7 @@ func TestConnectDocker(t *testing.T) {
 	grpcEndpoint = "localhost:8090"
 	authEndpoint = "localhost:8081"
 
-	// Create a context to add a timeout to the gRPC dial
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	conn, err := grpc.DialContext(ctx, grpcEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock(),
+	conn, err := grpc.NewClient(grpcEndpoint, grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithPerRPCCredentials(
 			auth.NewTableBasedTokenProviderUnsafe(
 				fmt.Sprintf("http://%s/v1/auth", authEndpoint), "cassandra", "cassandra",
