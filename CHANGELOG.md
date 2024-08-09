@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+
+- **Chore** - Dependency updates
+  
 ## 0.6.0
 
 - **Chore** - Dependency updates
