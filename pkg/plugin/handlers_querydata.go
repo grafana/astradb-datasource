@@ -52,6 +52,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 
 	stargateClient, err := client.NewStargateClientWithConn(d.conn)
 	if err != nil {
+		// Looks like there's no actual error here so we'll leave this as a plugin error
 		response.Error = err
 		return response
 	}
@@ -74,6 +75,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 	queryResponse, err := stargateClient.ExecuteQuery(selectQuery)
 	if err != nil {
 		response.Error = err
+		response.ErrorSource = backend.ErrorSourceDownstream
 		return response
 	}
 	frame, err := Frame(queryResponse, *qm)
@@ -127,7 +129,8 @@ func (d *AstraDatasource) connect() error {
 	}
 
 	if err != nil {
-		return err
+		// Marking these errors as downstream as they could be due to misconfigured credentials
+		return errorsource.DownstreamError(err, false)
 	}
 
 	d.conn = conn
