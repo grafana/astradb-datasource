@@ -1,8 +1,10 @@
 package models
 
-import "github.com/grafana/sqlds/v2"
+import (
+	"github.com/grafana/grafana-plugin-sdk-go/data/sqlutil"
+)
 
 var (
-	TableFormat      sqlds.FormatQueryOption = sqlds.FormatOptionTable
-	TimeSeriesFormat sqlds.FormatQueryOption = sqlds.FormatOptionTimeSeries
+	TableFormat      sqlutil.FormatQueryOption = sqlutil.FormatOptionTable
+	TimeSeriesFormat sqlutil.FormatQueryOption = sqlutil.FormatOptionTimeSeries
 )
