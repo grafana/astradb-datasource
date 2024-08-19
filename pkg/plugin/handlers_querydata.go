@@ -40,7 +40,7 @@ func (d *AstraDatasource) query(_ context.Context, _ backend.PluginContext, quer
 
 	qm, err := models.LoadQueryModel(query)
 	if err != nil {
-		response.Error = json.Unmarshal(query.JSON, qm)
+		response.Error = err
 		return response
 	}
 
