@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
-	"github.com/grafana/sqlds/v2"
+	"github.com/grafana/grafana-plugin-sdk-go/data/sqlutil"
 )
 
 type QueryModel struct {
@@ -18,13 +18,13 @@ func LoadQueryModel(query backend.DataQuery) (*QueryModel, error) {
 	qm := &QueryModel{}
 	err := json.Unmarshal(query.JSON, qm)
 	if qm.Format == nil {
-		qm.Format = sqlds.FormatOptionTable
+		qm.Format = sqlutil.FormatOptionTable
 	}
 	if strings.Contains(strings.ToLower(qm.RawCql), "as time") {
-		qm.Format = sqlds.FormatOptionTimeSeries
+		qm.Format = sqlutil.FormatOptionTimeSeries
 	}
 	if strings.Contains(strings.ToLower(qm.RawCql), "as log_time") {
-		qm.Format = sqlds.FormatOptionLogs
+		qm.Format = sqlutil.FormatOptionLogs
 	}
 	return qm, err
 }

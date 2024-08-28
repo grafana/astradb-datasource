@@ -28,6 +28,7 @@
     "Dgduv",
     "EndRegion",
     "errcheck",
+    "errorsource",
     "Grafana",
     "ineffassign",
     "instancemgmt",

@@ -3,14 +3,15 @@ package plugin
 import (
 	"context"
 	"crypto/tls"
-	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
-	sqlds "github.com/grafana/sqlds/v2"
+	"github.com/grafana/grafana-plugin-sdk-go/data/sqlutil"
+	"github.com/grafana/grafana-plugin-sdk-go/experimental/errorsource"
+	sqlds "github.com/grafana/sqlds/v4"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
@@ -34,12 +35,12 @@ func (d *AstraDatasource) QueryData(ctx context.Context, req *backend.QueryDataR
 	return response, nil
 }
 
-func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, query backend.DataQuery) backend.DataResponse {
+func (d *AstraDatasource) query(_ context.Context, _ backend.PluginContext, query backend.DataQuery) backend.DataResponse {
 	response := backend.DataResponse{}
 
 	qm, err := models.LoadQueryModel(query)
 	if err != nil {
-		response.Error = json.Unmarshal(query.JSON, qm)
+		response.Error = err
 		return response
 	}
 
@@ -52,14 +53,15 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 
 	stargateClient, err := client.NewStargateClientWithConn(d.conn)
 	if err != nil {
+		// Looks like there's no actual error here so we'll leave this as a plugin error
 		response.Error = err
 		return response
 	}
 
-	queryToEvaluate := &sqlds.Query{
+	queryToEvaluate := &sqlutil.Query{
 		RawSQL:    qm.RawCql,
 		TimeRange: query.TimeRange,
-		Format:    sqlds.FormatQueryOption(getFormat(qm.Format)),
+		Format:    sqlutil.FormatQueryOption(getFormat(qm.Format)),
 	}
 	qm.ActualCql, err = sqlds.Interpolate(BaseDriver{}, queryToEvaluate)
 	if err != nil {
@@ -74,6 +76,7 @@ func (d *AstraDatasource) query(_ context.Context, pCtx backend.PluginContext, q
 	queryResponse, err := stargateClient.ExecuteQuery(selectQuery)
 	if err != nil {
 		response.Error = err
+		response.ErrorSource = backend.ErrorSourceDownstream
 		return response
 	}
 	frame, err := Frame(queryResponse, *qm)
@@ -127,31 +130,32 @@ func (d *AstraDatasource) connect() error {
 	}
 
 	if err != nil {
-		return err
+		// Marking these errors as downstream as they could be due to misconfigured credentials
+		return errorsource.DownstreamError(err, false)
 	}
 
 	d.conn = conn
 	return nil
 }
 
-func getFormat(v any) sqlds.FormatQueryOption {
+func getFormat(v any) sqlutil.FormatQueryOption {
 	if v == nil {
-		return sqlds.FormatOptionTable
+		return sqlutil.FormatOptionTable
 	}
 
 	if fmt, ok := v.(string); ok {
 		if strings.EqualFold(fmt, "time_series") {
-			return sqlds.FormatOptionTimeSeries
+			return sqlutil.FormatOptionTimeSeries
 		} else if strings.EqualFold(fmt, "logs") {
-			return sqlds.FormatOptionLogs
+			return sqlutil.FormatOptionLogs
 		}
 	}
 	// for backwards compatibility with old format
-	if fmt, ok := v.(*sqlds.FormatQueryOption); ok {
+	if fmt, ok := v.(*sqlutil.FormatQueryOption); ok {
 		return *fmt
 	}
-	if fmt, ok := v.(sqlds.FormatQueryOption); ok {
+	if fmt, ok := v.(sqlutil.FormatQueryOption); ok {
 		return fmt
 	}
-	return sqlds.FormatOptionTable
+	return sqlutil.FormatOptionTable
 }

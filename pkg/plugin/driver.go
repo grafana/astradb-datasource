@@ -1,12 +1,13 @@
 package plugin
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/data/sqlutil"
-	sqlds "github.com/grafana/sqlds/v2"
+	sqlds "github.com/grafana/sqlds/v4"
 )
 
 // BaseDriver implements the driver interface for macro interpolation
@@ -14,11 +15,11 @@ import (
 type BaseDriver struct {
 }
 
-func (d BaseDriver) Connect(backend.DataSourceInstanceSettings, json.RawMessage) (*sql.DB, error) {
+func (d BaseDriver) Connect(context.Context, backend.DataSourceInstanceSettings, json.RawMessage) (*sql.DB, error) {
 	return nil, nil
 }
 
-func (d BaseDriver) Settings(backend.DataSourceInstanceSettings) sqlds.DriverSettings {
+func (d BaseDriver) Settings(context.Context, backend.DataSourceInstanceSettings) sqlds.DriverSettings {
 	return sqlds.DriverSettings{}
 }
 
