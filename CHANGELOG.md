@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.2
+
+- **Chore** - Dependency updates
+- **Chore** - Add `errorsource` #337
+  
 ## 0.6.1
 
 - **Chore** - Dependency updates
