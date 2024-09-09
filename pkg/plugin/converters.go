@@ -192,7 +192,7 @@ func translateType(value *pb.Value, spec *pb.TypeSpec) (interface{}, error) {
 		return translateBasicType(value, spec)
 	case *pb.TypeSpec_Map_:
 		elements := make(map[interface{}]interface{})
-		if c := get(value.GetCollection()); c.Elements != nil && len(c.Elements) > 0 {
+		if c := get(value.GetCollection()); len(c.Elements) > 0 {
 			for i := 0; i < len(c.Elements)-1; i += 2 {
 				key, err := translateType(c.Elements[i], spec.GetMap().Key)
 				if err != nil {
