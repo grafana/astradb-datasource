@@ -55,7 +55,7 @@
     "@types/react": "17.0.22",
     "@types/testing-library__jest-dom": "^5.9.5",
     "copy-webpack-plugin": "^11.0.0",
-    "cspell": "^8.14.4",
+    "cspell": "^8.15.2",
     "css-loader": "^6.7.3",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-webpack-plugin": "^4.0.1",
