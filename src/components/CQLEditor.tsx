@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { LanguageCompletionProvider, SQLEditor } from '@grafana/experimental';
+import { LanguageCompletionProvider, SQLEditor } from '@grafana/plugin-ui';
 
 import { formatSQL } from '../utils/formatSql';
 import type { AstraQuery } from 'types';

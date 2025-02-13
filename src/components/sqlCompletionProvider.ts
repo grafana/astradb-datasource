@@ -10,10 +10,12 @@ import {
   SuggestionKindProvider,
   TableDefinition,
   TokenType,
-} from '@grafana/experimental';
+  Aggregate,
+  DB,
+  MetaDefinition,
+} from '@grafana/plugin-ui';
 import { AGGREGATE_FNS, OPERATORS } from './constants';
 import { FUNCTIONS } from './functions';
-import type { Aggregate, DB, MetaDefinition } from '@grafana/plugin-ui';
 import type { SelectableValue } from '@grafana/data';
 import type { AstraQuery } from 'types';
 
