@@ -5,7 +5,7 @@ go 1.23.5
 require (
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
 	github.com/docker/go-connections v0.5.0
-	github.com/grafana/grafana-plugin-sdk-go v0.265.0
+	github.com/grafana/grafana-plugin-sdk-go v0.266.0
 	github.com/grafana/sqlds/v4 v4.1.7
 	github.com/stargate/stargate-grpc-go-client v0.0.0-20220822130422-9a1c6261d4fa
 	github.com/stretchr/testify v1.10.0
@@ -143,7 +143,7 @@ require (
 	github.com/rivo/uniseg v0.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	golang.org/x/net v0.34.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	google.golang.org/protobuf v1.36.4 // indirect
