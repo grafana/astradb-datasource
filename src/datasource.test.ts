@@ -1,8 +1,8 @@
-import { DataQueryResponse, ArrayVector, FieldType } from '@grafana/data';
+import { DataQueryResponse, FieldType } from '@grafana/data';
 import * as grafanaRuntime from '@grafana/runtime';
+import { expect } from '@jest/globals';
 import { from } from 'rxjs';
 import { DataSource } from './datasource';
-import { expect } from '@jest/globals';
 
 const getDataSource = () => {
   return new DataSource({
@@ -30,7 +30,7 @@ describe('DataSource', () => {
         {
           fields: [
             {
-              values: new ArrayVector(['test_one', 'test_two', 'test_three']),
+              values: ['test_one', 'test_two', 'test_three'],
               type: FieldType.string,
               name: 'name',
               config: {},
@@ -43,13 +43,15 @@ describe('DataSource', () => {
     ds.query = () => from([queryResponse]);
 
     expect(
-      ds.metricFindQuery(
-        {
-            refId: 'A',
-            rawSql: 'f',
-        }
-      )
-    ).resolves.toStrictEqual([{ text: 'test_one', value: 'test_one' }, { text: 'test_two', value: 'test_two' }, { text: 'test_three', value: 'test_three' }]);
+      ds.metricFindQuery({
+        refId: 'A',
+        rawSql: 'f',
+      })
+    ).resolves.toStrictEqual([
+      { text: 'test_one', value: 'test_one' },
+      { text: 'test_two', value: 'test_two' },
+      { text: 'test_three', value: 'test_three' },
+    ]);
   });
 
   it('should return correct `applyTemplateVariables` result', () => {
@@ -62,7 +64,7 @@ describe('DataSource', () => {
 
     const ds = getDataSource();
     const query = {
-        refId: 'A'
+      refId: 'A',
     };
 
     expect(ds.applyTemplateVariables(query, { var: { text: '', value: '' } })).toStrictEqual({

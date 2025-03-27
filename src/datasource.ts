@@ -7,8 +7,8 @@ import {
   DataSourceInstanceSettings,
   ScopedVars,
   TimeRange,
-  vectorator,
 } from '@grafana/data';
+import { CompletionItemKind, DB, LanguageCompletionProvider, QueryFormat } from '@grafana/plugin-ui';
 import {
   BackendDataSourceResponse,
   DataSourceWithBackend,
@@ -17,13 +17,12 @@ import {
   getTemplateSrv,
   toDataQueryResponse,
 } from '@grafana/runtime';
-import { buildColumnQuery, buildTableQuery, showDatabases } from './components/metaQuery';
 import { uniqueId } from 'lodash';
 import { lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
-import type { AstraQuery, AstraSettings } from './types';
-import { CompletionItemKind, LanguageCompletionProvider, QueryFormat, DB } from '@grafana/plugin-ui';
+import { buildColumnQuery, buildTableQuery, showDatabases } from './components/metaQuery';
 import { fetchColumns, fetchTables, getFunctions, getSqlCompletionProvider } from './components/sqlCompletionProvider';
+import type { AstraQuery, AstraSettings } from './types';
 
 export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings> {
   annotations = {};
@@ -65,11 +64,11 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
       return [];
     }
     if (frame?.fields?.length === 1) {
-      return vectorator(frame?.fields[0]?.values).map((text) => ({ text, value: text }));
+      return frame?.fields[0]?.values.map((text) => ({ text, value: text }));
     }
     // convention - assume the first field is an id field
     const ids = frame?.fields[0]?.values;
-    return vectorator(frame?.fields[1]?.values).map((text, i) => ({ text, value: ids.get(i) }));
+    return frame?.fields[1]?.values.map((text, i) => ({ text, value: ids.get(i) }));
   }
 
   async fetchDatasets(): Promise<string[]> {
@@ -127,7 +126,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
     }
   }
 
-  async runSql<T>(query: string, options?: RunSQLOptions) {
+  async runSql<T extends string[]>(query: string, options?: RunSQLOptions) {
     const frame = await this.runMetaQuery({ rawSql: query, format: QueryFormat.Table, refId: options?.refId }, options);
     return new DataFrameView<T>(frame);
   }
