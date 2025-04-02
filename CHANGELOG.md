@@ -1,23 +1,28 @@
 # Changelog
 
+## 1.0.0
+
+- **Chore** - Bump minimum Grafana version to 10.4.0
+- **Chore** - Dependency updates
+
 ## 0.6.3
 
 - **Chore** - Dependency updates
-  
+
 ## 0.6.2
 
 - **Chore** - Dependency updates
 - **Chore** - Add `errorsource` #337
-  
+
 ## 0.6.1
 
 - **Chore** - Dependency updates
-  
+
 ## 0.6.0
 
 - **Chore** - Dependency updates
 - **Chore** - Clean up some deprecated methods
-  
+
 ## 0.5.0
 
 - **Chore** - Dependency updates
