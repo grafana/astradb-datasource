@@ -63,7 +63,7 @@ jobs:
         shell: bash
         env:
           GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
-          GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+          SHA: ${{ github.event.pull_request.head.sha }}
           PR_NUMBER: ${{ github.event.number }}
         run: |
           echo "FROM grafana/grafana-oss:latest
@@ -78,7 +78,7 @@ jobs:
           ENV GF_DEFAULT_APP_MODE "development"
 
           # TODO: Cleanup script should remove images from closed PRs using these labels
-          LABEL gh-sha="${GITHUB_SHA}"
+          LABEL gh-sha="${SHA}"
           LABEL gh-repo="${GITHUB_REPOSITORY_NAME}"
           LABEL gh-pr-number="${PR_NUMBER}"
 
