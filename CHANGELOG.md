@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- **Chore** Add Github Action release flow
+- Harden Github Actions
+
 ## 1.0.0
 
 - **Chore** - Bump minimum Grafana version to 10.4.0
