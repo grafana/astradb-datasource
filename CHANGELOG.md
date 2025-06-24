@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2
+
+- **Chore** - Dependency updates
+- Add GHA for CI and fix code style errors (#536)
+
 ## 1.0.1
 
 - **Chore** Add Github Action release flow
