@@ -33,6 +33,9 @@ type AstraDatasource struct {
 func (d *AstraDatasource) Dispose() {
 	// Clean up datasource instance resources.
 	if d.conn != nil {
-		d.conn.Close()
+		err := d.conn.Close()
+		if err != nil {
+			backend.Logger.Error("Error closing database connection: %s.", err)
+		}
 	}
 }
