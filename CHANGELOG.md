@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3
+
+- **Chore** - Dependency updates
+- **Chore** - Mark macro errors downstream (#601)
+
 ## 1.0.2
 
 - **Chore** - Dependency updates
