@@ -3,7 +3,7 @@
 ## 1.0.3
 
 - **Chore** - Dependency updates
-- **Chore** - Mark macro errors downstream (#601)
+- **Chore** - Mark macro errors as downstream (#601)
 
 ## 1.0.2
 
