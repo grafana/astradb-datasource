@@ -66,6 +66,7 @@ func (d *AstraDatasource) query(_ context.Context, _ backend.PluginContext, quer
 	qm.ActualCql, err = sqlds.Interpolate(BaseDriver{}, queryToEvaluate)
 	if err != nil {
 		response.Error = err
+		response.ErrorSource = backend.ErrorSourceDownstream
 		return response
 	}
 
