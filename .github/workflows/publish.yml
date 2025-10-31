@@ -1,5 +1,5 @@
-name: Deploy to Grafana Cloud
-run-name: Deploy ${{ inputs.branch }} to Grafana Cloud ${{ inputs.environment }} by @${{ github.actor }}
+name: Plugins - CD
+run-name: Deploy ${{ inputs.branch }} to ${{ inputs.environment }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
