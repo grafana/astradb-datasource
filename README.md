@@ -1,12 +1,11 @@
 # Astra DB data source plugin for Grafana
+> [!IMPORTANT]
+> **Deprecation Notice**: This plugin is deprecated and will only receive critical security updates. Support will end on **June 1, 2026**. 
 
 The Astra DB plugin allows a direct connection to Astra DB to query and visualize data in Grafana.
 
 This plugin provides a CQL editor to format and color code your CQL statements, along with auto complete when entering keyspaces, tables and fields.
 
-## Beta
-
-This plugin is currently in **Beta** development. Breaking changes could occur but are not expected.
 
 ## Installation
 
