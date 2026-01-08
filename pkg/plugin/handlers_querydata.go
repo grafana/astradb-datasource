@@ -11,7 +11,7 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/sqlutil"
 	"github.com/grafana/grafana-plugin-sdk-go/experimental/errorsource"
-	sqlds "github.com/grafana/sqlds/v4"
+	sqlds "github.com/grafana/sqlds/v5"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
 	pb "github.com/stargate/stargate-grpc-go-client/stargate/pkg/proto"
