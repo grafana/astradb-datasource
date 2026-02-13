@@ -2,7 +2,7 @@ module github.com/grafana/astradb-datasource
 
 go 1.24.6
 
-toolchain go1.24.11
+toolchain go1.26.0
 
 require (
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
