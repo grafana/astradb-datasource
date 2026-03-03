@@ -1,6 +1,6 @@
 {
   "name": "astradb-datasource",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Grafana Data Source Backend Plugin for Astra DB",
   "private": true,
   "scripts": {
