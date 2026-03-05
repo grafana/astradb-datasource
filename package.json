@@ -89,7 +89,7 @@
     "webpack-livereload-plugin": "^3.0.2",
     "webpack-subresource-integrity": "^5.2.0-rc.1",
     "webpack-virtual-modules": "^0.6.2",
-    "@types/testing-library__jest-dom": "5.14.9"
+    "@types/testing-library__jest-dom": "6.0.0"
   },
   "resolutions": {
     "rxjs": "7.3.0",
