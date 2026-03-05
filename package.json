@@ -93,7 +93,7 @@
   },
   "resolutions": {
     "rxjs": "7.3.0",
-    "jackspeak": "2.1.1"
+    "jackspeak": "2.3.6"
   },
   "packageManager": "yarn@1.22.19"
 }
