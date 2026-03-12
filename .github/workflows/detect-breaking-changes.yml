@@ -12,9 +12,9 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - name: Install dependencies
-        run: yarn install
+        run: npm install
       - name: Build plugin
-        run: yarn build
+        run: npm run build
       - name: Compatibility check
         uses: grafana/plugin-actions/is-compatible@ad81bca30a8f98102741e1e6b0b6898a265ad691
         with:
