@@ -195,7 +195,7 @@ export class DataSource extends DataSourceWithBackend<AstraQuery, AstraSettings>
       fields: (query: AstraQuery) => this.fetchFields(query),
       validateQuery: (query: AstraQuery, range?: TimeRange) =>
         Promise.resolve({ query, error: '', isError: false, isValid: true }),
-      dsID: () => this.id,
+      dsID: () => this.id!,
       lookup: (path?: string) => this.fetchMeta(path),
       getSqlCompletionProvider: () => this.getSqlCompletionProvider(this.db),
       functions: async () => getFunctions(),
