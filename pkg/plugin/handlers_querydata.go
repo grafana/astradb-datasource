@@ -10,7 +10,6 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 	"github.com/grafana/grafana-plugin-sdk-go/data/sqlutil"
-	"github.com/grafana/grafana-plugin-sdk-go/experimental/errorsource"
 	sqlds "github.com/grafana/sqlds/v5"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/auth"
 	"github.com/stargate/stargate-grpc-go-client/stargate/pkg/client"
@@ -132,7 +131,7 @@ func (d *AstraDatasource) connect() error {
 
 	if err != nil {
 		// Marking these errors as downstream as they could be due to misconfigured credentials
-		return errorsource.DownstreamError(err, false)
+		return backend.DownstreamError(err)
 	}
 
 	d.conn = conn
