@@ -6,16 +6,16 @@
   "scripts": {
     "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",
     "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
-    "e2e:playwright": "yarn playwright test",
-    "e2e:playwright:ui": "yarn playwright test --ui",
-    "e2e:playwright:report": "yarn playwright show-report",
+    "e2e:playwright": "npx playwright test",
+    "e2e:playwright:ui": "npx playwright test --ui",
+    "e2e:playwright:report": "npx playwright show-report",
     "lint": "eslint --cache --ignore-path ./.gitignore --ext .js,.jsx,.ts,.tsx .",
-    "lint:fix": "yarn run lint --fix && prettier --write --list-different .",
+    "lint:fix": "npm run lint -- --fix && prettier --write --list-different .",
     "prettier:write": "prettier --list-different \"**/*.{js,ts,tsx,scss,md,mdx}\" --write",
     "server": "docker compose up --build",
     "sign": "npx --yes @grafana/sign-plugin@latest",
     "spellcheck": "cspell -c cspell.config.json \"**/*.{ts,tsx,js,go,md,mdx,yml,yaml,json,scss,css}\"",
-    "start": "yarn watch",
+    "start": "npm run dev",
     "test": "jest --watch --onlyChanged",
     "test:ci": "jest --passWithNoTests --maxWorkers 4",
     "typecheck": "tsc --noEmit",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@emotion/css": "11.13.5",
     "@grafana/data": "^11.5.2",
-    "@grafana/plugin-ui": "^0.13.0",
+    "@grafana/plugin-ui": "^0.13.1",
     "@grafana/runtime": "^11.5.2",
     "@grafana/schema": "^11.5.2",
     "@grafana/ui": "^11.5.2",
@@ -54,6 +54,7 @@
     "@types/lodash": "^4.14.194",
     "@types/node": "^20.8.7",
     "@types/react": "17.0.91",
+    "@types/testing-library__jest-dom": "5.14.9",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "copy-webpack-plugin": "^13.0.0",
@@ -88,12 +89,9 @@
     "webpack-cli": "^6.0.1",
     "webpack-livereload-plugin": "^3.0.2",
     "webpack-subresource-integrity": "^5.2.0-rc.1",
-    "webpack-virtual-modules": "^0.6.2",
-    "@types/testing-library__jest-dom": "5.14.9"
+    "webpack-virtual-modules": "^0.6.2"
   },
-  "resolutions": {
-    "rxjs": "7.3.0",
-    "jackspeak": "2.1.1"
-  },
-  "packageManager": "yarn@1.22.19"
+  "engines": {
+    "node": ">=22"
+  }
 }
