@@ -6,7 +6,7 @@ require (
 	github.com/araddon/dateparse v0.0.0-20210429162001-6b43995a97de
 	github.com/docker/go-connections v0.6.0
 	github.com/grafana/grafana-plugin-sdk-go v0.290.1
-	github.com/grafana/sqlds/v5 v5.0.4
+	github.com/grafana/sqlds/v5 v5.1.0
 	github.com/stargate/stargate-grpc-go-client v0.0.0-20220822130422-9a1c6261d4fa
 	github.com/stretchr/testify v1.11.1
 	github.com/testcontainers/testcontainers-go v0.41.0
