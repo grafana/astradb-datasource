@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5
+
+- **Chore** - Dependency updates
+- **Chore** - React v19 readiness, bump Node and use npm (#681)
+
 ## 1.0.4
 
 - **Chore** - Dependency updates
