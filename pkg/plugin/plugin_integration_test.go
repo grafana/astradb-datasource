@@ -9,7 +9,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/go-connections/nat"
 	"github.com/grafana/astradb-datasource/pkg/models"
 	"github.com/grafana/astradb-datasource/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
@@ -74,22 +73,12 @@ func setup() {
 			log.Fatalf("Failed to start Stargate container: %v", err)
 		}
 
-		grpcPort, err := nat.NewPort("tcp", "8090")
-		if err != nil {
-			log.Fatalf("Failed to get port: %v", err)
-		}
-
-		authPort, err := nat.NewPort("tcp", "8081")
-		if err != nil {
-			log.Fatalf("Failed to get port: %v", err)
-		}
-
-		grpcEndpoint, err = astraDbContainer.PortEndpoint(ctx, grpcPort, "")
+		grpcEndpoint, err = astraDbContainer.PortEndpoint(ctx, "8090/tcp", "")
 		if err != nil {
 			log.Fatalf("Failed to get endpoint: %v", err)
 		}
 
-		authEndpoint, err = astraDbContainer.PortEndpoint(ctx, authPort, "")
+		authEndpoint, err = astraDbContainer.PortEndpoint(ctx, "8081/tcp", "")
 		if err != nil {
 			log.Fatalf("Failed to get endpoint: %v", err)
 		}

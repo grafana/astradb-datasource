@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6
+
+- **Chore** - Dependency updates
+
 ## 1.0.5
 
 - **Chore** - Dependency updates
