@@ -4,6 +4,7 @@
         "github>grafana/grafana-renovate-config//presets/automerge"
     ],
     "platformAutomerge": true,
+    "minimumReleaseAge": "3 days",
     "packageRules": [
         {
             "description": "Disable minimum release age for Grafana owned npm packages (@grafana/*)",
@@ -34,6 +35,17 @@
                 "grafana/*"
             ],
             "minimumReleaseAge": null
+        },
+        {
+            "description": "Enforce minimum release age for third-party GitHub Actions",
+            "matchManagers": [
+                "github-actions"
+            ],
+            "excludePackageNames": [
+                "grafana/*",
+                "actions/*"
+            ],
+            "minimumReleaseAge": "3 days"
         },
         {
             "description": "Ignore major updates for dependencies that need to be kept in sync with Grafana",

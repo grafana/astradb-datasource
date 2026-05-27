@@ -1,9 +1,14 @@
 name: Compatibility check
 on: [push, pull_request]
 
+permissions: {}
+
 jobs:
   compatibilitycheck:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -12,7 +17,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Build plugin
         run: npm run build
       - name: Compatibility check
