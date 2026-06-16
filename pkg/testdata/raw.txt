@@ -1,0 +1,54 @@
+ carname                           | acceleration | cylinders | displacement | horsepower | modelyear | mpg | passedemissions | weight
+-----------------------------------+--------------+-----------+--------------+------------+-----------+-----+-----------------+--------
+                          fiat 128 |         15.5 |         4 |           90 |         75 |        74 |  24 |            TRUE |  1.054
+                   mazda rx2 coupe |         13.5 |         3 |           70 |         97 |        72 |  19 |            TRUE |  1.165
+                       volvo 244dl |         14.5 |         4 |          121 |         98 |        75 |  22 |            TRUE | 1.4725
+                         vw rabbit |         14.2 |         4 |           90 |         70 |        76 |  29 |            TRUE | 0.9685
+                         subaru dl |         16.4 |         4 |           97 |         67 |        77 |  30 |            TRUE | 0.9925
+                        audi 100ls |           15 |         4 |          115 |         95 |        75 |  23 |            TRUE |  1.347
+           buick estate wagon (sw) |           10 |         8 |          455 |        225 |        70 |  14 |           FALSE |  1.543
+                        opel manta |         14.5 |         4 |           97 |         78 |        74 |  26 |            TRUE |   1.15
+          oldsmobile vista cruiser |         12.5 |         8 |          350 |        180 |        73 |  12 |           FALSE | 2.2495
+                       datsun 1200 |           18 |         4 |           72 |         69 |        71 |  35 |            TRUE | 0.8065
+                  peugeot 504 (sw) |         19.5 |         4 |          120 |         87 |        72 |  21 |            TRUE | 1.4895
+             chevrolet nova custom |           18 |         6 |          250 |        100 |        73 |  16 |           FALSE |  1.639
+            plymouth volare custom |         17.7 |         6 |          225 |        100 |        77 |  19 |            TRUE |  1.815
+                       amc gremlin |           16 |         6 |          232 |        100 |        75 |  20 |            TRUE |  1.457
+               chevrolet vega 2300 |         15.5 |         4 |          140 |         90 |        71 |  28 |            TRUE |  1.132
+           buick opel isuzu deluxe |         14.8 |         4 |          111 |         80 |        77 |  30 |            TRUE | 1.0775
+                plymouth 'cuda 340 |            8 |         8 |          340 |        160 |        70 |  14 |           FALSE | 1.8045
+        plymouth volare premier v8 |         13.2 |         8 |          318 |        150 |        76 |  13 |           FALSE |   1.97
+                    chevrolet vega |           17 |         4 |          140 |         75 |        74 |  25 |            TRUE |  1.271
+                     toyota carina |           19 |         4 |           97 |         88 |        73 |  20 |            TRUE | 1.1395
+                         opel 1900 |         16.9 |         4 |          116 |         81 |        76 |  25 |            TRUE |   1.11
+                   mercury monarch |           21 |         6 |          250 |         72 |        75 |  15 |           FALSE |  1.716
+                   renault 12 (sw) |           18 |         4 |           96 |         69 |        72 |  26 |            TRUE | 1.0945
+              fiat 124 sport coupe |         15.5 |         4 |           98 |         90 |        73 |  26 |            TRUE | 1.1325
+                      datsun b-210 |           17 |         4 |           85 |         70 |        76 |  32 |            TRUE |  0.995
+               ford pinto runabout |         16.5 |         4 |          122 |         86 |        72 |  21 |            TRUE |  1.113
+                   ford mustang ii |           12 |         8 |          302 |        129 |        75 |  13 |           FALSE | 1.5845
+                  chevrolet impala |           14 |         8 |          400 |        150 |        73 |  11 |           FALSE | 2.4985
+           toyota corolla liftback |         18.2 |         4 |           97 |         75 |        77 |  26 |            TRUE | 1.1325
+                   plymouth duster |         16.5 |         6 |          198 |         95 |        74 |  20 |            TRUE |  1.551
+                    dodge aspen se |         17.7 |         6 |          225 |        100 |        76 |  20 |            TRUE | 1.8255
+                  ford gran torino |           14 |         8 |          302 |        140 |        74 |  16 |           FALSE | 2.0705
+                  plymouth cricket |         20.5 |         4 |           91 |         70 |        71 |  26 |            TRUE | 0.9775
+                 volkswagen rabbit |           14 |         4 |           90 |         70 |        75 |  29 |            TRUE | 0.9685
+                 cadillac eldorado |         17.4 |         8 |          350 |        125 |        79 |  23 |            TRUE |   1.95
+                            subaru |         15.5 |         4 |          108 |         93 |        74 |  26 |            TRUE | 1.1955
+                   mercury marquis |           11 |         8 |          429 |        208 |        72 |  11 |           FALSE | 2.3165
+            chrysler newport royal |         12.5 |         8 |          400 |        190 |        72 |  13 |           FALSE |  2.211
+          ford country squire (sw) |           12 |         8 |          400 |        170 |        71 |  13 |           FALSE |  2.373
+               chevrolet monza 2+2 |         13.5 |         8 |          262 |        110 |        75 |  20 |            TRUE | 1.6105
+                         chevy c10 |           12 |         8 |          350 |        145 |        76 |  13 |           FALSE | 2.0275
+                  plymouth valiant |         15.4 |         6 |          225 |        100 |        76 |  22 |            TRUE | 1.6165
+                       fiat 124 tc |           14 |         4 |          116 |         75 |        74 |  26 |            TRUE |  1.123
+                chevrolet chevette |         16.5 |         4 |           98 |         68 |        78 |  30 |            TRUE | 1.0775
+          buick century luxus (sw) |         14.5 |         8 |          350 |        150 |        74 |  13 |           FALSE | 2.3495
+                plymouth satellite |           11 |         8 |          318 |        150 |        70 |  18 |           FALSE |  1.718
+               pontiac safari (sw) |           12 |         8 |          400 |        175 |        71 |  13 |           FALSE |   2.57
+                          audi fox |         16.5 |         4 |           98 |         83 |        74 |  29 |            TRUE | 1.1095
+         chevroelt chevelle malibu |         18.5 |         6 |          250 |        105 |        75 |  16 |           FALSE | 1.9485
+                          fiat 131 |         15.5 |         4 |          107 |         86 |        76 |  28 |            TRUE |  1.232
+                 plymouth fury iii |         13.5 |         8 |          318 |        150 |        72 |  15 |           FALSE | 2.0675
+                          bmw 2002 |         12.5 |         4 |          121 |        113 |        70 |  26 |            TRUE |  1.117

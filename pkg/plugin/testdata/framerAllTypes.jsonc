@@ -1,0 +1,340 @@
+//  🌟 This was machine generated.  Do not edit. 🌟
+//  
+//  Frame[0] 
+//  Name: response
+//  Dimensions: 23 Fields by 1 Rows
+//  +--------------------------------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+---------------------------+-----------------+---------------------+-----------------+-----------------------------------+--------------------------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  | Name: id                             | Name: asciivalue | Name: bigintvalue | Name: blobvalue | Name: booleanvalue | Name: datevalue    | Name: decimalvalue | Name: doublevalue | Name: floatvalue | Name: inetvalue | Name: intvalue | Name: listvalue | Name: mapvalue            | Name: setvalue  | Name: smallintvalue | Name: textvalue | Name: timestampvalue              | Name: timeuuidvalue                  | Name: timevalue | Name: tinyintvalue | Name: tuplevalue | Name: varcharvalue | Name: varintvalue |
+//  | Labels:                              | Labels:          | Labels:           | Labels:         | Labels:            | Labels:            | Labels:            | Labels:           | Labels:          | Labels:         | Labels:        | Labels:         | Labels:                   | Labels:         | Labels:             | Labels:         | Labels:                           | Labels:                              | Labels:         | Labels:            | Labels:          | Labels:            | Labels:           |
+//  | Type: []*string                      | Type: []*string  | Type: []*int64    | Type: []*string | Type: []*bool      | Type: []*time.Time | Type: []*float64   | Type: []*float64  | Type: []*float64 | Type: []*string | Type: []*int64 | Type: []*string | Type: []*string           | Type: []*string | Type: []*int64      | Type: []*string | Type: []*time.Time                | Type: []*string                      | Type: []*uint64 | Type: []*int64     | Type: []*string  | Type: []*string    | Type: []*uint64   |
+//  +--------------------------------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+---------------------------+-----------------+---------------------+-----------------+-----------------------------------+--------------------------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  | f066f76d-5e96-4b52-8d8a-0f51387df76b | alpha            | 1                 | foo             | true               | null               | 1.1                | 2.2               | 3.3              | [127 0 0 1]     | 2              | ["a","b","c"]   | {"1":"a","2":"b","3":"c"} | ["a","b","c"]   | 3                   | bravo           | 2021-09-07 16:40:31.123 +0000 UTC | 30821634-13ad-11eb-adc1-0242ac120002 | 36930123456789  | 5                  | [3,"bar",2.1]    | charlie            | 4                 |
+//  +--------------------------------------+------------------+-------------------+-----------------+--------------------+--------------------+--------------------+-------------------+------------------+-----------------+----------------+-----------------+---------------------------+-----------------+---------------------+-----------------+-----------------------------------+--------------------------------------+-----------------+--------------------+------------------+--------------------+-------------------+
+//  
+//  
+//  🌟 This was machine generated.  Do not edit. 🌟
+{
+  "frames": [
+    {
+      "schema": {
+        "name": "response",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "id"
+            }
+          },
+          {
+            "name": "asciivalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "asciivalue"
+            }
+          },
+          {
+            "name": "bigintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "bigintvalue"
+            }
+          },
+          {
+            "name": "blobvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "blobvalue"
+            }
+          },
+          {
+            "name": "booleanvalue",
+            "type": "boolean",
+            "typeInfo": {
+              "frame": "bool",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "booleanvalue"
+            }
+          },
+          {
+            "name": "datevalue",
+            "type": "time",
+            "typeInfo": {
+              "frame": "time.Time",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "datevalue"
+            }
+          },
+          {
+            "name": "decimalvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "float64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "decimalvalue"
+            }
+          },
+          {
+            "name": "doublevalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "float64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "doublevalue"
+            }
+          },
+          {
+            "name": "floatvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "float64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "floatvalue"
+            }
+          },
+          {
+            "name": "inetvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "inetvalue"
+            }
+          },
+          {
+            "name": "intvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "intvalue"
+            }
+          },
+          {
+            "name": "listvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "mapvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "setvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "smallintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "smallintvalue"
+            }
+          },
+          {
+            "name": "textvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "textvalue"
+            }
+          },
+          {
+            "name": "timestampvalue",
+            "type": "time",
+            "typeInfo": {
+              "frame": "time.Time",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "timestampvalue"
+            }
+          },
+          {
+            "name": "timeuuidvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "timeuuidvalue"
+            }
+          },
+          {
+            "name": "timevalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "uint64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "timevalue"
+            }
+          },
+          {
+            "name": "tinyintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "int64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "tinyintvalue"
+            }
+          },
+          {
+            "name": "tuplevalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "varcharvalue",
+            "type": "string",
+            "typeInfo": {
+              "frame": "string",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "varcharvalue"
+            }
+          },
+          {
+            "name": "varintvalue",
+            "type": "number",
+            "typeInfo": {
+              "frame": "uint64",
+              "nullable": true
+            },
+            "config": {
+              "displayName": "varintvalue"
+            }
+          }
+        ]
+      },
+      "data": {
+        "values": [
+          [
+            "f066f76d-5e96-4b52-8d8a-0f51387df76b"
+          ],
+          [
+            "alpha"
+          ],
+          [
+            1
+          ],
+          [
+            "foo"
+          ],
+          [
+            true
+          ],
+          [
+            null
+          ],
+          [
+            1.1
+          ],
+          [
+            2.2
+          ],
+          [
+            3.3
+          ],
+          [
+            "[127 0 0 1]"
+          ],
+          [
+            2
+          ],
+          [
+            "[\"a\",\"b\",\"c\"]"
+          ],
+          [
+            "{\"1\":\"a\",\"2\":\"b\",\"3\":\"c\"}"
+          ],
+          [
+            "[\"a\",\"b\",\"c\"]"
+          ],
+          [
+            3
+          ],
+          [
+            "bravo"
+          ],
+          [
+            1631032831123
+          ],
+          [
+            "30821634-13ad-11eb-adc1-0242ac120002"
+          ],
+          [
+            36930123456789
+          ],
+          [
+            5
+          ],
+          [
+            "[3,\"bar\",2.1]"
+          ],
+          [
+            "charlie"
+          ],
+          [
+            4
+          ]
+        ]
+      }
+    }
+  ]
+}

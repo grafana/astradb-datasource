@@ -1,0 +1,12 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "javascript.format.enable": false,
+  "go.testEnvVars": {
+    "RUN_ASTRA_INTEGRATION_TESTS": "true",
+    "DOCKER_RUNNING": "true",
+  },
+}
