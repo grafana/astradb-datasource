@@ -12,7 +12,8 @@
     "go.sum",
     "mage_output_file.go",
     "temp_test.go",
-    "package.json"
+    "package.json",
+    "jest.config.js"
   ],
   "words": [
     "araddon",
