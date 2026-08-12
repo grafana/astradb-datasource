@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@grafana/eslint-config": "^9.0.0",
-    "@grafana/plugin-e2e": "^3.10.0",
+    "@grafana/plugin-e2e": "^3.11.0",
     "@grafana/sign-plugin": "3.3.3",
     "@grafana/tsconfig": "^2.1.0",
     "@playwright/test": "1.60.0",
