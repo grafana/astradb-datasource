@@ -2,6 +2,8 @@
 
 ## 1.0.6
 
+- **Security** - Clear CVEs due in the current SLO window across frontend and backend dependencies
+- **Chore** - Harden npm dependency installs
 - **Chore** - Dependency updates
 
 ## 1.0.5
