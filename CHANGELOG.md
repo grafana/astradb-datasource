@@ -2,6 +2,7 @@
 
 ## 1.0.6
 
+- **Fix** - Restore query formatting for queries containing template variables or macros
 - **Security** - Clear CVEs due in the current SLO window across frontend and backend dependencies
 - **Chore** - Harden npm dependency installs
 - **Chore** - Dependency updates
