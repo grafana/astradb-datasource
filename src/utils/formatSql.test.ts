@@ -9,7 +9,7 @@ describe('formatSQL', () => {
   it.each([
     ['a variable', 'select * from t where id = $host', '$host'],
     ['a braced variable', 'select * from ${table}', '${table}'],
-    ['a braced variable with a format', 'select * from t where x = ${var:sqlstring}', '${var:sqlstring}'],
+    ['a braced variable with a format', 'select * from t where x = ${var:csv}', '${var:csv}'],
     ['a legacy variable', 'select * from [[legacy]] where a = 1', '[[legacy]]'],
     ['a macro', 'select * from t where $__timeFilter(ts)', '$__timeFilter(ts)'],
     ['a macro with nested parentheses', 'select * from t where $__timeFilter(coalesce(a, b))', '$__timeFilter(coalesce(a, b))'],
