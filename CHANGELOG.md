@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.7
+
+- **Security** - Resolve security vulnerabilities (CVE-2026-84445, CVE-2026-85730)
+
 ## 1.0.6
 
 - **Security** - Clear CVEs due in the current SLO window across frontend and backend dependencies
