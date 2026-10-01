@@ -61,6 +61,7 @@
     "vals",
     "VARCHAR",
     "vectorator",
-    "viewports"
+    "viewports",
+    "struct"
   ]
 }
