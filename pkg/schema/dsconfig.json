@@ -12,7 +12,6 @@
       "valueType": "number",
       "target": "jsonData",
       "role": "auth.discriminator",
-      "required": true,
       "defaultValue": 0,
       "validations": [
         {

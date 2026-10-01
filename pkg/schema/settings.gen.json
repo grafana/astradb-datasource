@@ -4,9 +4,6 @@
     "properties": {
       "jsonData": {
         "type": "object",
-        "required": [
-          "authKind"
-        ],
         "properties": {
           "authEndpoint": {
             "description": "Stargate's auth endpoint, used to exchange the username/password for a session token, e.g. localhost:8081.",
