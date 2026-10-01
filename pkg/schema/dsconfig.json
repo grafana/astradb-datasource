@@ -1,62 +1,85 @@
 {
-  "$schema": "https://raw.githubusercontent.com/grafana/dsconfig/refs/heads/main/dsconfig/schema.json",
+  "$schema": "https://raw.githubusercontent.com/grafana/dsconfig/refs/tags/dsconfig/v0.0.13/dsconfig/schema.json",
   "schemaVersion": "v1",
   "pluginType": "grafana-astradb-datasource",
   "pluginName": "DataStax Astra DB",
   "fields": [
     {
+      "id": "jsonData.authKind",
+      "key": "authKind",
+      "label": "Authentication",
+      "description": "Authentication mode: Astra application token (0) or username/password credentials (1).",
+      "valueType": "number",
+      "target": "jsonData",
+      "role": "auth.discriminator",
+      "required": true,
+      "defaultValue": 0,
+      "validations": [
+        {
+          "type": "allowedValues",
+          "values": [0, 1]
+        }
+      ],
+      "ui": {
+        "component": "radio",
+        "options": [
+          { "label": "Token", "value": 0 },
+          { "label": "Credentials", "value": 1 }
+        ]
+      }
+    },
+    {
       "id": "jsonData.uri",
       "key": "uri",
       "label": "URI",
-      "description": "Astra DB connection URI.",
+      "description": "Astra DB connection URI, format: $ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443.",
       "valueType": "string",
       "target": "jsonData",
-      "required": true
-    },
-    {
-      "id": "jsonData.authKind",
-      "key": "authKind",
-      "label": "Auth Kind",
-      "description": "Authentication type identifier.",
-      "valueType": "number",
-      "target": "jsonData",
-      "required": true
-    },
-    {
-      "id": "jsonData.user",
-      "key": "user",
-      "label": "Username",
-      "description": "Astra DB username.",
-      "valueType": "string",
-      "target": "jsonData",
-      "required": true
+      "role": "endpoint.baseUrl",
+      "dependsOn": "jsonData.authKind == 0",
+      "requiredWhen": "jsonData.authKind == 0"
     },
     {
       "id": "jsonData.grpcEndpoint",
       "key": "grpcEndpoint",
       "label": "gRPC Endpoint",
-      "description": "Astra DB gRPC endpoint.",
+      "description": "gRPC data endpoint of a self-hosted Cassandra/DSE cluster fronted by Stargate (https://stargate.io), e.g. localhost:8090.",
       "valueType": "string",
       "target": "jsonData",
-      "required": true
+      "role": "endpoint.baseUrl",
+      "dependsOn": "jsonData.authKind == 1",
+      "requiredWhen": "jsonData.authKind == 1"
     },
     {
       "id": "jsonData.authEndpoint",
       "key": "authEndpoint",
       "label": "Auth Endpoint",
-      "description": "Authentication endpoint URL.",
+      "description": "Stargate's auth endpoint, used to exchange the username/password for a session token, e.g. localhost:8081.",
       "valueType": "string",
-      "role": "endpoint.baseUrl",
       "target": "jsonData",
-      "required": true
+      "dependsOn": "jsonData.authKind == 1",
+      "requiredWhen": "jsonData.authKind == 1"
+    },
+    {
+      "id": "jsonData.user",
+      "key": "user",
+      "label": "Username",
+      "description": "Cassandra database username, for a self-hosted cluster accessed via Stargate credentials.",
+      "valueType": "string",
+      "target": "jsonData",
+      "role": "auth.basic.username",
+      "dependsOn": "jsonData.authKind == 1",
+      "requiredWhen": "jsonData.authKind == 1"
     },
     {
       "id": "jsonData.secure",
       "key": "secure",
       "label": "Secure",
-      "description": "Use secure connection.",
+      "description": "Use a secure (TLS) connection to Stargate.",
       "valueType": "boolean",
       "target": "jsonData",
+      "defaultValue": false,
+      "dependsOn": "jsonData.authKind == 1",
       "ui": {
         "component": "switch"
       }
@@ -73,43 +96,74 @@
       "id": "secureJsonData.token",
       "key": "token",
       "label": "Token",
-      "description": "Astra DB application token.",
+      "description": "Astra DB application token, format: AstraCS:xxxxx, generated from the Astra console under Organization Settings > Token Management.",
       "valueType": "string",
       "role": "auth.apiKey.value",
-      "target": "secureJsonData"
+      "target": "secureJsonData",
+      "dependsOn": "jsonData.authKind == 0",
+      "requiredWhen": "jsonData.authKind == 0"
     },
     {
       "id": "secureJsonData.password",
       "key": "password",
       "label": "Password",
-      "description": "Astra DB password.",
+      "description": "Cassandra database password, for a self-hosted cluster accessed via Stargate credentials.",
       "valueType": "string",
       "role": "auth.basic.password",
-      "target": "secureJsonData"
+      "target": "secureJsonData",
+      "dependsOn": "jsonData.authKind == 1",
+      "requiredWhen": "jsonData.authKind == 1"
     }
   ],
-  "instructions": [
+  "relationships": [
     {
-      "msg": "Supports two authentication modes: Astra application token (set authKind to 0 and provide the token) or username/password credentials (set authKind to 1 and provide the user plus password) — ask which. But never ask for the token or password themselves. Those are secrets and should be entered in the UI.",
-      "tags": ["llm"]
+      "type": "pair",
+      "fields": ["jsonData.uri", "secureJsonData.token"],
+      "description": "Token-based connection: Astra DB endpoint URI paired with the application token. Used when jsonData.authKind == 0."
+    },
+    {
+      "type": "group",
+      "fields": ["jsonData.grpcEndpoint", "jsonData.authEndpoint", "jsonData.user", "secureJsonData.password"],
+      "description": "Credentials-based connection: gRPC endpoint, auth endpoint, username and password. Used when jsonData.authKind == 1."
     }
   ],
   "groups": [
     {
-      "id": "connection",
-      "title": "Connection",
-      "fieldRefs": ["jsonData.uri", "jsonData.grpcEndpoint", "jsonData.database", "jsonData.secure"]
+      "id": "auth-method",
+      "title": "Authentication",
+      "order": 1,
+      "fieldRefs": ["jsonData.authKind"]
     },
     {
-      "id": "auth",
-      "title": "Authentication",
+      "id": "token-auth",
+      "title": "Token",
+      "order": 2,
+      "fieldRefs": ["jsonData.uri", "secureJsonData.token"]
+    },
+    {
+      "id": "credentials-auth",
+      "title": "Credentials",
+      "order": 3,
       "fieldRefs": [
-        "jsonData.authKind",
-        "jsonData.user",
+        "jsonData.grpcEndpoint",
         "jsonData.authEndpoint",
-        "secureJsonData.token",
-        "secureJsonData.password"
+        "jsonData.user",
+        "secureJsonData.password",
+        "jsonData.secure"
       ]
+    },
+    {
+      "id": "optional-configuration",
+      "title": "Optional Configuration",
+      "order": 4,
+      "optional": true,
+      "fieldRefs": ["jsonData.database"]
+    }
+  ],
+  "instructions": [
+    {
+      "msg": "Astra DB supports two mutually exclusive authentication modes, selected via jsonData.authKind — ask the user which one applies: a managed Astra Cloud connection using an application token (authKind = 0), or a self-hosted Cassandra/DSE cluster behind Stargate using username/password credentials (authKind = 1). Only set the fields for the selected mode; leave the other mode's fields empty.",
+      "tags": ["llm", "auth"]
     }
   ]
 }

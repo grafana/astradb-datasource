@@ -4,8 +4,8 @@
   "description": "Grafana Data Source Backend Plugin for Astra DB",
   "private": true,
   "scripts": {
-    "build": "webpack -c ./.config/webpack/webpack.config.ts --env production",
-    "dev": "webpack -w -c ./.config/webpack/webpack.config.ts --env development",
+    "build": "webpack -c ./webpack.config.ts --env production",
+    "dev": "webpack -w -c ./webpack.config.ts --env development",
     "e2e:playwright": "npx --package @playwright/test playwright test",
     "e2e:playwright:ui": "npx --package @playwright/test playwright test --ui",
     "e2e:playwright:report": "npx --package @playwright/test playwright show-report",
@@ -47,6 +47,7 @@
     "@swc/core": "^1.15.40",
     "@swc/helpers": "^0.5.21",
     "@swc/jest": "^0.2.39",
+    "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -87,9 +88,9 @@
     "webpack": "^5.107.1",
     "webpack-cli": "^7.0.2",
     "webpack-livereload-plugin": "^3.0.2",
+    "webpack-merge": "6.0.1",
     "webpack-subresource-integrity": "^5.2.0-rc.1",
-    "webpack-virtual-modules": "^0.6.2",
-    "@testing-library/dom": "10.4.0"
+    "webpack-virtual-modules": "^0.6.2"
   },
   "engines": {
     "node": ">=24.5.0",

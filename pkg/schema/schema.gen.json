@@ -7,40 +7,51 @@
         "jsonData": {
           "type": "object",
           "required": [
-            "uri",
-            "authKind",
-            "user",
-            "grpcEndpoint",
-            "authEndpoint"
+            "authKind"
           ],
           "properties": {
             "authEndpoint": {
-              "description": "Authentication endpoint URL.",
-              "type": "string"
+              "description": "Stargate's auth endpoint, used to exchange the username/password for a session token, e.g. localhost:8081.",
+              "type": "string",
+              "x-dsconfig-depends-on": "jsonData.authKind == 1",
+              "x-dsconfig-required-when": "jsonData.authKind == 1"
             },
             "authKind": {
-              "description": "Authentication type identifier.",
-              "type": "number"
+              "description": "Authentication mode: Astra application token (0) or username/password credentials (1).",
+              "type": "number",
+              "default": 0,
+              "enum": [
+                0,
+                1
+              ]
             },
             "database": {
               "description": "Astra DB database name.",
               "type": "string"
             },
             "grpcEndpoint": {
-              "description": "Astra DB gRPC endpoint.",
-              "type": "string"
+              "description": "gRPC data endpoint of a self-hosted Cassandra/DSE cluster fronted by Stargate (https://stargate.io), e.g. localhost:8090.",
+              "type": "string",
+              "x-dsconfig-depends-on": "jsonData.authKind == 1",
+              "x-dsconfig-required-when": "jsonData.authKind == 1"
             },
             "secure": {
-              "description": "Use secure connection.",
-              "type": "boolean"
+              "description": "Use a secure (TLS) connection to Stargate.",
+              "type": "boolean",
+              "default": false,
+              "x-dsconfig-depends-on": "jsonData.authKind == 1"
             },
             "uri": {
-              "description": "Astra DB connection URI.",
-              "type": "string"
+              "description": "Astra DB connection URI, format: $ASTRA_CLUSTER_ID-$ASTRA_REGION.apps.astra.datastax.com:443.",
+              "type": "string",
+              "x-dsconfig-depends-on": "jsonData.authKind == 0",
+              "x-dsconfig-required-when": "jsonData.authKind == 0"
             },
             "user": {
-              "description": "Astra DB username.",
-              "type": "string"
+              "description": "Cassandra database username, for a self-hosted cluster accessed via Stargate credentials.",
+              "type": "string",
+              "x-dsconfig-depends-on": "jsonData.authKind == 1",
+              "x-dsconfig-required-when": "jsonData.authKind == 1"
             }
           }
         }
@@ -49,11 +60,11 @@
     "secureValues": [
       {
         "key": "token",
-        "description": "Astra DB application token."
+        "description": "Astra DB application token, format: AstraCS:xxxxx, generated from the Astra console under Organization Settings \u003e Token Management."
       },
       {
         "key": "password",
-        "description": "Astra DB password."
+        "description": "Cassandra database password, for a self-hosted cluster accessed via Stargate credentials."
       }
     ]
   }
