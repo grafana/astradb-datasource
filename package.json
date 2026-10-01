@@ -1,6 +1,6 @@
 {
   "name": "astradb-datasource",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Grafana Data Source Backend Plugin for Astra DB",
   "private": true,
   "scripts": {
@@ -25,12 +25,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@emotion/css": "11.13.5",
-    "@grafana/data": "^13.0.1",
-    "@grafana/i18n": "^13.0.1",
-    "@grafana/plugin-ui": "^0.13.1",
-    "@grafana/runtime": "^13.0.1",
-    "@grafana/schema": "^13.0.1",
-    "@grafana/ui": "^13.0.1",
+    "@grafana/data": "13.1.1",
+    "@grafana/i18n": "13.1.1",
+    "@grafana/plugin-ui": "0.17.3",
+    "@grafana/runtime": "13.1.1",
+    "@grafana/schema": "13.1.1",
+    "@grafana/ui": "13.1.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-virtualized-auto-sizer": "^2.0.3",
@@ -39,8 +39,8 @@
   },
   "devDependencies": {
     "@grafana/eslint-config": "^9.0.0",
-    "@grafana/plugin-e2e": "^3.8.0",
-    "@grafana/sign-plugin": "3.2.2",
+    "@grafana/plugin-e2e": "^3.11.0",
+    "@grafana/sign-plugin": "3.3.3",
     "@grafana/tsconfig": "^2.1.0",
     "@playwright/test": "1.60.0",
     "@stylistic/eslint-plugin-ts": "^4.0.0",
@@ -88,17 +88,18 @@
     "webpack-cli": "^7.0.2",
     "webpack-livereload-plugin": "^3.0.2",
     "webpack-subresource-integrity": "^5.2.0-rc.1",
-    "webpack-virtual-modules": "^0.6.2"
+    "webpack-virtual-modules": "^0.6.2",
+    "@testing-library/dom": "10.4.0"
   },
   "engines": {
     "node": ">=24.5.0",
-    "npm": ">=11.12.1"
+    "npm": ">=11.16.0"
   },
   "overrides": {
     "flatted": "3.4.2",
     "lodash": "4.18.0",
     "protobufjs": "7.6.3",
-    "immutable": "5.1.5"
+    "immutable": "5.1.9"
   },
-  "packageManager": "npm@11.12.1"
+  "packageManager": "npm@11.18.0"
 }
