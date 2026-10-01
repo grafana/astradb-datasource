@@ -1,0 +1,57 @@
+{
+  "spec": {
+    "type": "object",
+    "properties": {
+      "jsonData": {
+        "type": "object",
+        "required": [
+          "uri",
+          "authKind",
+          "user",
+          "grpcEndpoint",
+          "authEndpoint"
+        ],
+        "properties": {
+          "authEndpoint": {
+            "description": "Authentication endpoint URL.",
+            "type": "string"
+          },
+          "authKind": {
+            "description": "Authentication type identifier.",
+            "type": "number"
+          },
+          "database": {
+            "description": "Astra DB database name.",
+            "type": "string"
+          },
+          "grpcEndpoint": {
+            "description": "Astra DB gRPC endpoint.",
+            "type": "string"
+          },
+          "secure": {
+            "description": "Use secure connection.",
+            "type": "boolean"
+          },
+          "uri": {
+            "description": "Astra DB connection URI.",
+            "type": "string"
+          },
+          "user": {
+            "description": "Astra DB username.",
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "secureValues": [
+    {
+      "key": "token",
+      "description": "Astra DB application token."
+    },
+    {
+      "key": "password",
+      "description": "Astra DB password."
+    }
+  ]
+}
