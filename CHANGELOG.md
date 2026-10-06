@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.8
+
+- **Chore** - Add data source configuration (dsconfig) schema
+
 ## 1.0.7
 
 - **Security** - Resolve security vulnerabilities (CVE-2026-84445, CVE-2026-85730)
