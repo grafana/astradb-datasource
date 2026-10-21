@@ -1,6 +1,6 @@
 {
   "name": "astradb-datasource",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Grafana Data Source Backend Plugin for Astra DB",
   "private": true,
   "scripts": {
@@ -101,7 +101,9 @@
     "lodash": "4.18.0",
     "protobufjs": "7.6.3",
     "immutable": "5.1.9",
-    "basic-ftp": "6.2.1"
+    "basic-ftp": "6.2.1",
+    "moment": "2.31.0",
+    "sprintf-js": "1.1.3"
   },
   "packageManager": "npm@11.18.0"
 }

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.10
+
+- **Security** - Update Go to 1.27.3
+- **Security** - Resolve security vulnerabilities in backend and frontend dependencies
+
 ## 1.0.9
 
 - **Security** - Resolve security vulnerabilities (CVE-2026-102278, CVE-2026-102276, CVE-2026-102990)
