@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.11
+
+- **Chore** - Bump backend dependency
+
 ## 1.0.10
 
 - **Security** - Update Go to 1.27.3
