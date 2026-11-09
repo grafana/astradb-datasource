@@ -16,14 +16,19 @@ const (
 )
 
 type Settings struct {
+	// jsonData fields.
 	URI          string   `json:"uri"`
-	Token        string   `json:"token"`
 	GRPCEndpoint string   `json:"grpcEndpoint"`
 	AuthEndpoint string   `json:"authEndpoint"`
 	UserName     string   `json:"user"`
-	Password     string   `json:"password"`
 	Secure       bool     `json:"secure"`
 	AuthKind     AuthType `json:"authKind"`
+	Database     string   `json:"database"`
+
+	// secureJsonData fields. These are not part of jsonData (json:"-"); they are
+	// loaded from the decrypted secrets via mapstructure in LoadSettings.
+	Token    string `json:"-"`
+	Password string `json:"-"`
 }
 
 func LoadSettings(config backend.DataSourceInstanceSettings) (Settings, error) {

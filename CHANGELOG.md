@@ -1,7 +1,35 @@
 # Changelog
 
+## 1.0.12
+
+- Update backend dependencies
+- Fix a connection freeze between Grafana and the plugin under heavy query load by updating google.golang.org/grpc to v1.85.0 ([grpc/grpc-go#9330](https://github.com/grpc/grpc-go/issues/9330))
+
+## 1.0.11
+
+- **Chore** - Bump backend dependency
+
+## 1.0.10
+
+- **Security** - Update Go to 1.27.3
+- **Security** - Resolve security vulnerabilities in backend and frontend dependencies
+
+## 1.0.9
+
+- **Security** - Resolve security vulnerabilities (CVE-2026-102278, CVE-2026-102276, CVE-2026-102990)
+
+## 1.0.8
+
+- **Chore** - Add data source configuration (dsconfig) schema
+
+## 1.0.7
+
+- **Security** - Resolve security vulnerabilities (CVE-2026-84445, CVE-2026-85730)
+
 ## 1.0.6
 
+- **Security** - Clear CVEs due in the current SLO window across frontend and backend dependencies
+- **Chore** - Harden npm dependency installs
 - **Chore** - Dependency updates
 
 ## 1.0.5

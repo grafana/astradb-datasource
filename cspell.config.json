@@ -19,6 +19,7 @@
     "araddon",
     "Astra",
     "AstraDB",
+    "behaviour",
     "bigintvalue",
     "datacenter",
     "DATAPROXY",
@@ -28,6 +29,7 @@
     "dateparse",
     "datetime",
     "Dgduv",
+    "dsconfig",
     "EndRegion",
     "errcheck",
     "errorsource",
@@ -59,6 +61,7 @@
     "vals",
     "VARCHAR",
     "vectorator",
-    "viewports"
+    "viewports",
+    "struct"
   ]
 }
