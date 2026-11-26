@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.13
+
+- **Security** - Resolve security vulnerabilities (CVE-2026-78661, CVE-2026-97045, CVE-2026-110306, CVE-2026-110180)
+- Update backend dependencies
+
 ## 1.0.12
 
 - Update backend dependencies
