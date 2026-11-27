@@ -99,7 +99,7 @@
   "overrides": {
     "flatted": "3.4.4",
     "lodash": "4.18.1",
-    "protobufjs": "7.6.5",
+    "protobufjs": "8.8.1",
     "immutable": "5.1.10",
     "basic-ftp": "6.2.6",
     "moment": "2.31.0",
